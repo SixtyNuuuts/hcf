@@ -1,44 +1,30 @@
 <template>
   <section class="movie-cast">
-    <h3>Acteurs</h3>
+    <h3>Distribution</h3>
     <div class="actor-list">
-      <div class="card">
-        <a href="/person/11543-gaston-modot?language=fr-FR">
-          <img src="https://image.tmdb.org/t/p/w138_and_h175_face/2iYNh1NPS21O3Cq5sWzHlOUOFv3.jpg">
+      <div v-for="actor in movieCast" :key="actor.id" class="card">
+        <a href="">
+          <img :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + actor.profile_path">
         </a>
-        <p><a href="/person/11543-gaston-modot?language=fr-FR">Gaston Modot</a></p>
-        <p class="character">The Man</p>
-      </div>
-      <div class="card">
-        <a href="/person/11543-gaston-modot?language=fr-FR">
-          <img src="https://image.tmdb.org/t/p/w138_and_h175_face/2iYNh1NPS21O3Cq5sWzHlOUOFv3.jpg">
-        </a>
-        <p><a href="/person/11543-gaston-modot?language=fr-FR">Gaston Modot</a></p>
-        <p class="character">The Man</p>
-      </div>
-      <div class="card">
-        <a href="/person/11543-gaston-modot?language=fr-FR">
-          <img src="https://image.tmdb.org/t/p/w138_and_h175_face/2iYNh1NPS21O3Cq5sWzHlOUOFv3.jpg">
-        </a>
-        <p><a href="/person/11543-gaston-modot?language=fr-FR">Gaston Modot</a></p>
-        <p class="character">The Man</p>
+        <p><a href=""> {{ actor.name }} </a></p>
+        <p class="character">{{ actor.character }}</p>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-// import tmdbApi from "../services/tmdb-api";
+import tmdbApi from "../services/tmdb-api";
 
 export default {
-  // created() {
-  //   tmdbApi.getMovieById(this.id).then(res => {
-  //     this.movie = res.data;
-  //   });
-  // },
+  created() {
+    tmdbApi.getMovieCredits(this.id).then(res => {
+      this.movieCast = res.data.cast;
+    });
+  },
   data() {
     return {
-      movie: null
+      movieCast: null
     };
   },
   name: "MovieCast",

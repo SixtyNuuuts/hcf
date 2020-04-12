@@ -1,62 +1,44 @@
 <template>
   <section class="movie-info">
     <div class="poster">
-      <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/nrpeks4ScEBSYzpYSvex6CGWdlT.jpg" data-src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/nrpeks4ScEBSYzpYSvex6CGWdlT.jpg" data-srcset="https://image.tmdb.org/t/p/w300_and_h450_bestv2/nrpeks4ScEBSYzpYSvex6CGWdlT.jpg 1x, https://image.tmdb.org/t/p/w600_and_h900_bestv2/nrpeks4ScEBSYzpYSvex6CGWdlT.jpg 2x" alt="L'Âge d'Or" srcset="https://image.tmdb.org/t/p/w300_and_h450_bestv2/nrpeks4ScEBSYzpYSvex6CGWdlT.jpg 1x, https://image.tmdb.org/t/p/w600_and_h900_bestv2/nrpeks4ScEBSYzpYSvex6CGWdlT.jpg 2x" data-loaded="true">
+      <img :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + movie.poster_path">
     </div>
     <div>
       <div class="title">
         <h2>
-          <a href="/movie/5729-l-age-d-or?language=fr-FR">L'Âge d'Or</a>
-          <span class="release_date">(1930)</span>
+          <h1>{{ movie.original_title }} <span class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
         </h2>
         <div>
           <span class="release">
-            28/10/1930 (FR)
+            {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }} ({{ movie.production_countries[0].iso_3166_1}})
           </span>
-          <span class="genres">
-              <a href="/genre/10749-romance/movie">Romance</a>,&nbsp;<a href="/genre/35-comedie/movie">Comédie</a>,&nbsp;<a href="/genre/18-drame/movie">Drame</a>
-          </span>
+          <ul class="genres">
+            <li v-for="genre in movie.genres" :key="genre.id">
+              {{ genre.name }}
+            </li>
+          </ul>
           <span class="runtime">
-              1h 3m
+            {{ movie.runtime | minutesToHours() }}
           </span>
         </div>
       </div>
       <div>
-        <div class="score"></div>
+        <div class="score">{{ movie.vote_average }}</div>
       </div>
       <div>
-        <h3>A surrealist masterpiece</h3>
         <h3>Synopsis</h3>
         <div class="overview">
-          <p>Sur un scénario de Bunuel et Dali des images folles, un film choc qui fut longtemps frappe d'interdiction et provoqua la parution du "Manifeste surréaliste".</p>
+          <p>{{ movie.overview }}</p>
         </div>
-        <div class="characters">
-          <div>
-            <p><a href="/person/793-luis-bunuel?language=fr-FR">Luis Buñuel</a></p>
-            <p>Director, Screenplay</p>
-          </div>
-          <div>
-            <p><a href="/person/100327-marques-de-sade?language=fr-FR">Marquês de Sade</a></p>
-            <p>Novel</p>
-          </div>
-          <div>
-            <p><a href="/person/8988-salvador-dali?language=fr-FR">Salvador Dalí</a></p>
-            <p>Screenplay</p>
+        <div class="crew">
+          <div v-for="person in movieCrew" :key="person.id">
+            <p><a href="">{{ person.name }}</a></p>
+            <p>{{ person.job }}</p>
           </div>
         </div>
       </div>
     </div>
   </section>
-<!-- 
-  <div>
-    <h1>{{ movie.original_title }}</h1>
-    <img
-      v-if="movie.poster_path"
-      :src="'http://image.tmdb.org/t/p/w185' + movie.poster_path"
-      alt="poster"
-    />
-    <p>{{ movie.overview }}</p>
-  </div> -->
 </template>
 
 <script>
@@ -64,14 +46,27 @@ import tmdbApi from "../services/tmdb-api";
 
 export default {
   created() {
-    tmdbApi.getMovieById(this.id).then(res => {
+    tmdbApi.getMovieDetails(this.id).then(res => {
       this.movie = res.data;
+    });
+    tmdbApi.getMovieCredits(this.id).then(res => {
+      this.movieCrew = res.data.crew;
     });
   },
   data() {
     return {
-      movie: null
+      movie: null,
+      movieCrew: null,
     };
+  },
+  filters: {
+    minutesToHours: function (value) {
+      const hours = (value / 60);
+      const rhours = Math.floor(hours);
+      const minutes = (hours - rhours) * 60;
+      const rminutes = Math.round(minutes);
+      return rhours != 0 ? rhours + "h" + " " + rminutes + "m" : rminutes + "m";
+    }
   },
   name: "MovieDetails",
   props: {
@@ -102,7 +97,7 @@ export default {
       background-color: rgb(13, 202, 216); 
     }
 
-    .characters {
+    .crew {
       display: flex;
       
       div {

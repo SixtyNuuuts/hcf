@@ -3,12 +3,14 @@
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
     <MovieDetails :id="id" />
     <MovieCast :id="id" />
+    <MovieImages :id="id" />
   </div>
 </template>
 
 <script>
 import MovieDetails from "@/components/MovieDetails.vue";
 import MovieCast from "@/components/MovieCast.vue";
+import MovieImages from "@/components/MovieImages.vue";
 
 export default {
   created() {
@@ -22,7 +24,8 @@ export default {
   name: "Movie",
   components: {
     MovieDetails,
-    MovieCast
+    MovieCast,
+    MovieImages
   }
 };
 </script>
