@@ -16,7 +16,6 @@ export default {
   created() {
     tmdbApi.getMovieImages(this.id).then(res => {
       this.movieImages = res.data;
-      console.log(this.movieImages);
     });
   },
   data() {

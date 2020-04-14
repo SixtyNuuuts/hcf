@@ -2,29 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import VueFilterDateParse from 'vue-filter-date-parse'
-import VueFilterDateFormat from 'vue-filter-date-format';
+import VueFilterDateParse from './filters/date-parse'
+import VueFilterDateFormat from './filters/date-format';
+import VueFilterMinutesToHours from './filters/minutes-to-hours';
 
 Vue.config.productionTip = false
 
 Vue.use(VueFilterDateParse)
-
-Vue.use(VueFilterDateFormat, {
-  dayOfWeekNames: [
-    'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'
-  ],
-  dayOfWeekNamesShort: [
-    'dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'
-  ],
-  monthNames: [
-    'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-    'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-  ],
-  monthNamesShort: [
-    'Jan', 'Fev', 'Mars', 'Avr', 'Mai', 'Juin',
-    'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Dec'
-  ]
-});
+Vue.use(VueFilterDateFormat);
+Vue.use(VueFilterMinutesToHours);
 
 new Vue({
   router,

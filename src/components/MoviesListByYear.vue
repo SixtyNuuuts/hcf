@@ -27,7 +27,7 @@ export default {
   },
   name: "MoviesListByYear",
   props: {
-    year: Number
+    year: String
   },
   computed: {
     sortedMovies: function() {
