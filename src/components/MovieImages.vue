@@ -1,10 +1,17 @@
 <template>
-  <section class="movie-images">
-    <div v-for="backdrop in movieImages.backdrops" :key="backdrop.file_path">
-      <img :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + backdrop.file_path">
-    </div>
-    <div v-for="poster in movieImages.posters" :key="poster.file_path">
-      <img :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster.file_path">
+  <section v-if="Object.keys(movieImages.backdrops).length || Object.keys(movieImages.posters).length" class="movie-images">
+    <h3>Images</h3>
+    <div>
+      <div v-if="movieImages.backdrops">
+        <a v-for="backdrop in movieImages.backdrops" :key="backdrop.file_path" :href="'https://image.tmdb.org/t/p/original' + backdrop.file_path" target="_blank">
+          <img :src="'https://image.tmdb.org/t/p/w1280' + backdrop.file_path">
+        </a>
+      </div>
+      <div v-if="movieImages.posters">
+        <a v-for="poster in movieImages.posters" :key="poster.file_path" :href="'https://image.tmdb.org/t/p/original' + poster.file_path" target="_blank">
+          <img :src="'https://image.tmdb.org/t/p/w1280' + poster.file_path">
+        </a>
+      </div>
     </div>
   </section>
 </template>
@@ -21,8 +28,8 @@ export default {
   data() {
     return {
       movieImages: {
-        backdrops: null,
-        posters: null
+        backdrops: {},
+        posters: {}
       },
     };
   },
@@ -37,8 +44,17 @@ export default {
 <style scoped lang="scss">
 
   section.movie-images {
-    display: flex;
     text-align: left;
+
+    >div {
+      display: flex;
+
+      img {
+        max-width: 340px;
+      }
+
+    }
+
   }
 
 </style>

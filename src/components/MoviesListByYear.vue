@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Films de {{ year }}</h1>
-    <p v-for="movie in sortedMovies" :key="movie.id">
+    <p v-for="(movie, index) in sortedMovies" :key="index">
       <router-link :to="'/film/' + movie.id">{{ movie.original_title }}</router-link>
     </p>
   </div>

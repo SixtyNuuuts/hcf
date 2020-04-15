@@ -1,13 +1,18 @@
 <template>
-  <section class="movie-cast">
+  <section v-if="movieCast.length" class="movie-cast">
     <h3>Distribution</h3>
     <div class="actor-list">
       <div v-for="actor in movieCast" :key="actor.id" class="card">
         <a href="">
-          <img :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + actor.profile_path">
+          <img v-if="actor.profile_path" :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + actor.profile_path">
+          <div v-else class="no-picture">
+            <i class="fa fa-user" aria-hidden="true"></i>
+          </div>
         </a>
-        <p><a href=""> {{ actor.name }} </a></p>
-        <p class="character">{{ actor.character }}</p>
+        <div class="text">
+          <p><a href=""> {{ actor.name }} </a></p>
+          <p class="character">{{ actor.character }}</p>
+        </div>
       </div>
     </div>
   </section>
@@ -24,7 +29,7 @@ export default {
   },
   data() {
     return {
-      movieCast: null
+      movieCast: []
     };
   },
   name: "MovieCast",
@@ -42,11 +47,34 @@ export default {
 
     .actor-list {
       display: flex;
+      overflow: auto;
 
-      div {
+      .card {
         margin-right: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        
+        .no-picture {
+          background-color: lightgrey;
+          width: 138px;
+          height: 175px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          i {
+            font-size: 5rem;
+            color: #b5b5b5;
+          }
+
+        }
+
+        .text {
+          padding: 0 10px;
+
+        }
+
       }
-      
+
     }
 
   }

@@ -2,7 +2,9 @@
   <section class="movie-info">
     <div class="poster">
       <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + movie.poster_path">
-      <div v-else class="no-poster">Affiche du film non trouvée</div>
+      <div v-else class="no-poster">
+        <i class="fa fa-file-image-o" aria-hidden="true"></i>
+      </div>
     </div>
     <div class="text">
       <div class="title">
@@ -22,7 +24,6 @@
           </span>
         </div>
       </div>
-      <div v-if="movie.vote_average" class="score">{{ movie.vote_average }}</div>
       <div>
         <h3>Synopsis</h3>
         <div v-if="movie.overview" class="overview">
@@ -37,6 +38,7 @@
       </div>
     </div>
   </section>
+  <!-- <div v-if="movie.vote_average" class="score">{{ movie.vote_average }}</div> -->
 </template>
 
 <script>
@@ -220,6 +222,7 @@ export default {
       img {
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
       }
+      
       .no-poster {
         background-color: lightgrey;
         width: 300px;
@@ -227,7 +230,13 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);        margin-right: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+        i {
+          font-size: 8rem;
+          color: #b5b5b5;
+        }
+
       }
 
     }
@@ -242,6 +251,7 @@ export default {
           margin: 0;
           font-size: 2.2rem;
           font-weight: 800;
+          line-height: 1;
 
           span {
             opacity: 0.8;
@@ -252,6 +262,7 @@ export default {
 
         .facts {
           display: flex;
+          margin-top: 3px;
 
           .fact {
             position: relative;
@@ -288,22 +299,6 @@ export default {
           }
         }
 
-      }
-
-      .score {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 5px double #505f6d;
-        color: black;
-        position: absolute;
-        top: 50px;
-        right: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.4rem;
-        font-weight: 700;
       }
 
       h3 {
