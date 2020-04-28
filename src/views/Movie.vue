@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
+    <!-- <img alt="Vue logo" src="../assets/img/logo.png" /> -->
     <MovieDetails :id="id" />
     <MovieCast :id="id" />
     <MovieImages :id="id" />
