@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import tmdbApi from "../services/tmdb-api";
+import tmdbApi from "../../services/tmdb-api";
 
 export default {
   created() {

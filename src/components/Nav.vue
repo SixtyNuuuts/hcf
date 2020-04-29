@@ -24,11 +24,9 @@
           </el-col>
         </li>
       </ul>
-      <div class="logo">
-        <a href="/">
+      <a class="logo" href="/">
           <img src="../assets/img/logo-h-c-f.svg" alt="Logo Histoire du cinema français" />
-        </a>
-      </div>
+      </a>
       <ul class="right-part">
         <li class="nav-item mw">
           <span>Recherchez une personnalité</span>
@@ -140,7 +138,6 @@ nav {
       display: flex;
 
       .nav-item {
-        list-style: none;
         font-family: 'Bazar';
         font-size: 1.6rem;
         display: flex;
@@ -163,7 +160,6 @@ nav {
         }
 
         a {
-          text-decoration: none;
           font-size: 1.8rem;
           margin-top: 15px;
           text-shadow: 3px 3px 0 rgba(0,0,0,0.12);
@@ -215,13 +211,21 @@ nav {
       width: 19.5%;
       left: 40.15%;
       top: -28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      width: 200px;
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.3), 0 10px 12px rgba(0, 0, 0, 0.22);
+      border-radius: 50%;
+      overflow: hidden;
 
       img {
-        border-radius: 50%;
-        box-shadow: 0 15px 25px rgba(76, 46, 15, 0.23),
-          0 8px 8px rgba(76, 46, 15, 0.31);
+        width: 100%;
       }
+
     }
+
   }
 
   &:before,

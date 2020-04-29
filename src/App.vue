@@ -89,5 +89,13 @@ export default {
       }
 
     }
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
   
   </style>

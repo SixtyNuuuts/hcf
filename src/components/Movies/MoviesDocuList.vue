@@ -1,5 +1,5 @@
 <template>
-  <div id="moviesdocu_container">
+  <section id="moviesdocu">
     <div v-for="(movie, index) in movies" :key="index" class="moviedocu_wrap">
       <div class="moviedocu_box">
         <h3>{{ movie.original_title }}</h3>
@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -32,7 +32,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
-  #moviesdocu_container {
+  #moviesdocu {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;

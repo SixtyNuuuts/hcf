@@ -1,6 +1,5 @@
 <template>
-  <div id="movies">
-    <!-- <img alt="Vue logo" src="../assets/img/logo.png" /> -->
+  <section id="movies">
     <div class="box-select-year">
       <div>
         <h1>
@@ -18,12 +17,12 @@
     </div>
     <MoviesDocuList :movies="filteredMoviesDocu" />
     <MoviesList :movies="sortedMovies" :year="selectedYear" />
-  </div>
+  </section>
 </template>
 
 <script>
-import MoviesDocuList from "@/components/MoviesDocuList.vue"
-import MoviesList from "@/components/MoviesList.vue"
+import MoviesDocuList from "@/components/Movies/MoviesDocuList.vue"
+import MoviesList from "@/components/Movies/MoviesList.vue"
 import tmdbApi from "../services/tmdb-api"
 
 export default {

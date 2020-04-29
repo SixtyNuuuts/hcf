@@ -1,38 +1,42 @@
 <template>
-  <section class="movie-info">
-    <div class="poster">
-      <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + movie.poster_path">
-      <div v-else class="no-poster">
-        <i class="fa fa-file-image-o" aria-hidden="true"></i>
-      </div>
-    </div>
-    <div class="text">
-      <div class="title">
-        <h1 v-if="movie.original_title">{{ movie.original_title }} <span v-if="movie.release_date" class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
-        <div class="facts">
-          <span v-if="movie.release_date" class="fact release">
-            {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }} <span v-if="movie.production_countries[0]">({{ movie.production_countries[0].iso_3166_1}})</span>
-          </span>
-          <ul v-if="movie.genres" class="fact genres">
-            <li v-for="(genre, index) in movie.genres" :key="genre.id">
-              {{ genre.name }}
-              <span v-if="index != movie.genres.length-1">, </span>
-            </li>
-          </ul>
-          <span v-if="movie.runtime" class="fact runtime">
-            {{ movie.runtime | minutesToHours() }}
-          </span>
+  <section class="movie-info" :style="{ backgroundImage: 'url(' +  backdropUrl + ')' }">
+    <div class="content">
+      <div class="poster">
+        <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path">
+        <div v-else class="no-poster">
+          <i class="el-icon-picture"></i>
         </div>
       </div>
-      <div>
-        <h3>Synopsis</h3>
-        <div v-if="movie.overview" class="overview">
-          <p>{{ movie.overview }}</p>
+      <div class="text">
+        <div class="title">
+          <h1 v-if="movie.original_title">{{ movie.original_title }} <span v-if="movie.release_date" class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
+          <div class="facts">
+            <span v-if="movie.release_date" class="fact release">
+              {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }} <span v-if="movie.production_countries[0]">({{ movie.production_countries[0].iso_3166_1}})</span>
+            </span>
+            <ul v-if="movie.genres.length > 0" class="fact genres">
+              <span class="point"></span>
+              <li v-for="(genre, index) in movie.genres" :key="genre.id">
+                {{ genre.name }}
+                <span v-if="index != movie.genres.length-1">, </span>
+              </li>
+            </ul>
+            <span v-if="movie.runtime" class="fact runtime">
+              <span class="point"></span>
+              {{ movie.runtime | minutesToHours() }}
+            </span>
+          </div>
         </div>
-        <div v-if="movieCrew" class="crew">
-          <div v-for="person in movieCrewFormat" :key="person[0]">
-            <p><a href="">{{ person[2] }}</a></p>
-            <p v-for="job in person[1]" :key="job">{{ job }}</p>
+        <div>
+          <div v-if="movie.overview" id="synopsis">
+            <h3>Synopsis</h3>
+            <div v-if="movie.overview" class="overview">
+              <p>{{ movie.overview }}</p>
+            </div>
+          </div>
+          <div v-if="movieCrew.length > 0" id="crew">
+            <h3>l'Équipe technique</h3>
+            <CrewCarousel :movieCrewFormat='movieCrewFormat' />
           </div>
         </div>
       </div>
@@ -42,7 +46,8 @@
 </template>
 
 <script>
-import tmdbApi from "../services/tmdb-api";
+import tmdbApi from "../../services/tmdb-api";
+import CrewCarousel from "@/components/Movie/Carousel/CrewCarousel.vue";
 
 export default {
   created() {
@@ -83,7 +88,15 @@ export default {
     };
   },
   computed: {
-
+    backdropUrl: function() {
+      let backdropPath
+      if(this.movie.backdrop_path) {
+        backdropPath = "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces" + this.movie.backdrop_path
+      } else {
+        backdropPath = require("../../assets/img/backdrop_default.jpg")
+      }
+      return backdropPath
+    },
     movieCrewFormat: function() {
       const movieCrewFormat = [];
       const jobsTranslation = [
@@ -208,7 +221,8 @@ export default {
                 personJob
               ],
               person.name,
-              personPriority
+              personPriority,
+              person.profile_path
             ]);
           } else {
             personIsInArray[1] = [...personIsInArray[1], personJob];
@@ -229,6 +243,9 @@ export default {
   name: "MovieDetails",
   props: {
     id: String
+  },
+  components: {
+    CrewCarousel
   }
 };
 </script>
@@ -237,117 +254,130 @@ export default {
 <style scoped lang="scss">
 
   section.movie-info {
-    display: flex;
-    text-align: left;
-    background-color: #e2e1e0;
-    padding: 40px;
-    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;   
 
-    .poster {
-      margin-right: 40px;
+    .content {
+      display: flex;
+      text-align: left;
+      padding: 4.5em 3em 3em 3em;
+      position: relative;
+      background-image: linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
 
-      img {
-        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-      }
-      
-      .no-poster {
-        background-color: lightgrey;
-        width: 300px;
-        height: 450px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+      .poster {
+        margin-right: 40px;
 
-        i {
-          font-size: 8rem;
-          color: #b5b5b5;
+        img {
+          width: 290px;
+          height: 430px;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.66), 0 6px 6px rgba(0, 0, 0, 0.81);
         }
-
-      }
-
-    }
-
-    .text {
-      overflow: auto;
-
-      .title {
-        margin-bottom: 20px;
-
-        h1 {
-          margin: 0;
-          font-size: 2.2rem;
-          font-weight: 800;
-          line-height: 1;
-
-          span {
-            opacity: 0.8;
-            font-weight: 400;
-          }
-
-        }
-
-        .facts {
-          display: flex;
-          margin-top: 3px;
-
-          .fact {
-            position: relative;
-
-            &:not(:last-child) {
-              margin-right: 20px;
-            }
-
-            &:not(:last-child):after {
-              content: "";
-              display: block;
-              width: 5px;
-              height: 5px;
-              background-color: black;
-              position: absolute;
-              top: 8px;
-              right: -13px;
-              border-radius: 50%;
-            }
-
-          }
-
-          .genres {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin-top: 0;
-            margin-bottom: 0;
-
-            li:not(:last-child) {
-              margin-right: 7px;
-            }
-
-          }
-        }
-
-      }
-
-      h3 {
-        margin: 0;
-      }
-
-      .overview {
-
-        p{
-          margin: 0;
-        }
-
-      }
-
-      .crew {
-        display: flex;
         
-        div {
-          margin-right: 40px;
+        .no-poster {
+          background-color: lightgrey;
+          width: 290px;
+          height: 430px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.66), 0 6px 6px rgba(0, 0, 0, 0.81);
+
+          i {
+            font-size: 8rem;
+            color: #b5b5b5;
+          }
+
         }
 
       }
+
+      .text {
+        color: #f6e5c8;
+
+        .title {
+          margin-bottom: 40px;
+
+          h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+            color: #f8f0e0;
+
+            span {
+              opacity: 0.8;
+              font-weight: 400;
+            }
+
+          }
+
+          .facts {
+            display: flex;
+            margin-top: 3px;
+
+            .fact {
+              position: relative;
+
+              &:not(:first-child) {
+                margin-left: 20px;
+              }
+
+              span.point {
+                display: block;
+                width: 5px;
+                height: 5px;
+                background-color: #f6e5c8;
+                position: absolute;
+                top: 9px;
+                left: -12px;
+                border-radius: 50%;
+              }
+
+            }
+
+            .genres {
+              display: flex;
+              padding: 0;
+              margin-top: 0;
+              margin-bottom: 0;
+
+              li:not(:last-child) {
+                margin-right: 7px;
+              }
+
+            }
+            
+          }
+
+        }
+
+        div {
+
+          h3 {
+            margin: 0;
+            text-transform: uppercase;
+            font-size: 1em;
+            color: #f8f0e0;
+            margin-bottom: 0.1em;
+          }
+
+          #synopsis {
+            margin-bottom: 40px;
+
+            .overview {
+              p{
+                margin: 0;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
     }
 
   }

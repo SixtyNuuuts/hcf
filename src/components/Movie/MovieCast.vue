@@ -6,7 +6,7 @@
         <a href="">
           <img v-if="actor.profile_path" :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + actor.profile_path">
           <div v-else class="no-picture">
-            <i class="fa fa-user" aria-hidden="true"></i>
+            <i class="el-icon-user-solid"></i>
           </div>
         </a>
         <div class="text">
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import tmdbApi from "../services/tmdb-api";
+import tmdbApi from "../../services/tmdb-api";
 
 export default {
   created() {
