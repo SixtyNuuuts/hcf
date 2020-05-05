@@ -1,4 +1,5 @@
 $--color-primary: #a51f1e;
+$--color-success: #1362b5;
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 @import "~element-ui/packages/theme-chalk/src/index";
@@ -22,7 +23,7 @@ nav {
 
         .el-input__inner {
             background-color: #f4e3c7;
-            color: #a51f1e;
+            color: $--color-primary;
             padding: 8px;
             font-family: 'Bazar';
             font-size: 2em;
@@ -39,7 +40,7 @@ nav {
 
         .el-input {
             .el-select__caret {
-                color: #c92424;
+                color: $--color-primary;
             }
         }
 
@@ -47,7 +48,62 @@ nav {
 
 }
 
-.el-select-dropdown {
-    font-family: Arial, Helvetica, sans-serif;
+////////////////////////////////////
+
+/// Component : MovieEdit / Inputs 
+
+
+.movie-info {
+
+    input, textarea {
+        background-color: rgba(156, 156, 156, 0.315);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.205);
+
+        &:focus {
+            border: 2px solid $--color-success;
+        }
+    }
+
+    .genres, .job {
+        
+        input {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+            &::placeholder {
+                color: #c2c2c280;
+            }
+        }
+
+        button {
+            border-radius: 0 4px 4px 0;
+        }
+
+    }
+
+    button {
+        &.is-plain:not(:hover) {
+            background: white;
+            border-color: white;
+            color: inherit;
+
+            i {
+                font-weight: bold;
+            }
+
+        }
+    }
+
+}
+
+.el-date-table td.current:not(.disabled) span {
+    background-color: $--color-success;
+}
+.el-date-table td.available:hover {
+    color: $--color-success;
 }
 ////////////////////////////////////
+
+.el-date-picker, .el-select-dropdown, .el-message, .el-message-box {
+    font-family: Arial, Helvetica, sans-serif;
+}

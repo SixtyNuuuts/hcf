@@ -42,4 +42,22 @@ export default {
       `${baseUrl}/movie/${id}/images?api_key=${apiKey}`
     );
   },
+  // PERSON ///////////////////////////////////
+  getPerson(id) {
+    if (typeof id == "undefined") {
+      id = 0;
+    }
+    return axios.get(
+      `${baseUrl}/person/${id}?api_key=${apiKey}&language=fr-FR`
+    );
+  },
+  searchPerson(query, page) {
+    if (typeof page == "undefined") {
+      page = 1;
+    }
+    return axios.get(
+      `${baseUrl}/search/person?api_key=${apiKey}&query=${query}&language=fr-FR&page=${page}`
+    );
+  },
+
 };

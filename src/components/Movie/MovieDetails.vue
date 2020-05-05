@@ -1,8 +1,8 @@
 <template>
-  <section class="movie-info" :style="{ backgroundImage: 'url(' +  backdropUrl + ')' }">
+  <section class="movie-info" :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
     <div class="content">
       <div class="poster">
-        <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path">
+        <img v-if="movie.poster_path" :src="movie.poster_path">
         <div v-else class="no-poster">
           <i class="el-icon-picture"></i>
         </div>
@@ -28,35 +28,43 @@
           </div>
         </div>
         <div>
-          <div v-if="movie.overview" id="synopsis">
-            <h3>Synopsis</h3>
+          <div v-if="movie.overview" id="overview">
+            <h3>Résumé</h3>
             <div v-if="movie.overview" class="overview">
               <p>{{ movie.overview }}</p>
             </div>
           </div>
           <div v-if="movieCrew.length > 0" id="crew">
             <h3>l'Équipe technique</h3>
-            <CrewCarousel :movieCrewFormat='movieCrewFormat' />
+            <CrewCarousel :movieCrew="movieCrew" />
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- <div v-if="movie.vote_average" class="score">{{ movie.vote_average }}</div> -->
 </template>
 
 <script>
-import tmdbApi from "../../services/tmdb-api";
-import CrewCarousel from "@/components/Movie/Carousel/CrewCarousel.vue";
+import tmdbApi from "../../services/tmdb-api"
+import CrewCarousel from "@/components/Movie/Carousel/CrewCarousel.vue"
 
 export default {
+  name: "MovieDetails",
+  props: {
+    id: String
+  },
+  components: {
+    CrewCarousel
+  },
   created() {
     tmdbApi.getMovieDetails(this.id).then(res => {
-      this.movie = res.data;
-    });
+      this.movie = res.data
+      this.backdropPath()
+      this.posterPath()
+    })
     tmdbApi.getMovieCredits(this.id).then(res => {
-      this.movieCrew = res.data.crew;
-    });
+      this.movieCrewFormat(res.data.crew)
+    })
   },
   data() {
     return {
@@ -83,22 +91,13 @@ export default {
         ]
       },
       movieCrew: [
-        {"id": null, "name": null, "job": null}
+        { "id": null, "jobs": [], "name": null, "priority": null, "profile_path": null}
       ]
-    };
+    }
   },
-  computed: {
-    backdropUrl: function() {
-      let backdropPath
-      if(this.movie.backdrop_path) {
-        backdropPath = "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces" + this.movie.backdrop_path
-      } else {
-        backdropPath = require("../../assets/img/backdrop_default.jpg")
-      }
-      return backdropPath
-    },
-    movieCrewFormat: function() {
-      const movieCrewFormat = [];
+  methods: {
+    movieCrewFormat(dataCrew) {
+      const movieCrewFormat = []
       const jobsTranslation = [
         {
           "job": "Director",
@@ -202,55 +201,59 @@ export default {
           "jobTranslatationF":"Adaptation",
           "priority":4
         },
-      ];
-      this.movieCrew.forEach( person => {
-        let jobIsInArray = jobsTranslation.find(v => v.job == person.job);
+      ]
+      dataCrew.forEach( person => {
+        let jobIsInArray = jobsTranslation.find(p => p.job == person.job)
         if (jobIsInArray){
-          
-          let personJob = jobIsInArray.jobTranslatationM;
+          let personJob = jobIsInArray.jobTranslatationM
           if(person.gender==1) {
-            personJob = jobIsInArray.jobTranslatationF;
+            personJob = jobIsInArray.jobTranslatationF
           }
-          let personPriority = jobIsInArray.priority;
-
-          let personIsInArray = movieCrewFormat.find(v => v[0] == person.id);
+          let personPriority = jobIsInArray.priority
+          let personIsInArray = movieCrewFormat.find(p => p.id == person.id)
           if(!personIsInArray) {
-            movieCrewFormat.push([
-              person.id, 
-              [
-                personJob
+            movieCrewFormat.push({
+              id: person.id, 
+              jobs: [
+                {name: personJob}
               ],
-              person.name,
-              personPriority,
-              person.profile_path
-            ]);
+              name: person.name,
+              priority: personPriority,
+              profile_path: person.profile_path
+            })
           } else {
-            personIsInArray[1] = [...personIsInArray[1], personJob];
-            if(personIsInArray[3] > personPriority) {
-              personIsInArray[3] = personPriority;
+            personIsInArray.jobs = [...personIsInArray.jobs, {name: personJob}]
+            if(personIsInArray.priority > personPriority) {
+              personIsInArray.priority = personPriority
             }
           }
         }
-      });
-
+      })
       movieCrewFormat.sort(function (person1, person2) {
-        return person1[3] - person2[3];
-      });
-
-      return movieCrewFormat;
+        return person1.priority  - person2.priority
+      })
+      this.movieCrew = movieCrewFormat
+    },
+    backdropPath() {
+      let backdropPath = null
+      if(this.movie.backdrop_path) {
+        backdropPath = "https://image.tmdb.org/t/p/original" + this.movie.backdrop_path
+      } else {
+        backdropPath = require("../../assets/img/backdrop_default.jpg")
+      }
+      this.movie.backdrop_path = backdropPath
+    },
+    posterPath() {
+      let posterPath = null
+      if(this.movie.poster_path) {
+        posterPath = "https://image.tmdb.org/t/p/w300" + this.movie.poster_path
+      }
+      this.movie.poster_path = posterPath
     }
-  },
-  name: "MovieDetails",
-  props: {
-    id: String
-  },
-  components: {
-    CrewCarousel
   }
-};
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
   section.movie-info {
@@ -362,7 +365,7 @@ export default {
             margin-bottom: 0.1em;
           }
 
-          #synopsis {
+          #overview {
             margin-bottom: 40px;
 
             .overview {

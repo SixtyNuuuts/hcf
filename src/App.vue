@@ -10,16 +10,19 @@
     <main>
       <router-view/>
     </main>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import Nav from "@/components/Nav.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: "Movie",
   components: {
-    Nav
+    Nav,
+    Footer
   }
 };
 </script>
@@ -80,10 +83,6 @@ export default {
         main {
           box-shadow: inset 0 17px 61px 0 rgba(206,136,24,.24);
           background-color: #f6e5c8;
-
-          p {
-            margin: 0;
-          }
         }
 
       }

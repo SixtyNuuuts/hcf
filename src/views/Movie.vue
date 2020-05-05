@@ -2,14 +2,16 @@
   <section id="movie">
     <MovieDetails :id="id" />
     <MovieCast :id="id" />
-    <MovieImages :id="id" />
+    <MovieDocu />
+    <!-- <MovieImages :id="id" /> -->
   </section>
 </template>
 
 <script>
   import MovieDetails from "@/components/Movie/MovieDetails.vue";
   import MovieCast from "@/components/Movie/MovieCast.vue";
-  import MovieImages from "@/components/Movie/MovieImages.vue";
+  // import MovieImages from "@/components/Movie/MovieImages.vue";
+  import MovieDocu from "@/components/Movie/MovieDocu.vue";
 
   export default {
     created() {
@@ -24,7 +26,8 @@
     components: {
       MovieDetails,
       MovieCast,
-      MovieImages
+      // MovieImages,
+      MovieDocu
     }
   };
 </script>

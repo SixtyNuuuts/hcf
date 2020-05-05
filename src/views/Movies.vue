@@ -81,7 +81,7 @@ export default {
 
 <style scoped lang="scss">
 #movies {
-  padding: 3em 2em;
+  padding: 3em 2em 0 2em;
 
   .box-select-year {
     margin: 0 0 36px;

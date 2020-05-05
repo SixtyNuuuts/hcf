@@ -20,6 +20,11 @@ Vue.use(VueRouter)
       path: "/film/:id",
       name: "film",
       component: () => import(/* webpackChunkName: "film" */ "../views/Movie.vue")
+    },
+    {
+      path: "/film/edit/:id",
+      name: "filmEdit",
+      component: () => import(/* webpackChunkName: "film" */ "../views/MovieEdit.vue")
     }
   ]
 

@@ -2,14 +2,13 @@
   <section v-if="movieCast.length" class="movie-cast">
     <h1>Distribution</h1>
     <div class="actor-list">
-      <CastCarousel :movieCast="movieCast" />
+
     </div>
   </section>
 </template>
 
 <script>
-import tmdbApi from "../../services/tmdb-api";
-import CastCarousel from "@/components/Movie/Carousel/CastCarousel.vue";
+import tmdbApi from "../../../services/tmdb-api";
 
 export default {
   created() {
@@ -25,9 +24,6 @@ export default {
   name: "MovieCast",
   props: {
     id: String
-  },
-  components: {
-    CastCarousel
   }
 };
 </script>

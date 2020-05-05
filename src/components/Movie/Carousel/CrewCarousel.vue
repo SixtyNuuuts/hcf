@@ -1,25 +1,25 @@
 <template>
     <div class="crew-carousel-wrapper">
-        <div v-if="movieCrewFormat.length > nbElemVisib" class="crew-carousel--nav__left" @click="moveCarousel(-1)" :disabled="atHeadOfList"></div>
+        <div v-if="movieCrew.length > nbElemVisib" class="crew-carousel--nav__left" @click="moveCarousel(-1)" :disabled="atHeadOfList"></div>
         <div class="crew-carousel" :style="{ width: withContainer }">
             <div class="crew-carousel--overflow-container">
                 <div class="crew-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')' }">
-                    <div v-for="person in movieCrewFormat" :key="person[0]" class="person">
+                    <div v-for="person in movieCrew" :key="person.id" class="person">
                         <a href="" class="picture">
-                        <img v-if="person[4]" :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + person[4]">
-                        <div v-else class="no-picture">
-                            <i class="el-icon-user-solid"></i>
-                        </div>
+                          <img v-if="person.profile_path" :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + person.profile_path">
+                          <div v-else class="no-picture">
+                              <i class="el-icon-user-solid"></i>
+                          </div>
                         </a>
-                        <h4 class="name"><a href="">{{ person[2] }}</a></h4>
+                        <h4 class="name"><a href="">{{ person.name }}</a></h4>
                         <ul class="jobs">
-                        <li v-for="job in person[1]" :key="job">{{ job }}</li>
+                          <li v-for="job in person.jobs" :key="job.name">{{ job.name }}</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="movieCrewFormat.length > nbElemVisib" class="crew-carousel--nav__right" @click="moveCarousel(1)" :disabled="atEndOfList"></div>
+        <div v-if="movieCrew.length > nbElemVisib" class="crew-carousel--nav__right" @click="moveCarousel(1)" :disabled="atEndOfList"></div>
     </div>
 </template>
 
@@ -36,14 +36,14 @@ export default {
     }
   },
   props: {
-    movieCrewFormat: Array
+    movieCrew: Array
   },
   computed: {
     paginationFactor() { return this.cardWidth + this.cardMargin *2 },
     withContainer() {
         let withContainer;
-        if (this.movieCrewFormat.length < this.nbElemVisib) {
-            withContainer = ( this.cardWidth * this.movieCrewFormat.length ) + ( this.cardMargin * ( this.movieCrewFormat.length * 2 - 2 ) ) + 'px';
+        if (this.movieCrew.length < this.nbElemVisib) {
+            withContainer = ( this.cardWidth * this.movieCrew.length ) + ( this.cardMargin * ( this.movieCrew.length * 2 - 2 ) ) + 'px';
         } else {
             withContainer = ( this.cardWidth * this.nbElemVisib ) + ( this.cardMargin * ( this.nbElemVisib * 2 - 2 ) ) + 'px';
         }
@@ -51,7 +51,7 @@ export default {
       return withContainer;
     },
     atEndOfList() {
-      return this.currentOffset <= (this.paginationFactor * -1) * (this.movieCrewFormat.length - this.nbElemVisib);
+      return this.currentOffset <= (this.paginationFactor * -1) * (this.movieCrew.length - this.nbElemVisib);
     },
     atHeadOfList() {
       return this.currentOffset === 0;
@@ -74,9 +74,6 @@ export default {
 $card-width: 90px;
 $card-margin: 10px;
 $nb-elem-visib: 5;
-$wrapper-width: calc(( #{$card-width} * #{$nb-elem-visib} ) + ( #{$card-margin} * ( #{$nb-elem-visib} * 2 - 2 )));
-
-// ( #{$card-width} * #{$nb-elem-visib} ) + ( #{$card-margin} * ( #{$nb-elem-visib} * 2 ) - 2 )
 
 .crew-carousel-wrapper {
   display: flex;
@@ -175,7 +172,7 @@ $wrapper-width: calc(( #{$card-width} * #{$nb-elem-visib} ) + ( #{$card-margin} 
         h4 {
             margin: 0.3em 0;
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.15;
 
             a {
             color: #f8f0e0;
