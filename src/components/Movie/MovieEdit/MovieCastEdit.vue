@@ -1,9 +1,75 @@
 <template>
   <section v-if="movieCast.length" class="movie-cast">
-    <h1>Distribution</h1>
+    <h1>
+      Distribution
+      <el-button
+        type="success"
+        icon="el-icon-plus"
+        @click="addActor"
+        class="add-person-cast"
+        plain
+      >Ajouter une personnalité
+      </el-button>
+    </h1>
     <div class="actor-list">
-
+      <div class="cast-carousel-wrapper">
+        <div class="cast-carousel-cards">
+          <div v-for="(actor, index) in movieCast" :key="index" class="card">
+            <el-button
+              type="primary"
+              icon="el-icon-delete"
+              @click="deleteActor(actor)"
+              class="btn-delete-actor"
+            ></el-button>
+            <div class="picture">
+              <img v-if="actor.profile_path" :src="actor.profile_path" />
+              <div v-else class="no-picture">
+                <img v-if="actor.gender == 1" src="../../../assets/img/p-female.svg" />
+                <img v-else src="../../../assets/img/p-male.svg" />
+              </div>
+            </div>
+            <el-input
+              type="text"
+              name="profil-path"
+              v-model="actor.profile_path"
+              placeholder="Photo"
+            ></el-input>
+            <div class="text">
+              <el-autocomplete
+                :trigger-on-focus="false"
+                hide-loading
+                v-model="actor.name"
+                :fetch-suggestions="querySearchPerson"
+                placeholder="Nom"
+                @select="handleSelectActor(actor, $event)"
+              >
+                <template slot-scope="{ item }">
+                  <div>{{ item.name }}</div>
+                </template>
+              </el-autocomplete>
+              <p>SEXE</p>
+              <el-select v-model="actor.gender">
+                <el-option label="-----------" :value="0"></el-option>
+                <el-option label="Femme" :value="1"></el-option>
+                <el-option label="Homme" :value="2"></el-option>
+              </el-select>
+              <p>RÔLE DANS CE FILM</p>
+              <el-input type="text" v-model="actor.character" placeholder="Personnage"></el-input>
+              <p>POSITIONNEMENT</p>
+              <el-input type="text" v-model="actor.order" @input.native="$event.target.blur()"></el-input>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <el-button
+      type="success"
+      icon="el-icon-plus"
+      @click="saveMovieCastData"
+      plain
+      class="save-btn"
+    >Enregistrer les modifications
+    </el-button>
   </section>
 </template>
 
@@ -11,65 +77,215 @@
 import tmdbApi from "../../../services/tmdb-api";
 
 export default {
-  created() {
-    tmdbApi.getMovieCredits(this.id).then(res => {
-      this.movieCast = res.data.cast;
-    });
-  },
-  data() {
-    return {
-      movieCast: []
-    };
-  },
-  name: "MovieCast",
+  name: "MovieCastEdit",
   props: {
-    id: String
-  }
+    movieCast: Array
+  },
+  methods: {
+    querySearchPerson(queryString, cb) {
+      clearTimeout(this.debounce)
+      this.debounce = setTimeout(() => {
+        tmdbApi.searchPerson(queryString, 1).then(res => {
+          let searchPersonResult = []
+          let pageLimit = 5
+          if (res.data.total_pages < 5) {
+            pageLimit = res.data.total_pages
+          }
+          for (let page = 1; page <= pageLimit; page++) {
+            tmdbApi.searchPerson(queryString, page).then(res => {
+              searchPersonResult = [...searchPersonResult, ...res.data.results]
+              if (page === pageLimit) {
+                cb(searchPersonResult)
+              }
+            })
+          }
+        })
+      }, 600)
+    },
+    handleSelectActor(actor, item) {
+      actor.id = item.id;
+      actor.name = item.name;
+      let profilPath = "";
+      if (item.profile_path) {
+        profilPath = "https://image.tmdb.org/t/p/w300" + item.profile_path;
+      }
+      actor.profile_path = profilPath;
+    },
+    addActor() {
+      this.$store.commit('ADD_PERSON_TO_MOVIE_CAST', { id: null, name: null, character: null, gender: 2, profile_path: null, order: 0 })
+    },
+    deleteActor(actor) {
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer la fiche de " + actor.name + " ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+        .then(() => {
+          this.$store.commit('REMOVE_PERSON_FROM_MOVIE_CAST', actor)
+        })
+        .catch(() => {
+        });
+    },
+    saveMovieCastData() {
+      this.$db.collection("movies").doc(this.$parent.id).get()
+      .then((doc) => {
+          if (doc.exists) {
+            this.$db.collection("movies").doc(this.$parent.id).update({ movieCast: this.$store.state.currentMovieCast })
+            .then(function() {
+                console.log("le Film a été mis à jour");
+                console.log("movieCast bien modifié");
+            })
+            .catch(function(error) {
+                console.error("Erreur lors de la sauvegarde : ", error);
+            });
+          } else {
+            this.$db.collection("movies").doc(this.$parent.id).set({ movieCast: this.$store.state.currentMovieCast })
+            .then(function() {
+                console.log("le Film a été créé");
+                console.log("movieCast bien enregistré");
+            })
+            .catch(function(error) {
+                console.error("Erreur lors de la sauvegarde : ", error);
+            });
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
+section.movie-cast {
+  padding: 4% 4% 6% 4%;
+  position: relative;
 
-  section.movie-cast {
-    padding-bottom: 30px;
+  .save-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 
-    h1 {
-      font-family: "Bazar";
-      color: #3a2104;
-      font-size: 1.5em;
-      margin-bottom: .9em;
-      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
-      text-transform: uppercase;
-      position: relative;
-      margin-bottom: 10px;
+  h1 {
+    font-family: "Bazar";
+    color: #3a2104;
+    font-size: 1.5em;
+    margin-bottom: 0.9em;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+    text-transform: uppercase;
+    position: relative;
+    margin-bottom: 10px;
+    text-align: left;
+    margin-left: 1.6%;
+    position: relative;
 
-      &:before, &:after {
-        content: '';
-        position: absolute;
-        top: 14px;
-        display: block;
-        width: 37%;
-        height: 2px;
-        background-color: rgba(65, 38, 7, 0.09);
-      }
-
-      &:before {
-        left: 4%;
-      }
-
-      &:after {
-        right: 4%;
-      }
-
+    .add-person-cast {
+      position: absolute;
+      top: -0.4em;
+      right: 1.4em;
+      z-index: 1;
     }
 
-    .actor-list {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;      
+    &:after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      display: block;
+      width: 80%;
+      height: 2px;
+      background-color: rgba(65, 38, 7, 0.09);
+      right: 2.4%;
     }
 
   }
 
+  .actor-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .cast-carousel-wrapper {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      overflow: auto;
+    }
+
+    .cast-carousel-cards {
+      display: flex;
+
+      .card {
+        margin: 10px 1em 30px 1em;
+        width: 10em;
+        background-color: #fff;
+        margin-right: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        border: 1em solid white;
+        position: relative;
+
+        .btn-delete-actor {
+          position: absolute;
+          right: -0.6em;
+          top: -0.5em;
+          padding: 0.7em;
+          z-index: 1;
+        }
+
+        .picture {
+          width: 100%;
+          height: 125px;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: lightgrey;
+
+          img {
+            width: 100%;
+          }
+
+          .no-picture {
+            width: 100%;
+            height: 100%;
+            background-color: lightgrey;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+              width: 100%;
+              position: relative;
+              top: 0.6em;
+            }
+          }
+        }
+
+        .text {
+          padding: 0.05em;
+          margin-top: 0.7em;
+          color: #000;
+          text-align: left;
+
+          h1 {
+            margin: 0;
+            font-size: 1em;
+            line-height: 1.1;
+          }
+
+          p {
+            font-size: 0.8em;
+            margin: 0.7em 0 0.2em 0;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

@@ -6,7 +6,7 @@
                 <div class="cast-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')' }">
                     <a v-for="actor in movieCast" :key="actor.id" class="card" href="">
                       <div class="picture">
-                        <img v-if="actor.profile_path" :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + actor.profile_path">
+                        <img v-if="actor.profile_path" :src="actor.profile_path">
                         <div v-else class="no-picture">
                           <i class="el-icon-user-solid"></i>
                         </div>

@@ -21,97 +21,97 @@
 </template>
 
 <script>
-import MoviesDocuList from "@/components/Movies/MoviesDocuList.vue"
-import MoviesList from "@/components/Movies/MoviesList.vue"
-import tmdbApi from "../services/tmdb-api"
+  import MoviesDocuList from "@/components/Movies/MoviesDocuList.vue"
+  import MoviesList from "@/components/Movies/MoviesList.vue"
+  import tmdbApi from "../services/tmdb-api"
 
-export default {
-  created() {
-    this.getMovies(this.selectedYear)
-  },
-  data() {
-    return {
-      startYear: 1930,
-      selectedYear: 1930,
-      movies: [],
-      moviesDocuId: [
-        5729, 47831, 556675, 
-      ]
-    }
-  },
-  watch: {
-    selectedYear: function(year) {
-      this.movies = []
-      this.$router.push("/films/" + year)
-      this.getMovies(year)
-    }
-  },
-  methods: {
-    getMovies: function(year) {
-      tmdbApi.getMoviesFrByYear(year, 1).then(res => {
-        for (let page = 1; page <= res.data.total_pages; page++) {
-          tmdbApi.getMoviesFrByYear(year, page).then(res => {
-            this.movies = [...this.movies, ...res.data.results]
-          })
-        }
-      })
+  export default {
+    created() {
+      this.getMovies(this.selectedYear)
     },
-    sortMoviesAlphab: function(array) {
-      function compare(a, b) {
-        return a.original_title.localeCompare(b.original_title)
+    data() {
+      return {
+        startYear: 1930,
+        selectedYear: 1930,
+        movies: [],
+        moviesDocuId: [
+          5729, 47831, 556675, 
+        ]
       }
-      return [...array].sort(compare)
     },
-  },
-  computed: {
-    sortedMovies: function() {
-      return this.sortMoviesAlphab(this.movies)
+    watch: {
+      selectedYear: function(year) {
+        this.movies = []
+        this.$router.push("/films/" + year)
+        this.getMovies(year)
+      }
     },
-    filteredMoviesDocu: function() {
-      return this.movies.filter(movie => this.moviesDocuId.includes(movie.id))
+    methods: {
+      getMovies: function(year) {
+        tmdbApi.getMoviesFrByYear(year, 1).then(res => {
+          for (let page = 1; page <= res.data.total_pages; page++) {
+            tmdbApi.getMoviesFrByYear(year, page).then(res => {
+              this.movies = [...this.movies, ...res.data.results]
+            })
+          }
+        })
+      },
+      sortMoviesByAlphab: function(array) {
+        function compare(a, b) {
+          return a.original_title.localeCompare(b.original_title)
+        }
+        return [...array].sort(compare)
+      },
+    },
+    computed: {
+      sortedMovies: function() {
+        return this.sortMoviesByAlphab(this.movies)
+      },
+      filteredMoviesDocu: function() {
+        return this.movies.filter(movie => this.moviesDocuId.includes(movie.id))
+      }
+    },
+    name: "Movies",
+    components: {
+      MoviesList,
+      MoviesDocuList
     }
-  },
-  name: "Movies",
-  components: {
-    MoviesList,
-    MoviesDocuList
   }
-}
 </script>
 
 <style scoped lang="scss">
-#movies {
-  padding: 3em 2em 0 2em;
+  #movies {
+    padding: 3em 2em 0 2em;
 
-  .box-select-year {
-    margin: 0 0 36px;
-    padding: 21px 0 19px 0;
-    position: relative;
-    text-align: center;
-    z-index: 2;
-    background: url("../assets/img/box-border-patern.png") repeat 0 0 #f6e5c8;
+    .box-select-year {
+      margin: 0 0 36px;
+      padding: 21px 0 19px 0;
+      position: relative;
+      text-align: center;
+      z-index: 2;
+      background: url("../assets/img/box-border-patern.png") repeat 0 0 #f6e5c8;
 
-    &:before {
-      background: #fcedd5;
-      bottom: 0;
-      content: "";
-      display: block;
-      left: 0;
-      margin: 19px 18px 18px;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: -1;
-    }
+      &:before {
+        background: #fcedd5;
+        bottom: 0;
+        content: "";
+        display: block;
+        left: 0;
+        margin: 19px 18px 18px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+      }
 
-    h1 {
-      font-family: "Bazar";
-      color: #2b1d07;
-      font-size: 1.9em;
-      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+      h1 {
+        font-family: "Bazar";
+        color: #2b1d07;
+        font-size: 1.9em;
+        text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+      }
+
     }
 
   }
-
-}
 </style>

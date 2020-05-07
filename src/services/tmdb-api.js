@@ -59,5 +59,11 @@ export default {
       `${baseUrl}/search/person?api_key=${apiKey}&query=${query}&language=fr-FR&page=${page}`
     );
   },
+  // GENRE ///////////////////////////////////
+  getGenresList() {
+    return axios.get(
+      `${baseUrl}/genre/movie/list?api_key=${apiKey}&language=fr-FR`
+    );
+  },
 
 };

@@ -1,5 +1,5 @@
 <template>
-  <section class="movie-info" :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
+  <section class="movie-info" :style="{ backgroundImage: 'url(' + movie.backdrop_path + ')' }">
     <div class="content">
       <div>
         <div class="poster">
@@ -37,22 +37,19 @@
           <div class="genres">
             <label>Genres</label>
             <div v-for="genre in movie.genres" :key="genre.id">
-              <el-input type="text" name="genre" v-model="genre.name"></el-input>
-              <el-button type="primary" plain @click="deleteGenre(genre)">
-                <i class="el-icon-delete"></i> Supprimer
+              <el-select v-model="genre.id" @change="handleChangeGenre(genre, $event)">
+                <el-option
+                  v-for="genreL in genresList"
+                  :key="genreL.id"
+                  :label="genreL.name"
+                  :value="genreL.id"
+                ></el-option>
+              </el-select>
+              <el-button type="primary" @click="deleteGenre(genre)" plain>
+                <i class="el-icon-delete"></i>
               </el-button>
             </div>
-            <!-- <div>
-              <el-input
-                type="text"
-                name="genre"
-                v-model="newGenre.name"
-                placeholder="Ajouter un nouveau genre"
-              ></el-input>
-              <el-button type="success" plain @click="genreAdd()">
-                <i class="el-icon-folder-add"></i> Ajouter
-              </el-button>
-            </div> -->
+            <el-button type="success" icon="el-icon-plus" @click="addGenre()" plain>Ajouter un genre</el-button>
           </div>
           <div class="overview">
             <label for="overview">Résumé</label>
@@ -63,85 +60,83 @@
       <div>
         <div class="crew">
           <label for="crew">l'Équipe technique</label>
-          <el-button type="success" icon="el-icon-plus" @click="addPerson" plain >Ajouter une personnalité</el-button>
-          <!-- <div class="add-person">
-            <el-upload
-              class="upload-np-profile-path"
-              action="/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :before-remove="beforeRemove">
-              <el-button size="small" type="primary">Cliquer pour envoyer</el-button>
-            </el-upload>
-            <el-input type="text" name="name" v-model="newPerson.name"></el-input>
-            <div class="jobs">
-              <p class="subt">Rôle(s)</p>
-              <div v-for="(job, index) in newPerson.jobs" :key="index" class="job">
-                <el-input
-                  type="text"
-                  name="job"
-                  v-model="job.name"
-                ></el-input>
-                <el-button type="primary" plain icon="el-icon-delete" @click="deleteJobNewPerson(job)"></el-button>
-              </div>
-              <div class="job">
-                <el-input
-                  type="text"
-                  name="add-job"
-                  v-model="newJobNewPerson.name"
-                ></el-input>
-                <el-button type="success" plain icon="el-icon-plus" @click="jobAddNewPerson()"></el-button>
-              </div>
-            </div>
-          </div> -->
+          <el-button
+            type="success"
+            icon="el-icon-plus"
+            @click="addPerson"
+            plain
+          >Ajouter une personnalité</el-button>
           <div class="persons">
-            <div v-for="(person, index) in sortedMovieByPrio" :key="index" class="person">
+            <div v-for="(person, index) in movieCrew" :key="index" class="person">
               <div>
-                <!-- <el-input type="text" name="name" v-model="person.name"></el-input> -->
                 <el-autocomplete
                   :trigger-on-focus="false"
                   hide-loading
                   v-model="person.name"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="Entrez quelque chose"
-                  @select="handleSelect">
+                  :fetch-suggestions="querySearchPerson"
+                  placeholder="Nom de la personnalité"
+                  @select="handleSelectPerson(person, $event)"
+                >
                   <template slot-scope="{ item }">
-                    <div>{{ item.name }}<span> ({{ item.known_for_department }})</span></div>
+                    <div>{{ item.name }}</div>
                   </template>
                 </el-autocomplete>
-                <el-button type="primary" icon="el-icon-delete" @click="deletePerson(person)" plain ></el-button>
+                <el-button type="primary" icon="el-icon-delete" @click="deletePerson(person)" plain></el-button>
               </div>
               <div class="profile-path">
                 <div class="picture">
-                  <img
-                    v-if="person.profile_path"
-                    :src="person.profile_path"
-                  />
+                  <img v-if="person.profile_path" :src="person.profile_path" />
                   <div v-else class="no-picture">
-                    <i class="el-icon-user-solid"></i>
+                    <img v-if="person.gender == 1" src="../../../assets/img/p-female.svg" />
+                    <img v-else src="../../../assets/img/p-male.svg" />
                   </div>
                 </div>
-                <el-input type="text" name="profil-path" v-model="person.profile_path"></el-input>
+                <el-input
+                  type="text"
+                  name="profil-path"
+                  v-model="person.profile_path"
+                  placeholder="Photo de la personnalité"
+                ></el-input>
               </div>
+              <p class="subt">Sexe</p>
+              <el-select v-model="person.gender">
+                <el-option label="-----------" :value="0"></el-option>
+                <el-option label="Femme" :value="1"></el-option>
+                <el-option label="Homme" :value="2"></el-option>
+              </el-select>
               <p class="subt">Rôle(s) dans ce film</p>
               <div class="jobs">
                 <div v-for="(job, index) in person.jobs" :key="index" class="job">
-                  <el-input
-                    type="text"
-                    name="job"
-                    v-model="job.name"
-                  ></el-input>
-                  <el-button type="primary" plain icon="el-icon-delete" @click="deleteJob(person, job)"></el-button>
+                  <el-input type="text" name="job" v-model="job.name"></el-input>
+                  <el-button
+                    type="primary"
+                    icon="el-icon-delete"
+                    @click="deleteJob(person, job)"
+                    plain
+                  ></el-button>
                 </div>
-                <el-button type="success" icon="el-icon-plus" plain @click="addJob(person)">Ajouter un rôle</el-button>
+                <el-button
+                  type="success"
+                  icon="el-icon-plus"
+                  @click="addJob(person)"
+                  plain
+                >Ajouter un rôle</el-button>
               </div>
               <p class="subt">Positionnement</p>
-              <el-input type="text" v-model="person.priority" @input.native="$event.target.blur()"></el-input>
+              <el-input type="text" v-model="person.order" @input.native="$event.target.blur()"></el-input>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <el-button
+      type="success"
+      icon="el-icon-plus"
+      @click="saveMovieAndMovieCrewData"
+      plain
+      class="save-btn"
+    >Enregistrer les modifications
+    </el-button>
   </section>
 </template>
 
@@ -151,313 +146,153 @@ import tmdbApi from "../../../services/tmdb-api";
 export default {
   name: "MovieDetailsEdit",
   props: {
-    id: String
+    movie: Object,
+    movieCrew: Array
   },
   created() {
-    tmdbApi.getMovieDetails(this.id).then(res => {
-      this.movie = res.data
-      this.backdropPath()
-      this.posterPath()
-    });
-    tmdbApi.getMovieCredits(this.id).then(res => {
-      this.movieCrewFormat(res.data.crew)
-      this.movieCrew.forEach(person => { 
-        this.profilePath(person)
-      })
+    tmdbApi.getGenresList().then(res => {
+      this.genresList = res.data.genres;
     });
   },
   data() {
     return {
-      movie: {
-        backdrop_path: null,
-        genres: [
-          {
-            id: null,
-            name: null
-          }
-        ],
-        id: null,
-        original_title: null,
-        overview: null,
-        poster_path: null,
-        release_date: "1930-01-01",
-        runtime: null,
-        vote_average: null,
-        production_countries: [
-          {
-            iso_3166_1: null,
-            name: null
-          }
-        ]
-      },
-      movieCrew: [
-        { id: null, jobs: [], name: null, priority: null, profile_path: null }
-      ],
-      debounce: null
+      genresList: [],
+      debounce: null,
+      genreOptions: [
+        {id:"0", name: "Inconnu"},
+        {id:"1", name: "Femme"},
+        {id:"2", name: "Homme"},
+      ]
     };
   },
   methods: {
-    querySearchAsync(queryString, cb) {
+    querySearchPerson(queryString, cb) {
       clearTimeout(this.debounce)
       this.debounce = setTimeout(() => {
-        console.log('go')
         tmdbApi.searchPerson(queryString, 1).then(res => {
           let searchPersonResult = []
-          for (let page = 1; page <= res.data.total_pages; page++) {
+          let pageLimit = 5
+          if (res.data.total_pages < 5) {
+            pageLimit = res.data.total_pages
+          }
+          for (let page = 1; page <= pageLimit; page++) {
             tmdbApi.searchPerson(queryString, page).then(res => {
               searchPersonResult = [...searchPersonResult, ...res.data.results]
-              if (page === res.data.total_pages) {cb(searchPersonResult)}
+              if (page === pageLimit) {
+                cb(searchPersonResult)
+              }
             })
           }
         })
       }, 600)
     },
-    handleSelect(item) {
-      console.log(item, this.state);
+    handleSelectPerson(person, item) {
+      person.id = item.id;
+      person.name = item.name;
+      let profilPath = "";
+      if (item.profile_path) {
+        profilPath = "https://image.tmdb.org/t/p/w300" + item.profile_path;
+      }
+      person.profile_path = profilPath;
     },
-    // jobAdd(personId, value) {
-    //   console.log(value)
-    // },
-    // jobAddNewPerson() {
-    //   this.newPerson.jobs.push({...this.newJobNewPerson})
-    //   this.newJobNewPerson = { name: "" }
-    // },
-    // deleteJobNewPerson(job) {
-    //    this.newPerson.jobs.splice(this.newPerson.jobs.indexOf(job), 1)
-    // },
-    // genreAdd() {
-    //   this.movie.genres.push({...this.newGenre});
-    // },
-    // handleRemove(file) {
-    //   console.log(file);
-    // },
-    // handlePreview(file) {
-    //   console.log(file);
-    // },
-    // beforeRemove(file) {
-    //   return this.$confirm(`Supprimer le transfert de ${ file.name } ?`);
-    // },
-    addJob(person) {
-      person.jobs = [...person.jobs, ...[{ name: null }]]
+    handleChangeGenre(genre, e) {
+      genre.name = this.genresList.filter(g => g.id === e)[0].name
     },
-    deleteJob(person, job) {
-      this.$confirm('Ceci effacera le métier ' + job.name + ' de ' + person.name, 'Attention', {
-        confirmButtonText: 'Confirmer',
-        cancelButtonText: 'Annuler',
-      }).then(() => {
-        this.$message({
-          type: 'info',
-          message: 'Métier supprimé'
-        });
-        person.jobs.splice(person.jobs.indexOf(job), 1)
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: 'Suppression annulée'
-        });          
-      });
+    addGenre() {
+      this.movie.genres.push({ id: null, name: null })
     },
     deleteGenre(genre) {
-      this.movie.genres.splice(this.movie.genres.indexOf(genre), 1)
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer le genre " + genre.name + " ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+        .then(() => {
+          this.movie.genres.splice(this.movie.genres.indexOf(genre), 1)
+        })
+        .catch(() => {
+        });
     },
     addPerson() {
-      this.movieCrew = [...this.movieCrew, ...[{ id: null, jobs: [], name: null, priority: 0, profile_path: null }]]
+      this.$store.commit('ADD_PERSON_TO_MOVIE_CREW', { id: null, name: null, jobs: [], gender: 2, profile_path: null, order: 0 })
     },
     deletePerson(person) {
-      this.$confirm('Ceci effacera ' + person.name, 'Attention', {
-        confirmButtonText: 'Confirmer',
-        cancelButtonText: 'Annuler',
-      }).then(() => {
-        this.$message({
-          type: 'info',
-          message: person.name + ' supprimé'
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer la fiche de " + person.name + " ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+        .then(() => {
+          this.$store.commit('REMOVE_PERSON_FROM_MOVIE_CREW', person)
+        })
+        .catch(() => {
         });
-        this.movieCrew.splice(this.movieCrew.indexOf(person), 1)
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: 'Suppression annulée'
-        });          
+    },
+    addJob(person) {
+      this.$store.commit('ADD_JOB_TO_PERSON', { person, job: { name: null } })
+    },
+    deleteJob(person, job) {
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer le rôle " + job.name + " ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+      .then(() => {
+        this.$store.commit('REMOVE_JOB_FROM_PERSON', { person, job })
+      })
+      .catch(() => {
       });
     },
-    movieCrewFormat(dataCrew) {
-      const movieCrewFormat = []
-      const jobsTranslation = [
-        {
-          job: "Director",
-          jobTranslatationM: "Réalisateur",
-          jobTranslatationF: "Réalisatrice",
-          priority: 1
-        },
-        {
-          job: "Writer",
-          jobTranslatationM: "Scénariste",
-          jobTranslatationF: "Scénariste",
-          priority: 2
-        },
-        {
-          job: "Scenario Writer",
-          jobTranslatationM: "Scénariste",
-          jobTranslatationF: "Scénariste",
-          priority: 2
-        },
-        {
-          job: "Screenplay",
-          jobTranslatationM: "Scénariste",
-          jobTranslatationF: "Scénariste",
-          priority: 2
-        },
-        {
-          job: "Assistant Director",
-          jobTranslatationM: "Assistant Réalisateur",
-          jobTranslatationF: "Assistant Réalisatrice",
-          priority: 3
-        },
-        {
-          job: "Producer",
-          jobTranslatationM: "Producteur",
-          jobTranslatationF: "Productrice",
-          priority: 3
-        },
-        {
-          job: "Novel",
-          jobTranslatationM: "Roman",
-          jobTranslatationF: "Roman",
-          priority: 3
-        },
-        {
-          job: "Editor",
-          jobTranslatationM: "Monteur",
-          jobTranslatationF: "Monteuse",
-          priority: 4
-        },
-        {
-          job: "Music",
-          jobTranslatationM: "Musique",
-          jobTranslatationF: "Musique",
-          priority: 4
-        },
-        {
-          job: "Sound",
-          jobTranslatationM: "Son",
-          jobTranslatationF: "Son",
-          priority: 4
-        },
-        {
-          job: "Production Design",
-          jobTranslatationM: "Chef décorateur",
-          jobTranslatationF: "Chef décoratrice",
-          priority: 4
-        },
-        {
-          job: "Set Decoration",
-          jobTranslatationM: "Décorateur",
-          jobTranslatationF: "Décoratrice",
-          priority: 4
-        },
-        {
-          job: "Director of Photography",
-          jobTranslatationM: "Directeur de la photographie",
-          jobTranslatationF: "Directrice de la photographie",
-          priority: 4
-        },
-        {
-          job: "Still Photographer",
-          jobTranslatationM: "Photographe",
-          jobTranslatationF: "Photographe",
-          priority: 4
-        },
-        {
-          job: "Conductor",
-          jobTranslatationM: "Chef d'orchestre",
-          jobTranslatationF: "Chef d'orchestre",
-          priority: 4
-        },
-        {
-          job: "Original Music Composer",
-          jobTranslatationM: "Compositeur de la bande originale",
-          jobTranslatationF: "Compositrice de la bande originale",
-          priority: 4
-        },
-        {
-          job: "Adaptation",
-          jobTranslatationM: "Adaptation",
-          jobTranslatationF: "Adaptation",
-          priority: 4
-        }
-      ];
-      dataCrew.forEach(person => {
-        let jobIsInArray = jobsTranslation.find(p => p.job == person.job);
-        if (jobIsInArray) {
-          let personJob = jobIsInArray.jobTranslatationM;
-          if (person.gender == 1) {
-            personJob = jobIsInArray.jobTranslatationF;
-          }
-          let personPriority = jobIsInArray.priority;
-          let personIsInArray = movieCrewFormat.find(p => p.id == person.id);
-          if (!personIsInArray) {
-            movieCrewFormat.push({
-              id: person.id,
-              jobs: [{ name: personJob }],
-              name: person.name,
-              priority: personPriority,
-              profile_path: person.profile_path
+    saveMovieAndMovieCrewData() {
+      this.$db.collection("movies").doc(this.$parent.id).get()
+      .then((doc) => {
+          if (doc.exists) {
+            this.$db.collection("movies").doc(this.$parent.id).update({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew })
+            .then(function() {
+                console.log("le Film a été mis à jour");
+                console.log("movie et movieCrew bien modifié");
+            })
+            .catch(function(error) {
+                console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            personIsInArray.jobs = [
-              ...personIsInArray.jobs,
-              { name: personJob }
-            ];
-            if (personIsInArray.priority > personPriority) {
-              personIsInArray.priority = personPriority;
-            }
+            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew })
+            .then(function() {
+                console.log("le Film a été créé");
+                console.log("movie et movieCrew bien enregistré");
+            })
+            .catch(function(error) {
+                console.error("Erreur lors de la sauvegarde : ", error);
+            });
           }
-        }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
       });
-      this.movieCrew = movieCrewFormat;
     },
-    backdropPath() {
-      let backdropPath = null;
-      if (this.movie.backdrop_path) {
-        backdropPath =
-          "https://image.tmdb.org/t/p/original" + this.movie.backdrop_path;
-      } else {
-        backdropPath = require("../../../assets/img/backdrop_default.jpg");
-      }
-      this.movie.backdrop_path = backdropPath;
-    },
-    posterPath() {
-      let posterPath = null;
-      if (this.movie.poster_path) {
-        posterPath = "https://image.tmdb.org/t/p/w300" + this.movie.poster_path;
-      }
-      this.movie.poster_path = posterPath;
-    },
-    profilePath(person) {
-      let profilePath = null;
-      if (person.profile_path) {
-        profilePath = "https://image.tmdb.org/t/p/w138_and_h175_face" + person.profile_path;
-      }
-      person.profile_path = profilePath;
-    }
-  },
-  computed: {
-    sortedMovieByPrio() {
-      let movieCrewClone = [...this.movieCrew]
-      movieCrewClone.sort(function(person1, person2) {
-        return person1.priority  - person2.priority
-      })
-      return movieCrewClone
-    }
   }
 };
 </script>
 
 <style scoped lang="scss">
-
   section.movie-info {
     background-size: cover;
     background-repeat: no-repeat;
+    position: relative;
+
+    .save-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
 
     .content {
       text-align: left;
@@ -475,7 +310,7 @@ export default {
 
         label {
           text-transform: uppercase;
-          font-size: 1em;
+          font-size: 1.2em;
           font-weight: 800;
           color: #f8f0e0;
           margin-bottom: 0.3em;
@@ -520,7 +355,7 @@ export default {
           .crew {
             display: flex;
             flex-direction: column;
-            >div {
+            > div {
               margin-bottom: 0.8em;
             }
           }
@@ -538,14 +373,25 @@ export default {
             > div {
               display: flex;
             }
+            .el-select {
+              width: 100%;
+            }
+
+            > button {
+              margin-bottom: 1em;
+            }
           }
         }
 
         .crew {
           width: 100%;
+          position: relative;
 
-          label {
-            margin-right: 1.5em;
+          >button {
+            position: absolute;
+            right: 2.4em;
+            top: -0.8em;
+            z-index: 1;
           }
 
           input {
@@ -560,7 +406,7 @@ export default {
             transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             width: 100%;
           }
-          
+
           .persons {
             display: flex;
             flex-wrap: wrap;
@@ -569,15 +415,16 @@ export default {
             margin-top: 0.5em;
 
             .person {
-              flex: 1;
+              width: 28.5%;
               min-width: 25%;
+
               margin: 0.5em 0;
               margin-right: 1em;
               border: 1px solid rgba(255, 255, 255, 0.205);
               border-radius: 4px;
               padding: 0.7em;
-              
-              >div {
+
+              > div {
                 margin-bottom: 0.8em;
 
                 &:first-child {
@@ -587,9 +434,7 @@ export default {
                     margin-left: 0.8em;
                     padding: 0 1em;
                   }
-
                 }
-
               }
 
               .profile-path {
@@ -614,15 +459,22 @@ export default {
                     width: 100%;
                   }
 
-                  i {
-                    color: #b5b5b5;
-                    font-size: 1.9em;
+                  .no-picture {
+                    img {
+                    position: relative;
+                    top: 0.3em;
+                    width: 98.4%;
+                    }
                   }
                 }
               }
 
+              .el-select {
+                width: 100%;
+              }
+
               p.subt {
-                color:  #f8f0e0;
+                color: #f8f0e0;
                 font-weight: 500;
                 font-size: 0.8em;
                 text-transform: uppercase;
@@ -641,18 +493,14 @@ export default {
                   button {
                     padding: 0 1em;
                   }
-
                 }
 
-                >button {
+                > button {
                   width: 100%;
                 }
-
               }
-
             }
           }
-
         }
       }
     }

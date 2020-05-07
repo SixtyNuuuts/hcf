@@ -1,15 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import MovieYearsList from "../views/MovieYearsList.vue";
 
 Vue.use(VueRouter)
 
   const routes = [
-    {
-      path: "/",
-      name: "MovieYearsList",
-      component: MovieYearsList
-    },
     {
       path: "/films/:year",
       name: "films",
@@ -17,14 +11,9 @@ Vue.use(VueRouter)
         import(/* webpackChunkName: "films" */ "../views/Movies.vue")
     },
     {
-      path: "/film/:id",
+      path: "/film/:type?/:id",
       name: "film",
       component: () => import(/* webpackChunkName: "film" */ "../views/Movie.vue")
-    },
-    {
-      path: "/film/edit/:id",
-      name: "filmEdit",
-      component: () => import(/* webpackChunkName: "film" */ "../views/MovieEdit.vue")
     }
   ]
 

@@ -8,23 +8,12 @@
 </template>
 
 <script>
-import tmdbApi from "../../services/tmdb-api";
 import CastCarousel from "@/components/Movie/Carousel/CastCarousel.vue";
 
 export default {
-  created() {
-    tmdbApi.getMovieCredits(this.id).then(res => {
-      this.movieCast = res.data.cast;
-    });
-  },
-  data() {
-    return {
-      movieCast: []
-    };
-  },
   name: "MovieCast",
   props: {
-    id: String
+    movieCast: Array
   },
   components: {
     CastCarousel

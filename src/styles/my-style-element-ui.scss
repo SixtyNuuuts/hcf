@@ -60,12 +60,12 @@ nav {
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.205);
 
-        &:focus {
-            border: 2px solid $--color-success;
+        &:focus, &:active {
+            border: 1px solid $--color-success !important;
         }
     }
 
-    .genres, .job {
+    .genres > div, .job {
         
         input {
             border-radius: 4px 0 0 4px;
@@ -81,16 +81,34 @@ nav {
 
     }
 
+}
+
+.movie-info, .movie-cast {
+
     button {
         &.is-plain:not(:hover) {
             background: white;
-            border-color: white;
-            color: inherit;
+            border-color: rgb(209, 209, 209);
+            color: rgb(36, 36, 36);
 
             i {
                 font-weight: bold;
             }
 
+        }
+
+        &:not(.is-plain):focus {
+            
+            &.el-button--success {
+                color: #FFFFFF;
+                background-color: #1362b5;
+                border-color: #1362b5;
+            }
+            &.el-button--primary {
+                color: #FFFFFF;
+                background-color: #a51f1e;
+                border-color: #a51f1e;
+            }
         }
     }
 
@@ -102,8 +120,11 @@ nav {
 .el-date-table td.available:hover {
     color: $--color-success;
 }
+.el-select-dropdown__item.selected {
+    color: $--color-success;
+}
 ////////////////////////////////////
 
-.el-date-picker, .el-select-dropdown, .el-message, .el-message-box {
+.el-date-picker, .el-select-dropdown, .el-message, .el-message-box, .el-scrollbar {
     font-family: Arial, Helvetica, sans-serif;
 }

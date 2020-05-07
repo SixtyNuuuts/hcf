@@ -6,7 +6,7 @@
                 <div class="crew-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')' }">
                     <div v-for="person in movieCrew" :key="person.id" class="person">
                         <a href="" class="picture">
-                          <img v-if="person.profile_path" :src="'https://image.tmdb.org/t/p/w138_and_h175_face' + person.profile_path">
+                          <img v-if="person.profile_path" :src="person.profile_path">
                           <div v-else class="no-picture">
                               <i class="el-icon-user-solid"></i>
                           </div>
