@@ -1,249 +1,425 @@
 <template>
   <nav>
     <div class="ribbon-hole"></div>
-    <!-- <router-link to="/">Liste des années</router-link> -->
-    <div class="nav-content">
-      <ul class="left-part">
-        <li class="nav-item">
-          <router-link to="/films/1930">
-            <div>FILMS</div>
-            <span>documentés</span>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <span>Recherchez un film</span>
-          <el-col>
-            <el-autocomplete
-              class="inline-input"
-              v-model="state2"
-              :fetch-suggestions="querySearch"
-              placeholder="Titre du film"
-              :trigger-on-focus="false"
-              @select="handleSelect"
-            ></el-autocomplete>
-          </el-col>
-        </li>
-      </ul>
-      <a class="logo" href="/">
+    <div id="content" :class="{ 'menu-is-open': isMenuOpen }">
+      <a href="/" class="logo">
           <img src="../assets/img/logo-h-c-f.svg" alt="Logo Histoire du cinema français" />
       </a>
-      <ul class="right-part">
-        <li class="nav-item mw">
-          <span>Recherchez une personnalité</span>
-          <el-col>
+      <div id="menu">
+        <ul class="left-part">
+          <li class="tlink">
+            <router-link to="/films">
+              Films
+            </router-link>
+          </li>
+          <li class="search" :class="{ 'search-movie-is-open': idSearchMovieOpen }">
+            <div class="search-title" @click="toggleSearchMovie"><i class="el-icon-search"></i>Recherchez un film</div>
             <el-autocomplete
+              ref="searchm"
               class="inline-input"
-              v-model="state2"
-              :fetch-suggestions="querySearch"
+              placeholder="Titre du film"
+              :trigger-on-focus="false"
+              @blur="toggleSearchMovie"
+            ></el-autocomplete>
+          </li>
+        </ul>
+        <ul class="right-part">
+          <li class="tlink personnalites">
+            <a href="">
+              Personnalités
+            </a>
+          </li>
+          <li class="search" :class="{ 'search-person-is-open': idSearchPersonOpen }">
+            <div class="search-title" @click="toggleSearchPerson"><i class="el-icon-search"></i>Recherchez une personnalité</div>
+            <el-autocomplete
+              ref="searchp"
+              class="inline-input"
               placeholder="Nom d'un(e) réal. / act."
               :trigger-on-focus="false"
-              @select="handleSelect"
+              @blur="toggleSearchPerson"
             ></el-autocomplete>
-          </el-col>
-        </li>
-        <li class="nav-item">
-          <a class="real" href="">
-            <div>RÉALISATEURS</div>
-            <span>documentés</span>
-          </a>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
+      <div id="menu-icon" @click="toggleMenu">
+        <span></span>
+        <span></span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        <span></span>
+        <span></span>
+      </div>
     </div>
     <div class="ribbon-hole"></div>
   </nav>
 </template>
 
 <script>
-// import tmdbApi from "../services/tmdb-api";
 
 export default {
   name: "Nav",
-  // created() {
-  //   tmdbApi.getMovieCredits(this.id).then(res => {
-  //     this.movieCast = res.data.cast;
-  //   });
-  // },
-  // data() {
-  //   return {
-  //     movieCast: []
-  //   };
-  // },
-  data() {
+        data() {
     return {
-      startYear: 1930,
-      // value: "",
-      links: [],
-      state1: '',
-      state2: ''
+      isMenuOpen: false,
+      idSearchMovieOpen: false,
+      idSearchPersonOpen: false,
     };
   },
   methods: {
-    querySearch(queryString, cb) {
-      var links = this.links;
-      var results = queryString ? links.filter(this.createFilter(queryString)) : links;
-      // call callback function to return suggestions
-      cb(results);
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
     },
-    createFilter(queryString) {
-      return (link) => {
-        return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
+    toggleSearchMovie() {
+      this.idSearchMovieOpen = !this.idSearchMovieOpen;
+      this.$nextTick(() => this.$refs.searchm.focus());
     },
-    loadAll() {
-      return [
-        { "value": "vue", "link": "https://github.com/vuejs/vue" },
-        { "value": "element", "link": "https://github.com/ElemeFE/element" },
-        { "value": "cooking", "link": "https://github.com/ElemeFE/cooking" },
-        { "value": "mint-ui", "link": "https://github.com/ElemeFE/mint-ui" },
-        { "value": "vuex", "link": "https://github.com/vuejs/vuex" },
-        { "value": "vue-router", "link": "https://github.com/vuejs/vue-router" },
-        { "value": "babel", "link": "https://github.com/babel/babel" }
-        ];
+    toggleSearchPerson() {
+      this.idSearchPersonOpen = !this.idSearchPersonOpen;
+      this.$nextTick(() => this.$refs.searchp.focus());
     },
-    handleSelect(item) {
-      console.log(item);
-    }
   },
-  mounted() {
-    this.links = this.loadAll();
-  }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-nav {
-  background-color: #f7f0e1;
-  width: 1000px;
-  position: relative;
-  z-index: 9;
-  margin: 0 -20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.3), 0 10px 12px rgba(0, 0, 0, 0.22);
-  position: relative;
+  @import '../styles/bp.scss';  
+  @import '../styles/color.scss';  
+  @import '../styles/shadow.scss';  
 
-  .ribbon-hole {
-    background: url("../assets/img/hole.svg") repeat-x 0 bottom, #000000;
-  }
+  nav {
+    background-color: $--color-hcf-llight-beige;
+    box-shadow: $--box-shadow-dark-5;
+    position: relative;
+    z-index: 100;
 
-  .nav-content {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 0;
+    .ribbon-hole {
+      background: url("../assets/img/hole.svg") repeat-x 0 bottom, $--color-hcf-black;
+    }
 
-    ul {
-      margin: 0;
+    #content {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5em 5%;
+      position: relative;
 
-      .nav-item {
-        font-family: 'Bazar';
-        font-size: 1.6rem;
+      .logo {
+        position: absolute;
+        left: 5%;
+        top: -2em;
+        z-index: 3;
+        width: 9em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $--color-hcf-black;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: $--box-shadow-5;
+        transition: .4s ease-in-out;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+
+      }
+      
+      #menu {
         display: flex;
         flex-direction: column;
-        margin-right: 35px;
-        justify-content: center;
-        &.mw {
-          max-width: 177px;
-          margin-right: 25px;
-        }
-
-        >span {
-          font-size: 0.85rem;
-          line-height: 1;
-          text-align: left;
-          color: #a51f1e;
-          font-family: 'Baskerville';
-          font-weight: bold;
-          margin-bottom: 4px;
-        }
-
-        a {
-          font-size: 1.8rem;
-          margin-top: 15px;
-          text-shadow: 3px 3px 0 rgba(0,0,0,0.12);
-          color: #a51f1e;
-          &.real {
-            font-size: 1.55rem;
-          }
-
-          span {
-            font-size: 0.9rem;
-            position: relative;
-            top: -8px;
-            color: #000;
-            font-family: 'Baskerville';
-
-            &:before, &:after {
-              content: '';
-              display: inline-block;
-              height: 1px;
-              position: relative;
-              top: -3px;
-              width: 7px;
-              z-index: 2;
-              background-color: #000;
-            }
-
-            &:before {
-              margin-right: 5px;;
-            }
-
-            &:after {
-              margin-left: 5px;;
-            }
-
-          }
-
-        }
-
-      }
-
-    }
-
-    .right-part {
-      margin-right: -5px;
-    }
-
-    .logo {
-      position: absolute;
-      width: 19.5%;
-      left: 40.15%;
-      top: -28px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 200px;
-      width: 200px;
-      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.3), 0 10px 12px rgba(0, 0, 0, 0.22);
-      border-radius: 50%;
-      overflow: hidden;
-
-      img {
+        height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: .4s ease-in-out;
+        margin-top: 0em;
+        align-items: center;
         width: 100%;
+        max-width: 350px;
+
+        ul {
+          margin: 1em 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          position: relative;
+          min-height: 105px;
+          transition: .5s ease-in-out;
+          width: 100%;
+
+          &.left-part {
+            margin-bottom: 3.5em;
+
+            &::after {
+              content: '';
+              display: block;
+              height: 10px;
+              width: 100%;
+              position: absolute;
+              bottom: -2.6em;
+              background: url("../assets/img/sep-1-star-black.svg") no-repeat center 0;
+            }
+            
+          }
+
+          li {
+            font-family: 'Righteous', sans-serif;
+            position: relative;
+
+            &.tlink {
+              font-size: 1.95em;
+              text-transform: uppercase;
+              text-shadow: $--text-shadow-1;
+              position: relative;
+              margin-bottom: .6em;
+
+              a {
+                color: $--color-hcf-red;
+                transition: .3s ease-in-out;
+                position: relative;
+                top:0;
+
+                &:hover {
+                  top:-0.07em;
+                }
+
+              }
+
+              &::after {
+                content: '';
+                display: block;
+                height: 10px;
+                width: 100%;
+                position: absolute;
+                bottom: -0.7em;
+                background: url("../assets/img/sep-3-stars.svg") no-repeat center 0;
+              }
+
+              &.personnalites {
+                font-size: 1.90em;
+              }
+            }
+          
+            &.search {
+              order: 1;
+              margin-top: .9em;
+              position: relative;
+
+              i {
+                color: $--color-hcf-red;
+                margin-right: 5px;
+              }
+
+              &.search-movie-is-open, &.search-person-is-open {
+                .search-title {
+                  display: none;
+                }
+                .el-autocomplete {
+                  display: block;
+                }
+              }
+
+              .search-title {
+                cursor: pointer;
+                display: block;
+                transition: .2s ease-in-out;
+
+                &:hover {
+                  color: $--color-hcf-red;
+                }
+                
+              }
+
+              .el-autocomplete {
+                display: none;
+              }
+
+            }
+
+          }
+          
+        }
+
+      }
+
+      //// BURGER ICON ////////////////
+      $--val-burger-icon: 5px;
+      #menu-icon {
+        position: absolute;
+        right: 2%;
+        top: 1em;
+        z-index: 3;
+        width: 35px;
+        height: $--val-burger-icon * 5;
+        margin: .8em;
+        transform: rotate(0deg);
+        transition: .5s ease-in-out;
+        cursor: pointer;
+
+        &::before {
+          content: "MENU";
+          display: block;
+          position: absolute;
+          left: -72px;
+          top: 2px;
+          font-family: "Righteous";
+          color: $--color-hcf-grey;
+          font-size: 1.4em;
+          opacity: 1;
+          transition: .5s ease-in-out;
+        }
+
+        span {
+          display: block;
+          position: absolute;
+          height: $--val-burger-icon;
+          width: 100%;
+          background: $--color-hcf-black;
+          border-radius: $--val-burger-icon;
+          opacity: 1;
+          left: 0;
+          transform: rotate(0deg);
+          transition: .25s ease-in-out;
+
+          &:nth-child(1) {
+            top: 0px;
+          }
+
+          &:nth-child(2), &:nth-child(3) {
+            top: $--val-burger-icon * 2;
+          }
+
+          &:nth-child(4) {
+            top: $--val-burger-icon * 4;
+          }
+          
+        }
+
+      }
+
+      @media (max-width: $--bp-md - 1) { 
+        &.menu-is-open {
+
+          .logo {
+            width: 12em;
+            left: calc(50% - 6em);
+            top: 1.5em;
+          }
+          
+          #menu {
+            height: 19.5em;
+            opacity: 1;
+            margin-top: 12em;
+          }
+
+          //// BURGER ICON ////////////////
+          #menu-icon {
+
+            &::before {
+              opacity: 0;
+            }
+
+            span {
+
+              &:nth-child(1), &:nth-child(4) {
+                top: $--val-burger-icon * 2;
+                width: 0%;
+                left: 50%;
+              }
+
+              &:nth-child(2) {
+                transform: rotate(45deg);
+              }
+
+              &:nth-child(3) {
+                transform: rotate(-45deg);
+              }
+
+            }
+
+          }
+
+        }
+      }
+    }
+
+  }
+
+  @media (min-width: $--bp-md) { 
+    nav {
+
+      #content {
+        padding: .8em 2%;
+
+        .logo {
+          width: 12.5em;
+          left: calc(50% - 6.25em);
+          top: -2.1em;
+        }
+
+        #menu {
+          height: initial;
+          opacity: 1;
+          flex-direction: row;
+          max-width: none;
+
+          ul {
+            margin: 0;
+
+            &.left-part {
+              margin-bottom: 0;
+              margin-right: 15%;
+              
+              &::after {
+                content: none;
+              }
+            
+            }
+
+            &.right-part {
+              margin-left: 15%;
+            }
+
+          }
+
+        }
+
+        #menu-icon {
+          display: none;
+        } 
+
       }
 
     }
 
   }
 
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: -15px;
-    display: block;
-    width: 20px;
-    height: 15px;
+  @media (min-width: $--bp-lg) { 
+    nav {
+      width: $--bp-lg + 40;
+      left: -20px;    
+      
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        display: block;
+        width: 20px;
+        height: 15px;
+      }
+      &:before {
+        left: 0px;
+        background: url("../assets/img/left-ribbon.svg");
+      }
+      &:after {
+        right: 0px;
+        background: url("../assets/img/right-ribbon.svg");
+      }
+
+      #content {
+        padding: .8em 5%;
+
+      }
+    }
   }
-  &:before {
-    left: 0px;
-    background: url("../assets/img/left-ribbon.png");
-  }
-  &:after {
-    right: 0px;
-    background: url("../assets/img/right-ribbon.png");
-  }
-}
+
 </style>

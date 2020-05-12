@@ -1,10 +1,10 @@
 <template>
   <section id="movies">
-    <div class="box-select-year">
+    <div class="title">
       <div>
         <h1>
           LES FILMS DOCUMENTÉS DE
-          <el-select v-model="selectedYear" filterable placeholder="Sélectionnez une année">
+          <el-select v-model="selectedYear" filterable @change="handleYearSelected" placeholder="Sélectionnez une année">
             <el-option
               v-for="(item, index) in 10"
               :key="index"
@@ -15,61 +15,40 @@
         </h1>
       </div>
     </div>
-    <MoviesDocuList :movies="filteredMoviesDocu" />
-    <MoviesList :movies="sortedMovies" :year="selectedYear" />
+    <MoviesDocuList :movies="documentedMovieListByYear" />
+    <MoviesList :movies="movieListByYear" :year="selectedYear" />
   </section>
 </template>
 
 <script>
   import MoviesDocuList from "@/components/Movies/MoviesDocuList.vue"
   import MoviesList from "@/components/Movies/MoviesList.vue"
-  import tmdbApi from "../services/tmdb-api"
+  import f from "../services/func";
 
   export default {
     created() {
-      this.getMovies(this.selectedYear)
+      this.$store.dispatch("getMoviesByYear", this.startYear)
+      this.$store.dispatch("getDocumentedMoviesByYear", this.startYear)
     },
     data() {
       return {
         startYear: 1930,
         selectedYear: 1930,
-        movies: [],
-        moviesDocuId: [
-          5729, 47831, 556675, 
-        ]
-      }
-    },
-    watch: {
-      selectedYear: function(year) {
-        this.movies = []
-        this.$router.push("/films/" + year)
-        this.getMovies(year)
       }
     },
     methods: {
-      getMovies: function(year) {
-        tmdbApi.getMoviesFrByYear(year, 1).then(res => {
-          for (let page = 1; page <= res.data.total_pages; page++) {
-            tmdbApi.getMoviesFrByYear(year, page).then(res => {
-              this.movies = [...this.movies, ...res.data.results]
-            })
-          }
-        })
-      },
-      sortMoviesByAlphab: function(array) {
-        function compare(a, b) {
-          return a.original_title.localeCompare(b.original_title)
-        }
-        return [...array].sort(compare)
-      },
+      handleYearSelected(year) {
+        this.$store.dispatch("getMoviesByYear", year)
+        this.$store.dispatch("getDocumentedMoviesByYear", year)
+      }
     },
     computed: {
-      sortedMovies: function() {
-        return this.sortMoviesByAlphab(this.movies)
+      movieListByYear() {
+        return f.sortedByAlphabet(this.$store.state.currentMovieListByYear)
       },
-      filteredMoviesDocu: function() {
-        return this.movies.filter(movie => this.moviesDocuId.includes(movie.id))
-      }
+      documentedMovieListByYear() {
+        return f.sortedByAlphabet(this.$store.state.currentDocumentedMovieListByYear)
+      },
     },
     name: "Movies",
     components: {
@@ -80,24 +59,27 @@
 </script>
 
 <style scoped lang="scss">
-  #movies {
-    padding: 3em 2em 0 2em;
 
-    .box-select-year {
-      margin: 0 0 36px;
-      padding: 21px 0 19px 0;
+@import '../styles/color.scss';  
+
+  #movies {
+    padding: 3em 1.45em 0 1.5em;
+
+    .title {
+      margin: 0 0 2em;
+      padding: 1.5em;
       position: relative;
       text-align: center;
       z-index: 2;
-      background: url("../assets/img/box-border-patern.png") repeat 0 0 #f6e5c8;
+      background: url("../assets/img/box-border-patern.png") repeat 0 0 $--color-hcf-beige;
 
       &:before {
-        background: #fcedd5;
+        background: $--color-hcf-light-beige;
         bottom: 0;
         content: "";
         display: block;
         left: 0;
-        margin: 19px 18px 18px;
+        margin: 1.5em;
         position: absolute;
         right: 0;
         top: 0;
@@ -105,10 +87,17 @@
       }
 
       h1 {
-        font-family: "Bazar";
-        color: #2b1d07;
+        font-family: "Righteous";
+        color: $--color-hcf-ddark-brown;
         font-size: 1.9em;
         text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+        line-height: 1.2;
+        margin: 0.8em 1em 1em 1em; 
+
+        .el-select {
+          margin-top: 0.25em;
+        }
+
       }
 
     }

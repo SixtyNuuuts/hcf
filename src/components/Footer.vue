@@ -12,10 +12,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @import '../styles/color.scss';  
 
   footer {
     padding: 3% 2%;
-    background-color: #000;
+    background-color: $--color-hcf-black;
     color: #e8cea2;
     font-size: 0.9em;
 

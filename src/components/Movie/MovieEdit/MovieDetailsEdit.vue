@@ -23,6 +23,7 @@
             <div class="release-date">
               <label for="release_date">Date de sortie</label>
               <el-date-picker
+                value-format="yyyy-MM-dd"
                 type="date"
                 name="release_date"
                 id="release_date"
@@ -83,6 +84,7 @@
                 </el-autocomplete>
                 <el-button type="primary" icon="el-icon-delete" @click="deletePerson(person)" plain></el-button>
               </div>
+              <UploadFile @uploadFilePath="setUploadFilePath(person, $event)"/>
               <div class="profile-path">
                 <div class="picture">
                   <img v-if="person.profile_path" :src="person.profile_path" />
@@ -131,9 +133,8 @@
     </div>
     <el-button
       type="success"
-      icon="el-icon-plus"
+      icon="el-icon-check"
       @click="saveMovieAndMovieCrewData"
-      plain
       class="save-btn"
     >Enregistrer les modifications
     </el-button>
@@ -142,12 +143,16 @@
 
 <script>
 import tmdbApi from "../../../services/tmdb-api";
+import UploadFile from "@/components/UploadFile.vue";
 
 export default {
   name: "MovieDetailsEdit",
   props: {
     movie: Object,
     movieCrew: Array
+  },
+  components: {
+    UploadFile
   },
   created() {
     tmdbApi.getGenresList().then(res => {
@@ -158,14 +163,12 @@ export default {
     return {
       genresList: [],
       debounce: null,
-      genreOptions: [
-        {id:"0", name: "Inconnu"},
-        {id:"1", name: "Femme"},
-        {id:"2", name: "Homme"},
-      ]
     };
   },
   methods: {
+    setUploadFilePath(person, filePath) {
+      person.profile_path = filePath
+    },
     querySearchPerson(queryString, cb) {
       clearTimeout(this.debounce)
       this.debounce = setTimeout(() => {
@@ -257,18 +260,26 @@ export default {
       .then((doc) => {
           if (doc.exists) {
             this.$db.collection("movies").doc(this.$parent.id).update({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew })
-            .then(function() {
+            .then(() => {
                 console.log("le Film a été mis à jour");
                 console.log("movie et movieCrew bien modifié");
+                this.$message({
+                  type: 'info',
+                  message: 'le Film a bien été mis à jour'
+                });
             })
             .catch(function(error) {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
             this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew })
-            .then(function() {
+            .then(() => {
                 console.log("le Film a été créé");
                 console.log("movie et movieCrew bien enregistré");
+                this.$message({
+                  type: 'info',
+                  message: 'le Film a bien été créé'
+                });
             })
             .catch(function(error) {
                 console.error("Erreur lors de la sauvegarde : ", error);
@@ -290,13 +301,13 @@ export default {
 
     .save-btn {
       position: absolute;
-      bottom: 0;
-      right: 0;
+      bottom: 2.5em;
+      right: 3em;
     }
 
     .content {
       text-align: left;
-      padding: 4.5em 3em 3em 3em;
+      padding: 4.5em 3em 7em 3em;
       position: relative;
       background-image: linear-gradient(
         to right,
@@ -457,13 +468,15 @@ export default {
 
                   img {
                     width: 100%;
+                    height: 100%;
+                    object-fit: cover;
                   }
 
                   .no-picture {
                     img {
-                    position: relative;
-                    top: 0.3em;
-                    width: 98.4%;
+                      position: relative;
+                      top: 0.3em;
+                      width: 98.4%;
                     }
                   }
                 }

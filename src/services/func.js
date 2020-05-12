@@ -167,11 +167,19 @@ export default {
         person.profile_path = profilePath;
     },
 
-    sortedByOrder(persons) {
-      persons.sort(function(person1, person2) {
-        return person1.order  - person2.order
+    sortedByOrder(array) {
+      array.sort(function(a, b) {
+        return a.order  - b.order
       })
-      return persons
+      return array
     },
+
+    sortedByAlphabet(array) {
+      array.sort(function(a, b) {
+        return a.original_title.localeCompare(b.original_title)
+      })
+      return array
+    },
+
 
 }

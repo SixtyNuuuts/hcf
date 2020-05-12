@@ -3,12 +3,12 @@
     <div v-if="type === 'edit'" >
       <MovieDetailsEdit :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCastEdit :movieCast="currentMovieCast" />
-      <MovieDocuEdit />
+      <MovieDocuEdit :movieDocumented="currentMovieDocumented" />
     </div>
     <div v-else>
       <MovieDetails :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCast :movieCast="currentMovieCast" />
-      <MovieDocu />
+      <MovieDocu v-if="currentMovieDocumented.colLeftContent.length || currentMovieDocumented.colRightContent.length" :movieDocumented="currentMovieDocumented" />
       <!-- <MovieImages /> -->
     </div>
   </section>
@@ -39,6 +39,8 @@
       this.$store.dispatch("getCurrentMovie", this.id)
       this.$store.dispatch("getMovieCrew", this.id)
       this.$store.dispatch("getMovieCast", this.id)
+      this.$store.dispatch("getMovieDocumented", this.id)
+      console.log(this.currentMovieDocumented.colLeftContent)
     },
     data() {
       return {
@@ -55,6 +57,9 @@
       },
       currentMovieCast() {
         return f.sortedByOrder(this.$store.state.currentMovieCast)
+      },
+      currentMovieDocumented() {
+        return this.$store.state.currentDocumentedMovie
       }
     }
   };

@@ -8,23 +8,21 @@
         </div>
       </div>
       <div class="text">
-        <div class="title">
-          <h1 v-if="movie.original_title">{{ movie.original_title }} <span v-if="movie.release_date" class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
-          <div class="facts">
-            <span v-if="movie.release_date" class="fact release">
-              {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }} <span v-if="movie.production_countries[0]">({{ movie.production_countries[0].iso_3166_1}})</span>
-            </span>
-            <ul v-if="movie.genres.length > 0" class="fact genres">
-              <span class="point"></span>
-              <li v-for="(genre, index) in movie.genres" :key="genre.id">
-                {{ genre.name }}
-                <span v-if="index != movie.genres.length-1">, </span>
-              </li>
-            </ul>
-            <span v-if="movie.runtime" class="fact runtime">
-              <span class="point"></span>
-              {{ movie.runtime | minutesToHours() }}
-            </span>
+        <h1 v-if="movie.original_title">{{ movie.original_title }} <span v-if="movie.release_date" class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
+        <div class="facts">
+          <div v-if="movie.release_date" class="fact release">
+            <h3>Date de Sortie</h3>
+            {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
+          </div>
+          <div v-if="movie.genres.length > 0" class="fact genres">
+            <h3>Genre(s)</h3>
+            <div v-for="(genre) in movie.genres" :key="genre.id">
+              {{ genre.name }}
+            </div>
+          </div>
+          <div v-if="movie.runtime" class="fact runtime">
+            <h3>Durée</h3>
+            {{ movie.runtime | minutesToHours() }}
           </div>
         </div>
         <div>
@@ -61,38 +59,45 @@ export default {
 
 <style scoped lang="scss">
 
+  @import '../../styles/bp.scss';  
+  @import '../../styles/color.scss';  
+  @import '../../styles/shadow.scss';  
+
   section.movie-info {
     background-size: cover;
     background-repeat: no-repeat;   
 
     .content {
       display: flex;
-      text-align: left;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       padding: 4.5em 3em 3em 3em;
       position: relative;
       background-image: linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
 
       .poster {
-        margin-right: 40px;
+        width: 100%;
+        max-width: 310px;
+        margin-bottom: 2em;
 
         img {
-          width: 290px;
-          height: 430px;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.66), 0 6px 6px rgba(0, 0, 0, 0.81);
+          width: 100%;
+          box-shadow: $--box-shadow-dark-3;
         }
         
         .no-poster {
-          background-color: lightgrey;
-          width: 290px;
-          height: 430px;
+          background-color: $--color-hcf-light-grey;
+          width: 280px;
+          height: 420px;
           display: flex;
           justify-content: center;
           align-items: center;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.66), 0 6px 6px rgba(0, 0, 0, 0.81);
+          box-shadow: $--box-shadow-dark-3;
 
           i {
             font-size: 8rem;
-            color: #b5b5b5;
+            color: $--color-hcf-dark-grey;
           }
 
         }
@@ -100,64 +105,40 @@ export default {
       }
 
       .text {
-        color: #f6e5c8;
+        color: $--color-hcf-beige;
+        width: 80%;
 
-        .title {
-          margin-bottom: 40px;
+        h1 {
+          margin: 0;
+          font-size: 2.2rem;
+          font-weight: 800;
+          line-height: 1;
+          text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+          margin-bottom: .9em;
+          color: $--color-hcf-light-beige;
 
-          h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            font-weight: 800;
-            line-height: 1;
-            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
-            color: #f8f0e0;
-
-            span {
-              opacity: 0.8;
-              font-weight: 400;
-            }
-
+          span {
+            opacity: 0.8;
+            font-weight: 400;
           }
 
-          .facts {
-            display: flex;
-            margin-top: 3px;
+        }
 
-            .fact {
-              position: relative;
+        .facts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
 
-              &:not(:first-child) {
-                margin-left: 20px;
+          .fact {
+            margin-bottom: 2.5em;
+
+            &.genres {
+              >div {
+                margin-bottom: 0.2em;
               }
-
-              span.point {
-                display: block;
-                width: 5px;
-                height: 5px;
-                background-color: #f6e5c8;
-                position: absolute;
-                top: 9px;
-                left: -12px;
-                border-radius: 50%;
-              }
-
             }
-
-            .genres {
-              display: flex;
-              padding: 0;
-              margin-top: 0;
-              margin-bottom: 0;
-
-              li:not(:last-child) {
-                margin-right: 7px;
-              }
-
-            }
-            
           }
-
+          
         }
 
         div {
@@ -167,19 +148,26 @@ export default {
             text-transform: uppercase;
             font-size: 1em;
             color: #f8f0e0;
-            margin-bottom: 0.1em;
+            margin-bottom: 0.3em;
           }
 
           #overview {
-            margin-bottom: 40px;
+            margin-bottom: 2.5em;
 
             .overview {
               p{
                 margin: 0;
+                line-height: 1.2;
               }
 
             }
 
+          }
+
+          #crew {
+            h3 {
+              margin-bottom: .5em;
+            }
           }
 
         }
@@ -188,6 +176,65 @@ export default {
 
     }
 
+  }
+
+  @media (min-width: $--bp-sm) { 
+    section.movie-info {
+      .content {
+        .text {
+          width: 75%;
+
+          .facts {
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            margin-bottom: 2.5em;
+
+            .fact {
+              margin: 0 2em;
+              margin-top:0.2em;
+            }
+            
+          }
+        }
+
+      }
+    }
+  }
+
+  @media (min-width: $--bp-md) { 
+    section.movie-info {
+      .content {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+
+        .poster {
+          width: 50%;
+          margin-right: 3em;
+          margin-bottom: 0;
+        }
+
+        .text {
+          width: 60%;
+
+          .facts {
+            max-width: 28em;
+            justify-content: flex-start;
+            margin-bottom: 2em;
+
+            .fact {
+                &:first-child {
+                margin-left: 0;
+              }
+            }
+            
+
+          }
+        }
+
+      }
+    }
   }
 
 </style>

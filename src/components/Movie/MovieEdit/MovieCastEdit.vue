@@ -28,6 +28,7 @@
                 <img v-else src="../../../assets/img/p-male.svg" />
               </div>
             </div>
+            <UploadFile @uploadFilePath="setUploadFilePath(actor, $event)"/>
             <el-input
               type="text"
               name="profil-path"
@@ -64,9 +65,8 @@
     </div>
     <el-button
       type="success"
-      icon="el-icon-plus"
+      icon="el-icon-check"
       @click="saveMovieCastData"
-      plain
       class="save-btn"
     >Enregistrer les modifications
     </el-button>
@@ -75,13 +75,20 @@
 
 <script>
 import tmdbApi from "../../../services/tmdb-api";
+import UploadFile from "@/components/UploadFile.vue";
 
 export default {
   name: "MovieCastEdit",
   props: {
     movieCast: Array
   },
+  components: {
+    UploadFile
+  },
   methods: {
+    setUploadFilePath(actor, filePath) {
+      actor.profile_path = filePath
+    },
     querySearchPerson(queryString, cb) {
       clearTimeout(this.debounce)
       this.debounce = setTimeout(() => {
@@ -134,18 +141,26 @@ export default {
       .then((doc) => {
           if (doc.exists) {
             this.$db.collection("movies").doc(this.$parent.id).update({ movieCast: this.$store.state.currentMovieCast })
-            .then(function() {
+            .then(() =>  {
                 console.log("le Film a été mis à jour");
                 console.log("movieCast bien modifié");
+                this.$message({
+                  type: 'info',
+                  message: 'le Film a bien été mis à jour'
+                });
             })
             .catch(function(error) {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
             this.$db.collection("movies").doc(this.$parent.id).set({ movieCast: this.$store.state.currentMovieCast })
-            .then(function() {
+            .then(() => {
                 console.log("le Film a été créé");
                 console.log("movieCast bien enregistré");
+                this.$message({
+                  type: 'info',
+                  message: 'le Film a bien été créé'
+                });
             })
             .catch(function(error) {
                 console.error("Erreur lors de la sauvegarde : ", error);
@@ -160,18 +175,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @import '../../../styles/color.scss';  
+
 section.movie-cast {
-  padding: 4% 4% 6% 4%;
+  padding: 4% 4% 10% 4%;
   position: relative;
 
   .save-btn {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 2.5em;
+    right: 3em;
   }
 
   h1 {
-    font-family: "Bazar";
+    font-family: "Righteous";
     color: #3a2104;
     font-size: 1.5em;
     margin-bottom: 0.9em;
@@ -195,7 +212,7 @@ section.movie-cast {
       position: absolute;
       top: 14px;
       display: block;
-      width: 80%;
+      width: 78.7%;
       height: 2px;
       background-color: rgba(65, 38, 7, 0.09);
       right: 2.4%;
@@ -240,7 +257,7 @@ section.movie-cast {
 
         .picture {
           width: 100%;
-          height: 125px;
+          height: 180px;
           overflow: hidden;
           display: flex;
           justify-content: center;
@@ -249,6 +266,8 @@ section.movie-cast {
 
           img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
 
           .no-picture {
@@ -270,7 +289,7 @@ section.movie-cast {
         .text {
           padding: 0.05em;
           margin-top: 0.7em;
-          color: #000;
+          color: $--color-hcf-black;
           text-align: left;
 
           h1 {

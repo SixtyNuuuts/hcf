@@ -24,10 +24,10 @@ export default {
 <style scoped lang="scss">
 
   section.movie-cast {
-    padding-bottom: 30px;
+    padding: 1em 3em 2em 3em;
 
     h1 {
-      font-family: "Bazar";
+      font-family: "Righteous";
       color: #3a2104;
       font-size: 1.5em;
       margin-bottom: .9em;
@@ -41,26 +41,19 @@ export default {
         position: absolute;
         top: 14px;
         display: block;
-        width: 37%;
+        width: 39%;
         height: 2px;
         background-color: rgba(65, 38, 7, 0.09);
       }
 
       &:before {
-        left: 4%;
+        left: 0;
       }
 
       &:after {
-        right: 4%;
+        right: 0;
       }
 
-    }
-
-    .actor-list {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;      
     }
 
   }

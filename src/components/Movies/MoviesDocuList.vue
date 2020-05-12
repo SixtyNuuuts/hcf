@@ -1,21 +1,23 @@
 <template>
   <section id="moviesdocu">
-    <div v-for="(movie, index) in movies" :key="index" class="moviedocu_wrap">
-      <div class="moviedocu_box">
-        <h3>{{ movie.original_title }}</h3>
-        <div class="moviedocu_image">
-          <a href="#" target="_blank">
-            <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + movie.poster_path">
-            <div v-else class="no-poster">
-              <i class="fa fa-file-image-o" aria-hidden="true"></i>
-            </div>
-          </a>
-        </div>
-        <div class="moviedocu_entry">
-            {{ movie.overview }}
+     <router-link v-for="(movie, index) in movies" :to="'/film/' + movie.id" :key="index" class="moviedocu_wrap"  :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
+      <div>
+        <div class="moviedocu_box">
+          <h3>{{ movie.original_title }}</h3>
+          <div class="moviedocu_image">
+            <a href="#" target="_blank">
+              <img v-if="movie.poster_path" :src="movie.poster_path">
+              <div v-else class="no-poster">
+                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+              </div>
+            </a>
+          </div>
+          <div class="moviedocu_entry">
+              {{ movie.overview }}
+          </div>
         </div>
       </div>
-    </div>
+    </router-link>
   </section>
 </template>
 
@@ -29,75 +31,133 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  @import '../../styles/color.scss';  
+  @import '../../styles/bp.scss';  
+  @import '../../styles/shadow.scss';  
 
   #moviesdocu {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
+    justify-content: center;
+    margin-bottom: 3em;
+    flex-wrap: wrap;
     
     .moviedocu_wrap {
-      flex-basis: 30%;
-      box-shadow: 0 0 13px rgba(63,48,22,0.12);
-      background: #fdf1db;
-      padding: 10px;
-      
-      .moviedocu_box {
-        background: #fdf1db;
-        border: 1px solid #ceb792;
-        padding: 21px 10px 16px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        height: 480px;
+      box-shadow: $--box-shadow-1;
+      background-color: $--color-hcf-black;
+      width: 85%;
+      min-width: 190px;
+      margin: 1em;
+      color: $--color-hcf-light-beige;
+      background-size: cover;
+      background-position: 50%;
+      background-repeat: no-repeat;   
+      position: relative;
+      top:0;
+      transition: .2s ease-out;
 
-        h3 {
-          margin: 0;
-          color: #a51f1e;
-          font-family: "Bazar";
-          font-size: 1.64em;
-          line-height: 1.4;
-          text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
-          text-align: center;
-          letter-spacing: -1px;
-          padding: 0 0 42px;
-          text-transform: uppercase;
+      &:hover {
+        box-shadow: $--box-shadow-3;
+        top: -0.6em;
 
-          &::after {
-            content: '';
-            display: block;
-            height: 1px;
-            width: 40%;
+      }
+
+      >div {
+        background-color: rgba(2, 2, 0, 0.88);
+        padding: .8em;
+        height: 100%;
+        box-sizing: border-box;
+
+        .moviedocu_box {
+          border: 1px solid $--color-hcf-ddark-beige;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 1em;
+          height: 100%;
+          box-sizing: border-box;
+
+          h3 {
+            font-weight: 700;
+            font-size: 1.3em;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+            text-align: center;
+            line-height: 1.1;
+            margin: 0;
+            margin-bottom: 2em;
             position: relative;
-            top: 21px;
-            left: 30%;
-            background-color: #000;
-          }
-
-        }
-
-        .moviedocu_image {
-          width: 70%;
-
-          img {
-            box-shadow: 0 0 10px rgba(27, 20, 7, 0.514);
             width: 100%;
+            display: flex;
+            justify-content: center;
+
+            &::after {
+              content: '';
+              display: block;
+              height: 10px;
+              width: 85%;
+              position: absolute;
+              bottom: -1em;
+              background: url("../../assets/img/sep-3-stars.svg") no-repeat center 0;
+            }
+
           }
+
+          .moviedocu_image {
+            width: 70%;
+            margin-bottom: 3em;
+            position: relative;
+            display: flex;
+            justify-content: center;
+
+            img {
+              width: 100%;
+              box-shadow: $--box-shadow-dark-2;
+            }
+
+            &::after {
+              content: '';
+              display: block;
+              height: 10px;
+              width: 100%;
+              position: absolute;
+              bottom: -2em;
+              background: url("../../assets/img/sep-1-star.svg") no-repeat center 0;
+            }
+
+          }
+
+          .moviedocu_entry {
+            font-size: 0.8em;
+            line-height: 1.3em;
+            max-height: 6em;
+            overflow: auto;
+            font-style: italic;
+            padding: 0 0.5em 0.4em 0.5em;
+          }
+          
         }
 
-        .moviedocu_entry {
-          color: #000;
-          font-family: 'Baskerville';
-          line-height: 1.4;
-          padding: 12px 14px 0;
-        }
-        
       }
 
     }
     
+  }
+
+  @media (min-width: $--bp-sm) { 
+    #moviesdocu {
+      .moviedocu_wrap {
+        width: 20%;
+      }
+    }
+  }
+
+  @media (min-width: $--bp-lg) { 
+    #moviesdocu {
+      .moviedocu_wrap {
+        width: 25%;
+      }
+    }
   }
 
 </style>

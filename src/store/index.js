@@ -36,6 +36,12 @@ export default new Vuex.Store({
     currentMovieCast: [
       { id: null, name: null, character: null, gender: null, profile_path: null, order: null }
     ],
+    currentMovieListByYear: [],
+    currentDocumentedMovieListByYear: [],
+    currentDocumentedMovie: {
+      colLeftContent: [],
+      colRightContent: [],
+    }
   },
   mutations: {
     SET_CURRENT_MOVIE (state, payload) {
@@ -46,6 +52,43 @@ export default new Vuex.Store({
     },
     SET_CURRENT_MOVIE_CAST (state, payload) {
       state.currentMovieCast = payload;
+    },
+    SET_CURRENT_MOVIE_DOCUMENTED (state, payload) {
+      state.currentDocumentedMovie = payload;
+    },
+    ADD_MOVIE_LIST_PAGE_TO_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY (state, payload) {
+      state.currentMovieListByYear = [...state.currentMovieListByYear, ...payload]
+    },
+    RESET_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY (state) {
+      state.currentMovieListByYear = []
+    },
+    ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state, payload) {
+      state.currentDocumentedMovieListByYear.push(payload);
+    },
+    RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state) {
+      state.currentDocumentedMovieListByYear = []
+    },
+    RESET_CURRENT_MOVIE_DOCUMENTED (state) {
+      state.currentDocumentedMovie = {
+        colLeftContent: [],
+        colRightContent: [],
+      }
+    },
+    ADD_CONTENT_TO_DOCUMENTED_MOVIE (state, payload) {
+      if (payload.col === 'left') {
+        state.currentDocumentedMovie.colLeftContent.push(payload.content)
+      }
+      if (payload.col === 'right') {
+        state.currentDocumentedMovie.colRightContent.push(payload.content)
+      }
+    },
+    REMOVE_CONTENT_FROM_DOCUMENTED_MOVIE (state, payload) {
+      if (payload.col === 'left') {
+        state.currentDocumentedMovie.colLeftContent.splice(state.currentDocumentedMovie.colLeftContent.indexOf(payload.content), 1)
+      }
+      if (payload.col === 'right') {
+        state.currentDocumentedMovie.colRightContent.splice(state.currentDocumentedMovie.colRightContent.indexOf(payload.content), 1)
+      }
     },
     ADD_PERSON_TO_MOVIE_CREW (state, payload) {
       state.currentMovieCrew.push(payload)
@@ -126,6 +169,43 @@ export default new Vuex.Store({
       }).catch(function(error) {
           console.log("Error firebase:", error);
       });
+    },
+    getMovieDocumented ({commit}, payload) {
+      commit('RESET_CURRENT_MOVIE_DOCUMENTED');
+      db.collection("movies").doc(payload).get()
+      .then((doc) => {
+          if (doc.exists && doc.data().movieDocumented) {
+            console.log("MOVIE_DOCUMENTED");
+            commit('SET_CURRENT_MOVIE_DOCUMENTED', doc.data().movieDocumented);
+          } else {
+            console.log("MOVIE NOT DOCUMENTED");
+          }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
+    },
+    getDocumentedMoviesByYear ({commit}, payload) {
+      commit('RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR');
+      db.collection("movies").where("documented", "==", true).where("year", "==", payload)
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          console.log(payload, doc.data().movie)
+          commit('ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR', doc.data().movie);
+        });
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
+    },
+    getMoviesByYear ({commit}, payload) {
+      tmdbApi.getMoviesFrByYear(payload, 1).then(res => {
+        commit('RESET_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY');
+        for (let page = 1; page <= res.data.total_pages; page++) {
+          tmdbApi.getMoviesFrByYear(payload, page).then(res => {
+            commit('ADD_MOVIE_LIST_PAGE_TO_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY', res.data.results);
+          })
+        }
+      })
     },
   },
   // getters: {

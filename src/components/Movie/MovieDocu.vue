@@ -2,22 +2,57 @@
   <section id="moviedocu">
     <div class="moviedocu_border">
       <div class="moviedocu_container">
-        <h1>informations complémentaires sur le film</h1>
+        <h1>EN SAVOIR +</h1>
         <div class="moviedocu_content">
           <div class="col-left">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem doloremque facilis at, possimus numquam assumenda dolores pariatur officiis voluptates quis fugit eum labore quae natus cupiditate unde, quas suscipit magni fuga placeat necessitatibus perferendis? Quidem error numquam excepturi eos, corporis placeat sint dolorem, eum vitae cumque, ducimus assumenda. Accusantium, in?</p>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio, quisquam incidunt voluptates magni quos voluptatibus velit excepturi enim placeat totam officiis delectus temporibus cupiditate laudantium porro debitis nulla! Quae placeat rem consectetur quos! Corporis, fugiat. Corrupti, at sed. Corrupti laudantium autem ab quo impedit beatae, rerum et inventore laborum. Similique placeat, harum praesentium optio itaque, nam non adipisci enim eius officiis cupiditate suscipit modi vel sed eaque? Laborum tempore similique excepturi earum vitae cupiditate assumenda nostrum, magni, quaerat, exercitationem quisquam! Porro similique natus, voluptatem, corporis delectus neque magnam quae quo, provident facilis dolor ut? Iste at temporibus eligendi tempore quaerat!</p>
-            <figure>
-              <div class="pict">
-                <img src="https://picsum.photos/400" alt="idem legend">
+            <div v-for="(item, index) in colLeftMovieDocu" :key="index">
+              <div class="content" v-if="item.type === 'text'">
+                <p v-html="item.content"></p>
               </div>
-              <figcaption>An elephant at sunset</figcaption>
-            </figure>
+              <div class="content" v-if="item.type === 'picture'">
+                <figure class="pict">
+                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                    <img :src="item.path" :alt="item.caption?item.caption:'Image'">
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+              </div>
+              <div class="content" v-if="item.type === 'video'">
+                <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+              </div>
+            </div> 
           </div>
           <div class="col-right">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic ea molestias nam ad quia aliquam officia ipsa consequatur aspernatur dolores.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit nemo tempora facilis nulla totam eveniet dolorem impedit? Rem molestiae reiciendis, tempora quis vitae quibusdam, eligendi obcaecati blanditiis a exercitationem perferendis et aliquam consequuntur delectus incidunt amet, possimus cupiditate. Recusandae, vero inventore? Repudiandae libero at temporibus vel nulla ut ipsum culpa magnam quam quia tenetur mollitia molestias iusto iure dolorum harum doloribus, deleniti totam obcaecati. Quae necessitatibus rem nulla beatae dicta voluptatem, illum doloremque saepe consequuntur vel aliquid asperiores incidunt sunt.</p>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio, quisquam incidunt voluptates magni quos voluptatibus velit excepturi enim placeat totam officiis delectus temporibus cupiditate laudantium porro debitis nulla! Quae placeat rem consectetur quos! Corporis, fugiat. Corrupti, at sed. Corrupti laudantium autem ab quo impedit beatae, rerum et inventore laborum. Similique placeat, harum praesentium optio itaque, nam non adipisci enim eius officiis cupiditate suscipit modi vel sed eaque? Laborum tempore similique excepturi earum vitae cupiditate assumenda nostrum, magni, quaerat, exercitationem quisquam! Porro similique natus, voluptatem, corporis delectus neque magnam quae quo, provident facilis dolor ut? Iste at temporibus eligendi tempore quaerat!</p>
+            <div v-for="(item, index) in colRightMovieDocu" :key="index">
+              <div class="content" v-if="item.type === 'text'">
+                <p v-html="item.content"></p>
+              </div>
+              <div class="content" v-if="item.type === 'picture'">
+                <figure class="pict">
+                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                    <img :src="item.path" :alt="item.caption?item.caption:'Image'">
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+              </div>
+              <div class="content" v-if="item.type === 'video'">
+                <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+              </div>
+            </div> 
           </div>
         </div>
       </div>
@@ -26,83 +61,159 @@
 </template>
 
 <script>
+import f from "@/services/func";
 
 export default {
   name: "MovieDocu.",
-  // props: {
-  //   movies: Array,
-  //   year: Number
-  // },
+  props: {
+    movieDocumented: Object,
+  },
+  computed: {
+    colLeftMovieDocu() {
+      return f.sortedByOrder(this.movieDocumented.colLeftContent)
+    },
+    colRightMovieDocu() {
+      return f.sortedByOrder(this.movieDocumented.colRightContent)
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
+  @import '../../styles/bp.scss';  
+  @import '../../styles/color.scss';  
+  @import '../../styles/shadow.scss';  
 
-#moviedocu {
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.3), 0 10px 12px rgba(0, 0, 0, 0.22);
-  position: relative;
-  width: 102%;
-  left: -0.9%;
-
-  .moviedocu_border {
-    background: url('../../assets/img/content-tail-left.png') repeat-y 0 0, url('../../assets/img/content-tail-right.png') repeat-y right 0;
-    padding: 0 3px;
+  #moviedocu {
+    box-shadow: $--box-shadow-dark-5;
     position: relative;
-    width: 101%;
-    left: -1%;
+    width: 100%;
 
-    .moviedocu_container {
-      background: url('../../assets/img/main-pattern.jpg') repeat scroll left top;
-      padding: 2%;
-      padding-bottom: 4%;
+    .moviedocu_border {
+      position: relative;
+      width: 100%;
 
-      h1 {
-        font-family: "Bazar";
-        color: #2b1d07;
-        font-size: 1.5em;
-        margin-bottom: .9em;
-        text-transform: uppercase;
-        text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
-      }
+      .moviedocu_container {
+        background: url('../../assets/img/main-pattern.jpg') repeat scroll left top;
+        padding: 2%;
+        padding-bottom: 4%;
 
-      .moviedocu_content {
-        display: flex;
-        justify-content: center;
+        h1 {
+          font-family: "Righteous";
+          color: $--color-hcf-ddark-brown;
+          font-size: 1.5em;
+          margin: 0.7em;
+          margin-bottom: .9em;
+          text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+          position: relative;
+          text-transform: uppercase;
 
-        div {
-          flex-basis: 47%;
-          margin: 0 2.5%;
-      
-          p {
-            text-align: justify;
+          &:before, &:after {
+            content: '';
+            content: '';
+            position: absolute;
+            top: 0.1em;
+            display: block;
+            width: 40%;
+            height: 22px;
+            background: url("../../assets/img/box-border-patern.png") repeat 0 0;
           }
 
-          figure {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            border: .8em solid white;
-            box-sizing: border-box;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-            background-color: white;
-            
-            .pict {
-              margin: 0;
-              max-height: 250px;
-              overflow: hidden;
+          &:before {
+            left: 0;
+          }
 
-              img {
-                width: 100%;
-              }
+          &:after {
+            right: 0;
+          }
+
+        }
+
+        .moviedocu_content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          div {
+            flex-basis: 47%;
+            margin: 0 1%;
+
+            &.col-left {
+              margin-right: 2%;
             }
 
-            figcaption {
-              padding: 1em;
-              padding-bottom: 0.4em;
-              color: #6d400b;
+            &.col-right {
+              margin-left: 2%;
+            }
+
+            .content {
+              margin: 2em 1%;
+            }
+
+            p {
+              text-align: justify;
+              margin: 1em 0;
+              
+            }
+
+            figure {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              margin: 0;
+              box-shadow: $--box-shadow-dark-2;
+              box-sizing: border-box;
+
+              &.pict {
+                border: .8em solid white;
+                background-color: white;
+                >div {
+                  margin: 0;
+                  overflow: hidden;
+                  width: 100%;
+                  img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                  }
+                }
+                figcaption {
+                  padding: .3em;
+                  padding-top: 1em;
+                  color: $--color-hcf-black;
+                  font-size: 0.95em;
+                  font-style: italic;
+                  line-height: 1.1;
+                }
+
+              }
+              
+              &.video {
+                border-bottom: .8em solid $--color-hcf-black;
+                background-color: $--color-hcf-black;
+                >div {
+                  margin: 0;
+                  width: 100%;
+                  .ribbon-hole {
+                    margin: 0;
+                    background: url("../../assets/img/hole.svg") repeat-x 0 bottom, $--color-hcf-black;
+                  }
+                  iframe {
+                    width: 99%;
+                  }
+                }
+                figcaption {
+                  padding: .3em;
+                  padding-top: .6em;
+                  color: $--color-hcf-light-beige;
+                  font-size: 0.95em;
+                  font-style: italic;
+                  line-height: 1.1;
+                }
+              }
+
             }
 
           }
@@ -115,6 +226,37 @@ export default {
 
   }
 
-}
+  @media (min-width: $--bp-md) { 
+
+    #moviedocu {
+
+      .moviedocu_border {
+
+        .moviedocu_container {
+
+          .moviedocu_content {
+            flex-direction: row;
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: $--bp-lg) { 
+    
+    #moviedocu {
+      width: 102%;
+      left: -0.9%;
+
+      .moviedocu_border {
+        background: url('../../assets/img/content-tail-left.png') repeat-y 0 0, url('../../assets/img/content-tail-right.png') repeat-y right 0;
+        padding: 0 3px;
+        width: 101%;
+        left: -0.97%;
+      }
+
+    }
+
+  }
 
 </style>
