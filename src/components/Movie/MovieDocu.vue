@@ -21,11 +21,21 @@
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
-                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
+                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
+                    </video>
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
+                <!-- <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure> -->
               </div>
             </div> 
           </div>
@@ -46,11 +56,21 @@
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
-                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
+                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
+                    </video>
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
+                <!-- <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure> -->
               </div>
             </div> 
           </div>
@@ -88,6 +108,7 @@ export default {
     box-shadow: $--box-shadow-dark-5;
     position: relative;
     width: 100%;
+    z-index: 100;
 
     .moviedocu_border {
       position: relative;

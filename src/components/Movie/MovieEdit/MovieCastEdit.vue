@@ -137,10 +137,11 @@ export default {
         });
     },
     saveMovieCastData() {
+      const movieYear = parseInt(this.$store.state.currentMovie.release_date.split('-')[0])
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {
-            this.$db.collection("movies").doc(this.$parent.id).update({ movieCast: this.$store.state.currentMovieCast })
+            this.$db.collection("movies").doc(this.$parent.id).update({ movieCast: this.$store.state.currentMovieCast, year: movieYear })
             .then(() =>  {
                 console.log("le Film a été mis à jour");
                 console.log("movieCast bien modifié");
@@ -153,7 +154,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("movies").doc(this.$parent.id).set({ movieCast: this.$store.state.currentMovieCast })
+            this.$db.collection("movies").doc(this.$parent.id).set({ movieCast: this.$store.state.currentMovieCast, year: movieYear })
             .then(() => {
                 console.log("le Film a été créé");
                 console.log("movieCast bien enregistré");

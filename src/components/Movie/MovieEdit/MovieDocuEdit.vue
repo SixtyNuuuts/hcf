@@ -12,15 +12,22 @@
             </el-button-group>
             <div v-for="(item, index) in colLeftMovieDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 5}"
-                  placeholder="Entrez quelque chose"
-                  v-model="item.content">
-                </el-input>
+              <el-button
+                type="primary"
+                icon="el-icon-delete"
+                @click="deleteContentCL(item)"
+                class="btn-delete-content"
+              ></el-button>
+                <wysiwyg v-model="item.content" />
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
               <div class="content" v-if="item.type === 'picture'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCL(item)"
+                  class="btn-delete-content"
+                ></el-button>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
                 <figure class="pict">
                   <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
@@ -34,17 +41,31 @@
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
               <div class="content" v-if="item.type === 'video'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCL(item)"
+                  class="btn-delete-content"
+                ></el-button>
+                <h3>Vidéo</h3>
+                <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
+                <hr>
+                <h3>Image de la vidéo</h3>
+                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/>
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
-                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
+                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
+                    </video>
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
-                <el-input placeholder="Url" v-model="item.path"></el-input>
+                <el-input placeholder="Url Video" v-model="item.path"></el-input>
+                <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
-                <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input>
+                <!-- <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input> -->
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
             </div>
@@ -56,26 +77,61 @@
               <el-button type="success" icon="el-icon-video-play"  @click="addVideoCR"></el-button>
             </el-button-group>
             <div v-for="(item, index) in colRightMovieDocu" :key="index">
-              <div v-if="item.type === 'text'">
-                <h1>Texte</h1>
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 4}"
-                  placeholder="Entrez quelque chose"
-                  v-model="item.content">
-                </el-input>
+              <div class="content" v-if="item.type === 'text'">
+              <el-button
+                type="primary"
+                icon="el-icon-delete"
+                @click="deleteContentCR(item)"
+                class="btn-delete-content"
+              ></el-button>
+                <wysiwyg v-model="item.content" />
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
-              <div v-if="item.type === 'picture'">
-                <h1>Photo</h1>
+              <div class="content" v-if="item.type === 'picture'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCR(item)"
+                  class="btn-delete-content"
+                ></el-button>
+                <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
+                <figure class="pict">
+                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                    <img :src="item.path" :alt="item.caption?item.caption:'Image'">
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
                 <el-input placeholder="Url" v-model="item.path"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
+                <el-input placeholder="Hauteur de l'image" v-model="item.height"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
-              <div v-if="item.type === 'video'">
-                <h1>Vidéo</h1>
-                <el-input placeholder="Url" v-model="item.path"></el-input>
+              <div class="content" v-if="item.type === 'video'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCR(item)"
+                  class="btn-delete-content"
+                ></el-button>
+                <h3>Vidéo</h3>
+                <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
+                <hr>
+                <h3>Image de la vidéo</h3>
+                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/>
+                <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
+                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
+                    </video>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+                <el-input placeholder="Url Video" v-model="item.path"></el-input>
+                <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
+                <!-- <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input> -->
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
             </div>
@@ -91,6 +147,9 @@
     >Enregistrer les modifications
     </el-button>
   </section>
+  <!-- <div class="ribbon-hole"></div>
+<iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="ribbon-hole"></div> -->
 </template>
 
 <script>
@@ -109,6 +168,9 @@ export default {
     setUploadFilePath(item, filePath) {
       item.path = filePath
     },
+    setUploadPosterPath(item, posterPath) {
+      item.posterpath = posterPath
+    },
     addTextCL() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'text', content:'', order: this.colLeftMovieDocu.length} })
     },
@@ -116,7 +178,7 @@ export default {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'picture', path:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
     },
     addVideoCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'video', path:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
     },
     addTextCR() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'text', content:'', order: this.colRightMovieDocu.length} })
@@ -125,13 +187,44 @@ export default {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'picture', path:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
     },
     addVideoCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'video', path:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
+    },
+    deleteContentCL(content) {
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer cet élément ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+        .then(() => {
+          this.$store.commit('REMOVE_CONTENT_FROM_DOCUMENTED_MOVIE', { col: 'left', content })
+        })
+        .catch(() => {
+        });
+    },
+    deleteContentCR(content) {
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer cet élément ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+        .then(() => {
+          this.$store.commit('REMOVE_CONTENT_FROM_DOCUMENTED_MOVIE', { col: 'right', content })
+        })
+        .catch(() => {
+        });
     },
     saveMovieDocumented() {
+      const movieYear = parseInt(this.$store.state.currentMovie.release_date.split('-')[0])
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {
-            this.$db.collection("movies").doc(this.$parent.id).update({ movieDocumented: this.$store.state.currentDocumentedMovie, documented: true })
+            this.$db.collection("movies").doc(this.$parent.id).update({ movieDocumented: this.$store.state.currentDocumentedMovie, documented: true, year: movieYear })
             .then(() => {
                 console.log("movieDocumented ok");
                 this.$message({
@@ -143,7 +236,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("movies").doc(this.$parent.id).set({ movieDocumented: this.$store.state.currentDocumentedMovie, documented: true })
+            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieDocumented: this.$store.state.currentDocumentedMovie, documented: true, year: movieYear })
             .then(() => {
                 console.log("movieDocumented ok");
                 this.$message({
@@ -180,6 +273,14 @@ export default {
     box-shadow: $--box-shadow-dark-5;
     position: relative;
     width: 100%;
+
+    .btn-delete-content {
+      position: absolute;
+      right:0;
+      top: 0;
+      padding: 0.7em;
+      z-index: 1;
+    }
 
     .save-btn {
       position: absolute;
@@ -252,9 +353,16 @@ export default {
               border: 1px dotted $--color-hcf-dark-grey;
               border-radius: 5px;
               margin: 2em 1%;
-              
+              position: relative;
+
             }
-        
+
+            h3 {
+              font-size: 1.3em;
+              margin: 0;
+              margin-top: 1em;
+            }
+
             p {
               text-align: justify;
               margin: 1.5em 0;

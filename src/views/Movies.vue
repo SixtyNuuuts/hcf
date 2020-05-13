@@ -6,7 +6,7 @@
           LES FILMS DOCUMENTÉS DE
           <el-select v-model="selectedYear" filterable @change="handleYearSelected" placeholder="Sélectionnez une année">
             <el-option
-              v-for="(item, index) in 10"
+              v-for="(item, index) in 60"
               :key="index"
               :label="index+startYear"
               :value="index+startYear"

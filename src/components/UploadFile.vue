@@ -1,6 +1,6 @@
 <template>
   <div>
-      <input type="file" @change="onUpload" accept="image/*"><progress id="progress" :value="uploadValue" max="100" ></progress>
+      <input type="file" @change="onUpload"><progress id="progress" :value="uploadValue" max="100" ></progress>
   </div>
 </template>
 

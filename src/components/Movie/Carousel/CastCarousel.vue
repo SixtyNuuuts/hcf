@@ -1,7 +1,7 @@
 <template>
     <carousel :navigationEnabled="true" :perPage="1" :perPageCustom="[[440,2], [600,3], [800, 4], [992, 5]]" :paginationEnabled="false" navigationNextLabel="" navigationPrevLabel="" :navigationClickTargetSize="15">
       <slide v-for="actor in movieCast" :key="actor.id">
-        <a href="" class="card">
+        <a :href="'https://www.themoviedb.org/person/'+actor.id+'?language=fr-FR'" class="card">
           <div class="picture">
             <img v-if="actor.profile_path" :src="actor.profile_path">
             <div v-else class="no-picture">

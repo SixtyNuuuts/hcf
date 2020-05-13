@@ -36,6 +36,7 @@ export default new Vuex.Store({
     currentMovieCast: [
       { id: null, name: null, character: null, gender: null, profile_path: null, order: null }
     ],
+    currentMovieImages: [],
     currentMovieListByYear: [],
     currentDocumentedMovieListByYear: [],
     currentDocumentedMovie: {
@@ -46,6 +47,9 @@ export default new Vuex.Store({
   mutations: {
     SET_CURRENT_MOVIE (state, payload) {
       state.currentMovie = payload;
+    },
+    SET_CURRENT_MOVIE_IMAGES (state, payload) {
+      state.currentMovieImages = payload;
     },
     SET_CURRENT_MOVIE_CREW (state, payload) {
       state.currentMovieCrew = payload;
@@ -59,6 +63,15 @@ export default new Vuex.Store({
     ADD_MOVIE_LIST_PAGE_TO_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY (state, payload) {
       state.currentMovieListByYear = [...state.currentMovieListByYear, ...payload]
     },
+    ADD_MOVIE_IMAGES_LIST_TO_CURRENT_MOVIE_IMAGES (state, payload) {
+      state.currentMovieImages = [...state.currentMovieImages, ...payload]
+    },
+    ADD_IMAGES_TO_MOVIE_IMAGES (state, payload) {
+      state.currentMovieImages.push(payload)
+    },
+    REMOVE_IMAGES_FROM_MOVIE_IMAGES (state, payload) {
+      state.currentMovieImages.splice(state.currentMovieImages.indexOf(payload), 1)
+    },
     RESET_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY (state) {
       state.currentMovieListByYear = []
     },
@@ -67,6 +80,9 @@ export default new Vuex.Store({
     },
     RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state) {
       state.currentDocumentedMovieListByYear = []
+    },
+    RESET_CURRENT_MOVIE_IMAGES (state) {
+      state.currentMovieImages = []
     },
     RESET_CURRENT_MOVIE_DOCUMENTED (state) {
       state.currentDocumentedMovie = {
@@ -164,6 +180,38 @@ export default new Vuex.Store({
                 f.profilePath(person)
               })
               commit('SET_CURRENT_MOVIE_CAST', cast);
+            }).catch(function(error) {console.log("Error TMDB:", error)});      
+          }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
+    },
+    getMovieImages ({commit}, payload) {
+      commit('RESET_CURRENT_MOVIE_IMAGES');
+      db.collection("movies").doc(payload).get()
+      .then((doc) => {
+          if (doc.exists && doc.data().movieImages) {
+            console.log("MOVIE_IMAGES : FIREBASE");
+            commit('SET_CURRENT_MOVIE_IMAGES', doc.data().movieImages);
+          } else {
+            console.log("MOVIE_IMAGES : TMDB");
+            tmdbApi.getMovieImages(payload).then(res => {
+              if(res.data.backdrops) {
+                let backdrops = res.data.backdrops
+                backdrops.forEach(movie => { 
+                  f.filePath(movie)
+                })
+                backdrops = f.formatImgForGallery(backdrops)
+                commit('ADD_MOVIE_IMAGES_LIST_TO_CURRENT_MOVIE_IMAGES', backdrops);
+              }
+              if(res.data.posters) {
+                let posters = res.data.posters
+                posters.forEach(movie => { 
+                  f.filePath(movie)
+                })
+                posters = f.formatImgForGallery(posters)
+                commit('ADD_MOVIE_IMAGES_LIST_TO_CURRENT_MOVIE_IMAGES', posters);
+              }
             }).catch(function(error) {console.log("Error TMDB:", error)});      
           }
       }).catch(function(error) {

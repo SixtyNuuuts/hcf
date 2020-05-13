@@ -159,12 +159,24 @@ export default {
         movie.poster_path = posterPath;
     },
 
+    filePath(movie) {
+      let filePath = null;
+      if (movie.file_path) {
+        filePath = "https://image.tmdb.org/t/p/original" + movie.file_path;
+      }
+      movie.file_path = filePath;
+    },
+
     profilePath(person) {
         let profilePath = null;
         if (person.profile_path) {
             profilePath = "https://image.tmdb.org/t/p/w138_and_h175_face" + person.profile_path;
         }
         person.profile_path = profilePath;
+    },
+
+    formatImgForGallery(arrayOfImg){
+      return arrayOfImg.map(e => e = { src: e.file_path, msrc: e.file_path, alt: '', title: '', w: e.width, h: e.height })
     },
 
     sortedByOrder(array) {
@@ -180,6 +192,5 @@ export default {
       })
       return array
     },
-
 
 }

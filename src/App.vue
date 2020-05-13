@@ -37,13 +37,9 @@
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Source Sans Pro', sans-serif;
-    text-align: center;
+    min-width: 330px;
     color: $--color-hcf-black;
     background-color: $--color-hcf-red;
-    font-size: 100%;
-    line-height: 1;
-    min-width: 330px;
     background: linear-gradient(0deg, rgba(0,0,0,.9) 5%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 70%, rgba(0,0,0,.9) 100%), url("assets/img/red-curtain-pattern.svg");
     background-size: 700px;
     min-height: 100vh;
@@ -152,8 +148,9 @@
     .content {
       line-height: 1.2;
 
-      p {
-        
+      p, .editr {
+        text-align: justify;
+
         h1 {
           color: #3a2104;
           font-size: 1.7em;
@@ -164,16 +161,16 @@
           padding: 0.4em 0;
         }
 
-        strong, q {
+        b {
           color: #3a2104;
 
         }
 
-        em  {
+        i  {
           color: #8e6319;
         }
 
-        q {
+        h2 {
           display: block;
           text-align: right;
           color: #946c26;
@@ -193,6 +190,43 @@
 
     }
 
+    .my-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      background-color: rgb(15, 15, 15);     
+      box-shadow: inset 0px 0px 20px 1px rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      overflow: hidden;
+      padding: 1% 1%;
+      figure {
+        width: 10%;
+        margin: 1%;
+        position: relative;
+        top:0;
+        transition: .3s ease;
+        display: flex;
+        align-items: center;
+        &:hover {
+          top:-5px;
+        }
+        a {
+          img {
+            width: 100%;
+            object-fit: contain;
+            box-shadow: 0 3px 6px rgba(15, 12, 10, 1), 0 3px 6px rgba(15, 12, 10, 1);
+          }
+        }
+      }
+    }
+
+    // @media (min-width: $--bp-md) { 
+    //   .my-gallery {
+    //     figure {
+    //       width: 20%;
+    //     }
+    //   }  
+    // }
+
     /////////////////////////////////////////
 
     #app {
@@ -200,6 +234,10 @@
       margin: 0 auto;
       background-color: $--color-hcf-beige;
       box-shadow: $--box-shadow-dark-6;
+      font-family: 'Source Sans Pro', sans-serif;
+      text-align: center;
+      font-size: 100%;
+      line-height: 1;
 
       .top-tail {
         background-color: #a51f1e;

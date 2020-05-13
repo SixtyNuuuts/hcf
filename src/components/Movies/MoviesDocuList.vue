@@ -115,6 +115,27 @@ export default {
               box-shadow: $--box-shadow-dark-2;
             }
 
+            a {
+              width: 100%;
+              .no-poster {
+                background-color: lightgrey;
+                width: 100%;
+                height: 185px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.66),
+                  0 6px 6px rgba(0, 0, 0, 0.81);
+
+                i {
+                  font-size: 8rem;
+                  color: #b5b5b5;
+                }
+              }
+
+            }
+
+
             &::after {
               content: '';
               display: block;

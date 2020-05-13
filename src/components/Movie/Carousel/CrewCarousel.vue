@@ -2,14 +2,14 @@
     <carousel :navigationEnabled="true" :perPage="1" :perPageCustom="[[576, 2], [768, 3], [992, 4], [1200, 4]]" :paginationEnabled="false" navigationNextLabel="" navigationPrevLabel="" :navigationClickTargetSize="15">
       <slide v-for="person in movieCrew" :key="person.id" class="person">
         <div>
-          <a href="" class="picture">
+          <a :href="'https://www.themoviedb.org/person/'+person.id+'?language=fr-FR'" class="picture">
             <img v-if="person.profile_path" :src="person.profile_path">
             <div v-else class="no-picture">
               <img v-if="person.gender == 1" src="../../../assets/img/p-female.svg" />
               <img v-else src="../../../assets/img/p-male.svg" />
             </div>
           </a>
-          <h4 class="name"><a href="">{{ person.name }}</a></h4>
+          <h4 class="name"><a :href="'https://www.themoviedb.org/person/'+person.id+'?language=fr-FR'">{{ person.name }}</a></h4>
           <ul class="jobs">
             <li v-for="job in person.jobs" :key="job.name">{{ job.name }}</li>
           </ul>

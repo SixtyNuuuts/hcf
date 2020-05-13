@@ -256,10 +256,11 @@ export default {
       });
     },
     saveMovieAndMovieCrewData() {
+      const movieYear = parseInt(this.$store.state.currentMovie.release_date.split('-')[0])
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {
-            this.$db.collection("movies").doc(this.$parent.id).update({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew })
+            this.$db.collection("movies").doc(this.$parent.id).update({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, year: movieYear })
             .then(() => {
                 console.log("le Film a été mis à jour");
                 console.log("movie et movieCrew bien modifié");
@@ -272,7 +273,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew })
+            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, year: movieYear })
             .then(() => {
                 console.log("le Film a été créé");
                 console.log("movie et movieCrew bien enregistré");

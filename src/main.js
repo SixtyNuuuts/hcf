@@ -10,6 +10,11 @@ import locale from 'element-ui/lib/locale/lang/fr'
 import './styles/my-style-element-ui.scss'
 import db from './firebase'
 import VueCarousel from 'vue-carousel';
+import VuePreview from 'vue-preview'
+import wysiwyg from "vue-wysiwyg";
+import 'vue-wysiwyg/dist/vueWysiwyg.css'
+
+Vue.use(wysiwyg, {hideModules: { "code": true, "orderedList": true, "unorderedList": true,  "image": true, "table": true, "separator": true}});
 
 Vue.config.productionTip = false
 
@@ -22,6 +27,7 @@ Vue.use(ElementUI, { locale })
 Vue.prototype.$db = db
 
 Vue.use(VueCarousel);
+Vue.use(VuePreview)
 
 new Vue({
   router,

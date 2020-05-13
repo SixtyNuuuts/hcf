@@ -19,7 +19,8 @@ export default {
     background-color: $--color-hcf-black;
     color: #e8cea2;
     font-size: 0.9em;
-
+    text-align: center;
+    
     span {
       font-style: italic;
     }
