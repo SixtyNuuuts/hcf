@@ -7,6 +7,7 @@
           <div v-else class="no-poster">
             <i class="el-icon-picture"></i>
           </div>
+          <UploadFile @uploadFilePath="setUploadPosterPath(movie, $event)"/>
           <el-input type="text" name="poster_path" v-model="movie.poster_path"></el-input>
         </div>
         <div class="form-details-edit">
@@ -166,6 +167,9 @@ export default {
     };
   },
   methods: {
+    setUploadPosterPath(movie, posterPath) {
+      movie.poster_path = posterPath
+    },
     setUploadFilePath(person, filePath) {
       person.profile_path = filePath
     },
