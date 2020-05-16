@@ -47,25 +47,23 @@
                   @click="deleteContentCL(item)"
                   class="btn-delete-content"
                 ></el-button>
-                <h3>Vidéo</h3>
+                <!-- <h3>Vidéo</h3>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
                 <hr>
                 <h3>Image de la vidéo</h3>
-                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/>
+                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/> -->
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
-                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
-                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
-                    </video>
+                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
                 <el-input placeholder="Url Video" v-model="item.path"></el-input>
-                <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input>
+                <!-- <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input> -->
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
-                <!-- <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input> -->
+                <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
             </div>
@@ -113,25 +111,23 @@
                   @click="deleteContentCR(item)"
                   class="btn-delete-content"
                 ></el-button>
-                <h3>Vidéo</h3>
+                <!-- <h3>Vidéo</h3>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
                 <hr>
                 <h3>Image de la vidéo</h3>
-                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/>
+                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/> -->
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
-                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
-                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
-                    </video>
+                    <iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
                 <el-input placeholder="Url Video" v-model="item.path"></el-input>
-                <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input>
+                <!-- <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input> -->
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
-                <!-- <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input> -->
+                <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
             </div>
@@ -147,9 +143,6 @@
     >Enregistrer les modifications
     </el-button>
   </section>
-  <!-- <div class="ribbon-hole"></div>
-<iframe :style=" { minHeight: item.height+'px', height: item.height+'px' }" :src="item.path" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<div class="ribbon-hole"></div> -->
 </template>
 
 <script>

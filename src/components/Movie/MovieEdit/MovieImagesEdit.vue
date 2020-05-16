@@ -18,7 +18,7 @@
       <img v-if="img.src" :src="img.src" class="image">
       <UploadFile @uploadFilePath="setUploadFilePath(img, $event)"/>
       <el-input placeholder="Url" v-model="img.src"></el-input>
-      <el-input placeholder="Url minia" v-model="img.msrc"></el-input>
+      <!-- <el-input placeholder="Url minia" v-model="img.msrc"></el-input> -->
       <el-input placeholder="Largeur" v-model="img.w"></el-input>
       <el-input placeholder="Hauteur" v-model="img.h"></el-input>
     </div>

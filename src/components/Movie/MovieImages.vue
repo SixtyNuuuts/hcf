@@ -15,6 +15,13 @@ export default {
   name: "MovieImages",
   props: {
     movieImages: Array
+  },
+  mounted() {
+    this.movieImages.forEach(img => {
+      if(!img.msrc) {
+        img.msrc = img.src
+      }
+    })
   }
 };
 </script>
