@@ -6,18 +6,20 @@
         <div class="moviedocu_content">
           <div class="col-left">
             <el-button-group>
-              <el-button type="success" icon="el-icon-tickets" @click="addTextCL"></el-button>
-              <el-button type="success" icon="el-icon-picture-outline" @click="addPictureCL"></el-button>
-              <el-button type="success" icon="el-icon-video-play"  @click="addVideoCL"></el-button>
+              <el-button type="success" icon="el-icon-tickets" @click="addTextCL">Texte</el-button>
+              <el-button type="success" icon="el-icon-picture-outline" @click="addPictureCL">Image</el-button>
+              <el-button type="success" icon="el-icon-video-play"  @click="addVideoCL">Vidéo</el-button>
+              <el-button type="success" icon="el-icon-video-play"  @click="addYoutubeCL">Youtube</el-button>
+              <el-button type="success" icon="el-icon-video-play"  @click="addAudioCL">Audio</el-button>
             </el-button-group>
             <div v-for="(item, index) in colLeftMovieDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
-              <el-button
-                type="primary"
-                icon="el-icon-delete"
-                @click="deleteContentCL(item)"
-                class="btn-delete-content"
-              ></el-button>
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCL(item)"
+                  class="btn-delete-content"
+                ></el-button>
                 <wysiwyg v-model="item.content" />
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
@@ -47,11 +49,34 @@
                   @click="deleteContentCL(item)"
                   class="btn-delete-content"
                 ></el-button>
-                <!-- <h3>Vidéo</h3>
+                <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
+                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
+                    </video>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+                <h3>Vidéo</h3>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
                 <hr>
                 <h3>Image de la vidéo</h3>
-                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/> -->
+                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/>
+                <el-input placeholder="Url Video" v-model="item.path"></el-input>
+                <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input>
+                <el-input placeholder="Légende" v-model="item.caption"></el-input>
+                <!-- <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input> -->
+                <el-input placeholder="Position" v-model="item.order"></el-input>
+              </div>
+              <div class="content" v-if="item.type === 'youtube'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCL(item)"
+                  class="btn-delete-content"
+                ></el-button>
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
@@ -60,19 +85,40 @@
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
-                <el-input placeholder="Url Video" v-model="item.path"></el-input>
-                <!-- <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input> -->
+                <el-input placeholder="Url Youtube" v-model="item.path"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
                 <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input>
+                <el-input placeholder="Position" v-model="item.order"></el-input>
+              </div>
+              <div class="content" v-if="item.type === 'audio'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCL(item)"
+                  class="btn-delete-content"
+                ></el-button>
+                <figure class="audio">
+                    <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                    <audio
+                        controls
+                        :src="item.path">
+                        Votre navigateur ne supporte pas ce fichier audio.
+                    </audio>
+                </figure>
+                <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
+                <el-input placeholder="Url Audio" v-model="item.path"></el-input>
+                <el-input placeholder="Légende" v-model="item.caption"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
             </div>
           </div>
           <div class="col-right">
             <el-button-group>
-              <el-button type="success" icon="el-icon-tickets" @click="addTextCR"></el-button>
-              <el-button type="success" icon="el-icon-picture-outline" @click="addPictureCR"></el-button>
-              <el-button type="success" icon="el-icon-video-play"  @click="addVideoCR"></el-button>
+              <el-button type="success" icon="el-icon-tickets" @click="addTextCR">Texte</el-button>
+              <el-button type="success" icon="el-icon-picture-outline" @click="addPictureCR">Image</el-button>
+              <el-button type="success" icon="el-icon-video-play"  @click="addVideoCR">Vidéo</el-button>
+              <el-button type="success" icon="el-icon-video-play"  @click="addYoutubeCR">Youtube</el-button>
+              <el-button type="success" icon="el-icon-video-play"  @click="addAudioCR">Audio</el-button>
             </el-button-group>
             <div v-for="(item, index) in colRightMovieDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
@@ -111,11 +157,34 @@
                   @click="deleteContentCR(item)"
                   class="btn-delete-content"
                 ></el-button>
-                <!-- <h3>Vidéo</h3>
+                <figure class="video">
+                  <div>
+                    <div class="ribbon-hole"></div>
+                    <video controls="controls" :poster="item.posterpath" style="width: 100%">
+                      <source :src="item.path" :alt="item.caption?item.caption:'Vidéo'">
+                    </video>
+                    <div class="ribbon-hole"></div>
+                  </div>
+                  <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+                <h3>Vidéo</h3>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
                 <hr>
                 <h3>Image de la vidéo</h3>
-                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/> -->
+                <UploadFile @uploadFilePath="setUploadPosterPath(item, $event)"/>
+                <el-input placeholder="Url Video" v-model="item.path"></el-input>
+                <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input>
+                <el-input placeholder="Légende" v-model="item.caption"></el-input>
+                <!-- <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input> -->
+                <el-input placeholder="Position" v-model="item.order"></el-input>
+              </div>
+              <div class="content" v-if="item.type === 'youtube'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCR(item)"
+                  class="btn-delete-content"
+                ></el-button>
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
@@ -124,10 +193,29 @@
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
-                <el-input placeholder="Url Video" v-model="item.path"></el-input>
-                <!-- <el-input placeholder="Url Poster" v-model="item.posterpath"></el-input> -->
+                <el-input placeholder="Url Youtube" v-model="item.path"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
                 <el-input placeholder="Hauteur de la vidéo" v-model="item.height"></el-input>
+                <el-input placeholder="Position" v-model="item.order"></el-input>
+              </div>
+              <div class="content" v-if="item.type === 'audio'">
+                <el-button
+                  type="primary"
+                  icon="el-icon-delete"
+                  @click="deleteContentCR(item)"
+                  class="btn-delete-content"
+                ></el-button>
+                <figure class="audio">
+                    <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                    <audio
+                        controls
+                        :src="item.path">
+                        Votre navigateur ne supporte pas ce fichier audio.
+                    </audio>
+                </figure>
+                <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
+                <el-input placeholder="Url Audio" v-model="item.path"></el-input>
+                <el-input placeholder="Légende" v-model="item.caption"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
             </div>
@@ -173,6 +261,12 @@ export default {
     addVideoCL() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
     },
+    addYoutubeCL() {
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'youtube', path:'', posterpath:'', height:'250', caption:'', order: this.colLeftMovieDocu.length} })
+    },
+    addAudioCL() {
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'audio', path:'', caption: '', order: this.colLeftMovieDocu.length} })
+    },
     addTextCR() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'text', content:'', order: this.colRightMovieDocu.length} })
     },
@@ -181,6 +275,12 @@ export default {
     },
     addVideoCR() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
+    },
+    addYoutubeCR() {
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'youtube', path:'', posterpath:'', height:'250', caption:'', order: this.colLeftMovieDocu.length} })
+    },
+    addAudioCR() {
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'audio', path:'', caption: '', order: this.colLeftMovieDocu.length} })
     },
     deleteContentCL(content) {
       this.$confirm(
@@ -416,6 +516,19 @@ export default {
                   color: $--color-hcf-light-beige;
                   font-size: 0.95em;
                   font-style: italic;
+                  line-height: 1.1;
+                }
+              }
+
+              &.audio {
+                background-color: $--color-hcf-beige;
+                padding: 1em 1em 1.1em 1em;
+                border-radius: 5px;
+                figcaption {
+                  margin-bottom: 0.8em;
+                  color: $--color-hcf-brown  ;
+                  font-size: 1em;
+                  font-weight: 700;
                   line-height: 1.1;
                 }
               }

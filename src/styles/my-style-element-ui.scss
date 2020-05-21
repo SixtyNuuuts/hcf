@@ -134,3 +134,9 @@ nav {
 .el-autocomplete {
     width: 100%;
 }
+
+#moviedocu {
+    .el-button-group > .el-button {
+        padding: .6em .8em;
+    }
+}

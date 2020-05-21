@@ -18,7 +18,7 @@
                 </figure>
               </div>
               <div class="content" v-if="item.type === 'video'">
-                <!-- <figure class="video">
+                <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
                     <video controls="controls" :poster="item.posterpath" style="width: 100%">
@@ -27,7 +27,9 @@
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
-                </figure> -->
+                </figure>
+              </div>
+              <div class="content" v-if="item.type === 'youtube'">
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
@@ -35,6 +37,16 @@
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+              </div>
+              <div class="content" v-if="item.type === 'audio'">
+                <figure class="audio">
+                    <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                    <audio
+                        controls
+                        :src="item.path">
+                        Votre navigateur ne supporte pas ce fichier audio.
+                    </audio>
                 </figure>
               </div>
             </div> 
@@ -53,7 +65,7 @@
                 </figure>
               </div>
               <div class="content" v-if="item.type === 'video'">
-                <!-- <figure class="video">
+                <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
                     <video controls="controls" :poster="item.posterpath" style="width: 100%">
@@ -62,7 +74,9 @@
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
-                </figure> -->
+                </figure>
+              </div>
+              <div class="content" v-if="item.type === 'youtube'">
                 <figure class="video">
                   <div>
                     <div class="ribbon-hole"></div>
@@ -70,6 +84,16 @@
                     <div class="ribbon-hole"></div>
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                </figure>
+              </div>
+              <div class="content" v-if="item.type === 'audio'">
+                <figure class="audio">
+                    <figcaption v-if="item.caption">{{item.caption}}</figcaption>
+                    <audio
+                        controls
+                        :src="item.path">
+                        Votre navigateur ne supporte pas ce fichier audio.
+                    </audio>
                 </figure>
               </div>
             </div> 
@@ -231,6 +255,19 @@ export default {
                   color: $--color-hcf-light-beige;
                   font-size: 0.95em;
                   font-style: italic;
+                  line-height: 1.1;
+                }
+              }
+
+              &.audio {
+                background-color: $--color-hcf-beige;
+                padding: 1em 1em 1.1em 1em;
+                border-radius: 5px;
+                figcaption {
+                  margin-bottom: 0.8em;
+                  color: $--color-hcf-brown  ;
+                  font-size: 1em;
+                  font-weight: 700;
                   line-height: 1.1;
                 }
               }
