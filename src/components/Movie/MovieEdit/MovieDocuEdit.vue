@@ -516,13 +516,13 @@ export default {
                   color: $--color-hcf-light-beige;
                   font-size: 0.95em;
                   font-style: italic;
-                  line-height: 1.1;
+                  line-height: 1.15;
                 }
               }
 
               &.audio {
                 background-color: $--color-hcf-beige;
-                padding: 1em 1em 1.1em 1em;
+                padding: 1em 2em 1.1em 2em;
                 border-radius: 5px;
                 figcaption {
                   margin-bottom: 0.8em;

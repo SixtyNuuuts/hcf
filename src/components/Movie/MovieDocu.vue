@@ -261,14 +261,14 @@ export default {
 
               &.audio {
                 background-color: $--color-hcf-beige;
-                padding: 1em 1em 1.1em 1em;
+                padding: 1em 2em 1.1em 2em;
                 border-radius: 5px;
                 figcaption {
                   margin-bottom: 0.8em;
                   color: $--color-hcf-brown  ;
                   font-size: 1em;
                   font-weight: 700;
-                  line-height: 1.1;
+                  line-height: 1.15;
                 }
               }
 
