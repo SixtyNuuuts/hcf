@@ -145,49 +145,60 @@
 
     }
 
-    .content {
+    .ql-editor {
+      padding: .3em;
+      max-width: 440px;
+      font-size: 16px;
       line-height: 1.2;
-
-      p, .editr {
-        text-align: justify;
-
-        h1 {
-          color: #3a2104;
-          font-size: 1.7em;
-          text-align: center;
-          line-height: .9;
-          border-bottom: 1px solid #3a2104;
-          border-top: 1px solid #3a2104;
-          padding: 0.4em 0;
-        }
-
-        b {
-          color: #3a2104;
-
-        }
-
-        i  {
-          color: #8e6319;
-        }
-
-        h2 {
-          display: block;
-          text-align: right;
-          color: #946c26;
-          font-weight: bold;
-          font-style: italic;
-          margin: 1em 0;
-          font-size: 1.2em;
-        }
-
-        a {
-          text-decoration: underline;
-          color: #946c26;
-          font-weight: bold;
-        }
-
+      font-family: 'Source Sans Pro', sans-serif;
+      text-align: left;
+      min-height: none;
+      
+      h1 {
+        color: #3a2104;
+        line-height: 1.1;
+        font-size: 1.7em!important;
+        text-align: center;
+        border-bottom: 1px solid #3a2104;
+        border-top: 1px solid #3a2104;
+        padding: 0.4em 0 !important;
       }
 
+      .ql-align-justify {
+        text-align: justify;
+      }
+
+      .ql-align-left {
+        text-align: left;
+      }
+
+      .ql-align-center {
+        text-align: center;
+      }
+
+      .ql-align-right {
+        text-align: right;
+      }
+
+      a {
+        font-weight: 600 !important;
+        color: #946a3b !important;
+        text-decoration: underline;
+      }
+
+    }
+
+    .quillWrapper {
+      margin: 0 !important;
+      .ql-container {
+        border: 0px solid #ccc;
+      }
+    }
+
+    .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor ol, .ql-editor p, .ql-editor pre, .ql-editor ul {
+        margin: 0;
+        padding: 0;
+        counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
     }
 
     .my-gallery {

@@ -20,7 +20,7 @@
                   @click="deleteContentCL(item)"
                   class="btn-delete-content"
                 ></el-button>
-                <wysiwyg v-model="item.content" />
+                <vue-editor v-model="item.content" :editorToolbar="customToolbar" />
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
               <div class="content" v-if="item.type === 'picture'">
@@ -128,7 +128,7 @@
                 @click="deleteContentCR(item)"
                 class="btn-delete-content"
               ></el-button>
-                <wysiwyg v-model="item.content" />
+                <vue-editor v-model="item.content" :editorToolbar="customToolbar" />
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
               <div class="content" v-if="item.type === 'picture'">
@@ -244,6 +244,27 @@ export default {
   },
   props: {
     movieDocumented: Object,
+  },
+  data() {
+    return {
+      content: "<h1>Html For Editor</h1>",
+      customToolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" }
+        ],
+        [],
+        [{ color: [] }], // dropdown with defaults from theme
+        ["link"],
+        [],
+        [],
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["clean"],
+      ]
+    };
   },
   methods: {
     setUploadFilePath(item, filePath) {

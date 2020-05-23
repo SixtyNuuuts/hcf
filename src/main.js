@@ -11,10 +11,10 @@ import './styles/my-style-element-ui.scss'
 import db from './firebase'
 import VueCarousel from 'vue-carousel';
 import VuePreview from 'vue-preview'
-import wysiwyg from "vue-wysiwyg";
-import 'vue-wysiwyg/dist/vueWysiwyg.css'
 
-Vue.use(wysiwyg, {hideModules: { "code": true, "orderedList": true, "unorderedList": true,  "image": true, "table": true, "separator": true}});
+import Vue2Editor from "vue2-editor";
+
+Vue.use(Vue2Editor);
 
 Vue.config.productionTip = false
 
