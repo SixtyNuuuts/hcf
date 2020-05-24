@@ -10,8 +10,8 @@
                 <div class="ql-editor" v-html="item.content"></div>
               </div>
               <div class="content" v-if="item.type === 'picture'">
-                <figure class="pict">
-                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                <figure :style=" { width: item.width +'%' }" class="pict">
+                  <div>
                     <img :src="item.path" :alt="item.caption?item.caption:'Image'">
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
@@ -57,8 +57,8 @@
                 <div class="ql-editor" v-html="item.content"></div>
               </div>
               <div class="content" v-if="item.type === 'picture'">
-                <figure class="pict">
-                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                <figure :style=" { width: item.width +'%' }" class="pict">
+                  <div>
                     <img :src="item.path" :alt="item.caption?item.caption:'Image'">
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
@@ -202,7 +202,6 @@ export default {
             }
 
             figure {
-              width: 100%;
               display: flex;
               flex-direction: column;
               justify-content: center;
@@ -212,6 +211,7 @@ export default {
               box-sizing: border-box;
 
               &.pict {
+                margin: 0 auto;
                 border: .8em solid white;
                 background-color: white;
                 >div {
@@ -236,6 +236,7 @@ export default {
               }
               
               &.video {
+                width: 100%;
                 border-bottom: .8em solid $--color-hcf-black;
                 background-color: $--color-hcf-black;
                 >div {
@@ -260,6 +261,7 @@ export default {
               }
 
               &.audio {
+                width: 100%;
                 background-color: $--color-hcf-beige;
                 padding: 1em 2em 1.1em 2em;
                 border-radius: 5px;

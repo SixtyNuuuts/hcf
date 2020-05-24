@@ -31,15 +31,15 @@
                   class="btn-delete-content"
                 ></el-button>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
-                <figure class="pict">
-                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                <figure :style=" { width: item.width +'%' }" class="pict">
+                  <div>
                     <img :src="item.path" :alt="item.caption?item.caption:'Image'">
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
                 <el-input placeholder="Url" v-model="item.path"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
-                <el-input placeholder="Hauteur de l'image" v-model="item.height"></el-input>
+                <el-input placeholder="Largeur de l'image" v-model="item.width"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
               <div class="content" v-if="item.type === 'video'">
@@ -139,15 +139,15 @@
                   class="btn-delete-content"
                 ></el-button>
                 <UploadFile @uploadFilePath="setUploadFilePath(item, $event)"/>
-                <figure class="pict">
-                  <div :style=" { minHeight: item.height+'px', height: item.height+'px' }">
+                <figure :style=" { width: item.width +'%' }" class="pict">
+                  <div>
                     <img :src="item.path" :alt="item.caption?item.caption:'Image'">
                   </div>
                   <figcaption v-if="item.caption">{{item.caption}}</figcaption>
                 </figure>
                 <el-input placeholder="Url" v-model="item.path"></el-input>
                 <el-input placeholder="Légende" v-model="item.caption"></el-input>
-                <el-input placeholder="Hauteur de l'image" v-model="item.height"></el-input>
+                <el-input placeholder="Largeur de l'image" v-model="item.width"></el-input>
                 <el-input placeholder="Position" v-model="item.order"></el-input>
               </div>
               <div class="content" v-if="item.type === 'video'">
@@ -277,7 +277,7 @@ export default {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'text', content:'', order: this.colLeftMovieDocu.length} })
     },
     addPictureCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'picture', path:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'picture', path:'', width:'60', caption:'', order: this.colLeftMovieDocu.length} })
     },
     addVideoCL() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
@@ -292,7 +292,7 @@ export default {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'text', content:'', order: this.colRightMovieDocu.length} })
     },
     addPictureCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'picture', path:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
+      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'picture', path:'', width:'60', caption:'', order: this.colRightMovieDocu.length} })
     },
     addVideoCR() {
       this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
@@ -483,7 +483,6 @@ export default {
             }
 
             figure {
-              width: 100%;
               display: flex;
               flex-direction: column;
               justify-content: center;
@@ -518,6 +517,7 @@ export default {
               }
               
               &.video {
+                width: 100%;
                 border-bottom: .8em solid $--color-hcf-black;
                 background-color: $--color-hcf-black;
                 >div {
@@ -542,6 +542,7 @@ export default {
               }
 
               &.audio {
+                width: 100%;
                 background-color: $--color-hcf-beige;
                 padding: 1em 2em 1.1em 2em;
                 border-radius: 5px;
