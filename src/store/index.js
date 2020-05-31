@@ -238,8 +238,9 @@ export default new Vuex.Store({
       .get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          console.log(payload, doc.data().movie)
-          commit('ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR', doc.data().movie);
+          if (doc.data().movie) {
+            commit('ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR', doc.data().movie);
+          }
         });
       }).catch(function(error) {
           console.log("Error firebase:", error);

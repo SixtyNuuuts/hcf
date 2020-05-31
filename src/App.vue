@@ -148,7 +148,7 @@
     .ql-editor {
       padding: .3em;
       max-width: 440px;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1.2;
       font-family: 'Source Sans Pro', sans-serif;
       text-align: left;
@@ -178,6 +178,18 @@
 
       .ql-align-right {
         text-align: right;
+      }
+
+      .ql-size-small {
+          font-size: .75em;
+      }
+
+      .ql-size-large {
+          font-size: 1.25em;
+      }
+
+      .ql-size-huge {
+          font-size: 1.5em;
       }
 
       a {
