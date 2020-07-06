@@ -42,9 +42,13 @@ export default new Vuex.Store({
     currentDocumentedMovie: {
       colLeftContent: [],
       colRightContent: [],
-    }
+    },
+    currentYearSelected: 1930
   },
   mutations: {
+    SET_CURRENT_YEAR_SELECTED (state, payload) {
+      state.currentYearSelected = payload;
+    },
     SET_CURRENT_MOVIE (state, payload) {
       state.currentMovie = payload;
     },

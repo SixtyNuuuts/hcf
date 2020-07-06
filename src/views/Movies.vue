@@ -27,17 +27,18 @@
 
   export default {
     created() {
-      this.$store.dispatch("getMoviesByYear", this.startYear)
-      this.$store.dispatch("getDocumentedMoviesByYear", this.startYear)
+      this.$store.dispatch("getMoviesByYear", this.selectedYear)
+      this.$store.dispatch("getDocumentedMoviesByYear", this.selectedYear)
     },
     data() {
       return {
         startYear: 1930,
-        selectedYear: 1930,
+        selectedYear: this.$store.state.currentYearSelected,
       }
     },
     methods: {
       handleYearSelected(year) {
+        this.$store.commit('SET_CURRENT_YEAR_SELECTED', year)
         this.$store.dispatch("getMoviesByYear", year)
         this.$store.dispatch("getDocumentedMoviesByYear", year)
       }
