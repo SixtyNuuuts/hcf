@@ -8,12 +8,7 @@
           <el-input placeholder="Identifiant" v-model="form.email"></el-input>
           <el-input placeholder="Mot de passe" v-model="form.password" show-password></el-input>
           <el-button type="primary" native-type="submit">Se connecter</el-button>
-          <el-button
-            type="primary"
-            native-type="button"
-            @click.prevent="logout"
-            plain
-          >Se déconnecter</el-button>
+          <!-- <el-button type="primary" native-type="button" @click.prevent="logout" plain >Se déconnecter</el-button> -->
         </form>
       </div>
     </div>
@@ -46,14 +41,14 @@ export default {
           this.error = err.message;
         });
     },
-    logout() {
-      firebase
-        .auth()
-        .signOut()
-        .catch(err => {
-          this.error = err.message;
-        });
-    }
+    // logout() {
+    //   firebase
+    //     .auth()
+    //     .signOut()
+    //     .catch(err => {
+    //       this.error = err.message;
+    //     });
+    // }
   },
   name: "LoginAdmin"
 };
@@ -90,6 +85,7 @@ export default {
         width: 80%;
         margin: auto;
         margin-bottom: 1.7rem;
+        max-width: 20rem;
 
         h1 {
             font-family: "Righteous";
@@ -102,7 +98,8 @@ export default {
         }
 
         .el-input, .el-button {
-            margin: 0.5em;
+            margin: 0.5em 0;
+            width: 100%;
         }
     }
   }
