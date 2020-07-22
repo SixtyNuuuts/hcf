@@ -1,10 +1,11 @@
 <template>
   <section id="movie">
-    <div v-if="type === 'edit'" >
+    <LoginAdmin v-if="type === 'edit' && !isAdmin" />
+    <div v-else-if="type === 'edit' && isAdmin" >
       <MovieDetailsEdit :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCastEdit :movieCast="currentMovieCast" />
       <MovieDocuEdit :movieDocumented="currentMovieDocumented" />
-      <MovieImagesEdit :movieImages="currentMovieImages"/>
+      <MovieImagesEdit :movieImages="currentMovieImages" />
     </div>
     <div v-else>
       <MovieDetails :movie="currentMovie" :movieCrew="currentMovieCrew"/>
@@ -24,11 +25,13 @@
   import MovieCastEdit from "@/components/Movie/MovieEdit/MovieCastEdit.vue";
   import MovieDocuEdit from "@/components/Movie/MovieEdit/MovieDocuEdit.vue";
   import MovieImagesEdit from "@/components/Movie/MovieEdit/MovieImagesEdit.vue";
+  import LoginAdmin from "@/components/Movie/MovieEdit/LoginAdmin.vue";
   import f from "../services/func";
 
   export default {
     name: "MovieEdit",
     components: {
+      LoginAdmin,
       MovieDetailsEdit,
       MovieCastEdit,
       MovieDocuEdit,
@@ -50,10 +53,13 @@
     data() {
       return {
         id: null,
-        type: null,
+        type: null
       };
     },
     computed: {
+      isAdmin() {
+        return this.$store.state.currentUser.admin;
+      },
       currentMovie() {
         return this.$store.state.currentMovie
       },
@@ -69,6 +75,6 @@
       currentMovieImages() {
         return this.$store.state.currentMovieImages
       }
-    }
+    },
   };
 </script>

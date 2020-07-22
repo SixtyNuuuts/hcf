@@ -116,6 +116,28 @@ nav {
 
 }
 
+/// Component : Movies / Login Admin 
+#login-admin {
+    .title {
+        form {
+            .el-input {
+                .el-input__inner {
+                    background-color: $--color-hcf-beige!important;
+                    color: $--color-primary!important;
+                    background-image: inherit!important;
+                    font-family: 'Righteous';
+                    font-size: 1.2em;
+                    text-align: center;
+            
+                    &::placeholder {
+                        color: $--color-hcf-dark-beige;
+                    }
+                }    
+            }        
+        }
+    }
+}
+
 // .el-date-table td.current:not(.disabled) span {
 //     background-color: $--color-success;
 // }

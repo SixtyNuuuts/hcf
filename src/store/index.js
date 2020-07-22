@@ -8,6 +8,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    currentUser: {
+      loggedIn: false,
+      admin: false,
+      data: null
+    }, 
     currentMovie: {
       backdrop_path: null,
       genres: [
@@ -49,6 +54,15 @@ export default new Vuex.Store({
     SET_CURRENT_YEAR_SELECTED (state, payload) {
       state.currentYearSelected = payload;
     },
+    SET_CURRENT_USER_IS_ADMIN (state, value) {
+      state.currentUser.admin = value;
+    },
+    SET_CURRENT_USER_LOGGED_IN (state, value) {
+      state.currentUser.loggedIn = value;
+    },
+    SET_CURRENT_USER (state, data) {
+      state.currentUser.data = data;
+    },  
     SET_CURRENT_MOVIE (state, payload) {
       state.currentMovie = payload;
     },
@@ -130,6 +144,18 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    fetchUser({ commit }, user) {
+      commit("SET_CURRENT_USER_LOGGED_IN", user !== null);
+      commit("SET_CURRENT_USER_IS_ADMIN", user !== null);
+      if (user) {
+        commit("SET_CURRENT_USER", {
+          displayName: user.displayName,
+          email: user.email
+        });
+      } else {
+        commit("SET_CURRENT_USER", null);
+      }
+    },  
     getCurrentMovie ({commit}, payload) {
       db.collection("movies").doc(payload).get()
       .then((doc) => {
@@ -261,15 +287,18 @@ export default new Vuex.Store({
       })
     },
   },
-  // getters: {
-  //   currentMovie (state) {
-  //     return state.currentMovie;
-  //   },
-  //   currentMovieCrew (state) {
-  //     return state.currentMovieCrew;
-  //   },
-  //   currentMovieCast (state) {
-  //     return state.currentMovieCast;
-  //   },
-  // }
+  getters: {
+    // currentMovie (state) {
+    //   return state.currentMovie;
+    // },
+    // currentMovieCrew (state) {
+    //   return state.currentMovieCrew;
+    // },
+    // currentMovieCast (state) {
+    //   return state.currentMovieCast;
+    // },
+    // currentUser(state){
+    //   return state.currentUser
+    // }
+  }
 })

@@ -9,6 +9,7 @@ import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/fr'
 import './styles/my-style-element-ui.scss'
 import db from './firebase'
+import firebase from 'firebase'
 import VueCarousel from 'vue-carousel';
 import VuePreview from 'vue-preview'
 
@@ -25,6 +26,10 @@ Vue.use(VueFilterMinutesToHours)
 Vue.use(ElementUI, { locale })
 
 Vue.prototype.$db = db
+
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch("fetchUser", user);
+});
 
 Vue.use(VueCarousel);
 Vue.use(VuePreview)
