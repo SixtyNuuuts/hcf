@@ -272,6 +272,10 @@ export default {
                   font-weight: 700;
                   line-height: 1.15;
                 }
+                audio:focus {
+                  outline: none;
+                } 
+
               }
 
             }

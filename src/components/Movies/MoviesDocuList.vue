@@ -12,9 +12,15 @@
               </div>
             </a>
           </div>
-          <div class="moviedocu_entry">
-              {{ movie.overview }}
+          <div class="moviedocu_directors">
+              <div v-for="director in movie.directors" :key="director">
+                <img src="../../assets/img/icon-clap.svg" alt="icon clap">
+                <p>{{ director }}</p>
+              </div>
           </div>
+          <!-- <div class="moviedocu_overview">
+              {{ movie.overview }}
+          </div> -->
         </div>
       </div>
     </router-link>
@@ -72,20 +78,20 @@ export default {
           border: 1px solid $--color-hcf-ddark-beige;
           display: flex;
           flex-direction: column;
-          justify-content: flex-start;
+          justify-content: space-between;
           align-items: center;
-          padding: 1em;
+          padding: .8rem;
           height: 100%;
           box-sizing: border-box;
 
           h3 {
             font-weight: 700;
-            font-size: 1.3em;
+            font-size: 1.25em;
             text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
             text-align: center;
             line-height: 1.1;
             margin: 0;
-            margin-bottom: 2em;
+            margin-bottom: 1.7em;
             position: relative;
             width: 100%;
             display: flex;
@@ -97,20 +103,22 @@ export default {
               height: 10px;
               width: 85%;
               position: absolute;
-              bottom: -1em;
+              bottom: -1.15em;
               background: url("../../assets/img/sep-3-stars.svg") no-repeat center 0;
             }
 
           }
 
           .moviedocu_image {
-            width: 70%;
-            margin-bottom: 3em;
+            width: 80%;
+            margin-bottom: 2rem;
             position: relative;
             display: flex;
             justify-content: center;
+            max-height: none;
 
             img {
+              height: initial;
               width: 100%;
               box-shadow: $--box-shadow-dark-2;
             }
@@ -135,27 +143,53 @@ export default {
 
             }
 
+          }
 
-            &::after {
+          .moviedocu_directors {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            div {
+              display: flex;
+              justify-content: center;
+
+              img {
+                width: .6rem;
+                margin-right: .4rem;
+                position: relative;
+                top: -1px;
+              }
+              p {
+                text-align: left;
+                margin: 0.3rem 0;
+                line-height: 1.2;
+                font-size: 0.8rem;
+              }
+            }
+
+            &::before {
               content: '';
               display: block;
               height: 10px;
-              width: 100%;
+              width: 80%;
               position: absolute;
-              bottom: -2em;
+              top: -0.95em;
               background: url("../../assets/img/sep-1-star.svg") no-repeat center 0;
             }
-
           }
 
-          .moviedocu_entry {
-            font-size: 0.8em;
-            line-height: 1.3em;
-            max-height: 6em;
-            overflow: auto;
-            font-style: italic;
-            padding: 0 0.5em 0.4em 0.5em;
-          }
+          // .moviedocu_overview {
+          //   font-size: 0.8em;
+          //   line-height: 1.3em;
+          //   max-height: 6em;
+          //   overflow: auto;
+          //   font-style: italic;
+          //   padding: 0 0.5em 0.4em 0.5em;
+          // }
           
         }
 
@@ -164,21 +198,31 @@ export default {
     }
     
   }
-
   @media (min-width: $--bp-sm) { 
     #moviesdocu {
       .moviedocu_wrap {
         width: 20%;
+        > div {
+          .moviedocu_box {
+            .moviedocu_image {
+              max-height: 9rem;
+              img {
+                height: 100%;
+                width: initial;
+              }
+            }
+          }
+        }
       }
     }
   }
 
-  @media (min-width: $--bp-lg) { 
-    #moviesdocu {
-      .moviedocu_wrap {
-        width: 25%;
-      }
-    }
-  }
+  // @media (min-width: $--bp-lg) { 
+  //   #moviesdocu {
+  //     .moviedocu_wrap {
+  //       width: 10%;
+  //     }
+  //   }
+  // }
 
 </style>

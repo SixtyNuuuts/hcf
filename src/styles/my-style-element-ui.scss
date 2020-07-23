@@ -158,6 +158,11 @@ nav {
     width: 100%;
 }
 
+.el-scrollbar__wrap {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 #moviedocu {
     .el-button-group > .el-button {
         padding: .6em .8em;

@@ -269,7 +269,19 @@ export default new Vuex.Store({
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           if (doc.data().movie) {
-            commit('ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR', doc.data().movie);
+            let movieDetail = doc.data().movie;
+            if (doc.data().movieCrew) {
+              let directors = [];
+              doc.data().movieCrew.forEach(person => {
+                person.jobs.forEach(job => {
+                  if (job.name.includes("Réalisateur")) {
+                    directors.push(person.name);
+                  }
+                });
+              });
+              movieDetail.directors = directors;
+            } 
+            commit('ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR', movieDetail);   
           }
         });
       }).catch(function(error) {
