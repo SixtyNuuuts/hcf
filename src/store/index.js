@@ -274,7 +274,7 @@ export default new Vuex.Store({
               let directors = [];
               doc.data().movieCrew.forEach(person => {
                 person.jobs.forEach(job => {
-                  if (job.name.includes("Réalisateur")) {
+                  if (job.name === "Réalisateur") {
                     directors.push(person.name);
                   }
                 });
