@@ -1,40 +1,35 @@
 <template>
-  <section class="movie-info" :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
+  <section class="person-info" :style="{ backgroundImage: backgroundImage }">
     <div class="content">
       <div class="poster">
-        <img v-if="movie.poster_path" :src="movie.poster_path">
-        <div v-else class="no-poster">
-          <i class="el-icon-picture"></i>
+        <img v-if="person.profile_path" :src="person.profile_path">
+        <div v-else class="no-picture">
+          <img v-if="person.gender == 1" src="@/assets/img/p-female.svg" />
+          <img v-else src="@/assets/img/p-male.svg" />
         </div>
       </div>
       <div class="text">
-        <h1 v-if="movie.original_title">{{ movie.original_title }} <span v-if="movie.release_date" class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
+        <h1 v-if="person.name">{{ person.name }}<span v-if="person.known_for_department">({{ person.known_for_department }})</span></h1>
         <div class="facts">
-          <div v-if="movie.release_date" class="fact release">
-            <h3>Date de Sortie</h3>
-            {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
+          <div v-if="person.birthday" class="fact">
+            <h3>Date de naissance</h3>
+            {{ person.birthday  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
           </div>
-          <div v-if="movie.genres.length > 0" class="fact genres">
-            <h3>Genre(s)</h3>
-            <div v-for="(genre) in movie.genres" :key="genre.id">
-              {{ genre.name }}
-            </div>
+          <div v-if="person.place_of_birth" class="fact">
+            <h3>Lieu de naissance</h3>
+            {{ person.place_of_birth }}
           </div>
-          <div v-if="movie.runtime" class="fact runtime">
-            <h3>Durée</h3>
-            {{ movie.runtime | minutesToHours() }}
+          <div v-if="person.deathday" class="fact">
+            <h3>Date de décès</h3>
+            {{ person.deathday  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
           </div>
         </div>
         <div>
-          <div v-if="movie.overview" id="overview">
-            <h3>Résumé</h3>
-            <div v-if="movie.overview" class="overview">
-              <p>{{ movie.overview }}</p>
+          <div v-if="person.biography" id="biography">
+            <h3>Biographie</h3>
+            <div v-if="person.biography" class="biography">
+              <p>{{ person.biography }}</p>
             </div>
-          </div>
-          <div v-if="movieCrew.length > 0" id="crew">
-            <h3>l'Équipe technique</h3>
-            <CrewCarousel :movieCrew="movieCrew" />
           </div>
         </div>
       </div>
@@ -43,16 +38,20 @@
 </template>
 
 <script>
-import CrewCarousel from "@/components/Movie/Carousel/CrewCarousel.vue"
 
 export default {
-  name: "MovieDetails",
+  name: "PersonDetails",
   props: {
-    movie: Object,
-    movieCrew: Array,
+    person: Object,
   },
-  components: {
-    CrewCarousel
+  computed: {
+    backgroundImage() {
+      let backgroundImg = 'url(' +  require("@/assets/img/backdrop_default.jpg") + ')';
+      if(this.person.profile_path) {
+        backgroundImg = 'url(' +  this.person.profile_path + ')';
+      }
+      return backgroundImg;
+    }
   }
 }
 </script>
@@ -63,9 +62,10 @@ export default {
   @import '../../styles/color.scss';  
   @import '../../styles/shadow.scss';  
 
-  section.movie-info {
+  section.person-info {
     background-size: cover;
     background-repeat: no-repeat;   
+    background-position: center;
 
     .content {
       display: flex;
@@ -86,18 +86,20 @@ export default {
           box-shadow: $--box-shadow-dark-3;
         }
         
-        .no-poster {
+        .no-picture {
           background-color: $--color-hcf-light-grey;
           width: 280px;
-          height: 420px;
+          height: 310px;
           display: flex;
           justify-content: center;
           align-items: center;
           box-shadow: $--box-shadow-dark-3;
 
-          i {
-            font-size: 8rem;
-            color: $--color-hcf-dark-grey;
+          img {
+            width: 110%;
+            position: relative;
+            bottom: -0.9em;
+            box-shadow: none;
           }
 
         }
@@ -114,14 +116,19 @@ export default {
           font-weight: 800;
           line-height: 1;
           text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
-          margin-bottom: .9em;
+          margin-bottom: 1.3em;
           color: $--color-hcf-light-beige;
 
           span {
             opacity: 0.8;
             font-weight: 400;
+            font-size: 1.7rem;
+            display: block;
+            position: relative;
+            top:.4rem;
+            left:0;
           }
-
+          
         }
 
         .facts {
@@ -131,12 +138,6 @@ export default {
 
           .fact {
             margin-bottom: 2.5em;
-
-            &.genres {
-              >div {
-                margin-bottom: 0.2em;
-              }
-            }
           }
           
         }
@@ -146,15 +147,16 @@ export default {
           h3 {
             margin: 0;
             text-transform: uppercase;
-            font-size: .9em;
+            font-size: 0.9em;
+            line-height: 1.1;
             color: #f8f0e0;
             margin-bottom: 0.3em;
           }
 
-          #overview {
-            margin-bottom: 2.5em;
+          #biography {
+            margin-bottom: .5em;
 
-            .overview {
+            .biography {
               p{
                 margin: 0;
                 line-height: 1.2;
@@ -162,12 +164,6 @@ export default {
 
             }
 
-          }
-
-          #crew {
-            h3 {
-              margin-bottom: .5em;
-            }
           }
 
         }
@@ -179,10 +175,21 @@ export default {
   }
 
   @media (min-width: $--bp-sm) { 
-    section.movie-info {
+    section.person-info {
       .content {
         .text {
           width: 75%;
+
+          h1 {
+            margin-bottom: .9em;
+
+            span {
+              display: inline;
+              top: -0.1rem;
+              left: .9rem;
+            }
+            
+          }
 
           .facts {
             flex-direction: row;
@@ -203,7 +210,7 @@ export default {
   }
 
   @media (min-width: $--bp-md) { 
-    section.movie-info {
+    section.person-info {
       .content {
         flex-direction: row;
         align-items: flex-start;
@@ -228,8 +235,6 @@ export default {
                 margin-left: 0;
               }
             }
-            
-
           }
         }
 

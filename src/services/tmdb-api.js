@@ -6,55 +6,44 @@ const apiKey = "c022388163d1fd502e4967b01c1cf1b8";
 export default {
 
   // MOVIES LIST ///////////////////////////////////
-  getMoviesFrByYear(year, page) {
-    if (typeof year == "undefined") {
-      year = 1930;
-    }
-    if (typeof page == "undefined") {
-      page = 1;
-    }
+  getMoviesFrByYear(year = 1930, page = 1) {
     return axios.get(
       `${baseUrl}/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=release_date.asc&include_adult=false&year=${year}&with_original_language=fr&page=${page}`
     );
   },
   // MOVIE ///////////////////////////////////
-  getMovieDetails(id) {
-    if (typeof id == "undefined") {
-      id = 0;
-    }
+  getMovieDetails(id = 0) {
     return axios.get(
       `${baseUrl}/movie/${id}?api_key=${apiKey}&language=fr-FR`
     );
   },
-  getMovieCredits(id) {
-    if (typeof id == "undefined") {
-      id = 0;
-    }
+  getMovieCredits(id = 0) {
     return axios.get(
       `${baseUrl}/movie/${id}/credits?api_key=${apiKey}&language=fr-FR`
     );
   },
-  getMovieImages(id) {
-    if (typeof id == "undefined") {
-      id = 0;
-    }
+  getMovieImages(id = 0) {
     return axios.get(
       `${baseUrl}/movie/${id}/images?api_key=${apiKey}`
     );
   },
   // PERSON ///////////////////////////////////
-  getPerson(id) {
-    if (typeof id == "undefined") {
-      id = 0;
-    }
+  getPersonDetails(id = 0) {
     return axios.get(
       `${baseUrl}/person/${id}?api_key=${apiKey}&language=fr-FR`
     );
   },
-  searchPerson(query, page) {
-    if (typeof page == "undefined") {
-      page = 1;
-    }
+  getPersonCredits(id = 0) {
+    return axios.get(
+      `${baseUrl}/person/${id}/movie_credits?api_key=${apiKey}&language=fr-FR`
+    );
+  },
+  getPersonImages(id = 0) {
+    return axios.get(
+      `${baseUrl}/person/${id}/images?api_key=${apiKey}`
+    );
+  },
+  searchPerson(query, page = 1) {
     return axios.get(
       `${baseUrl}/search/person?api_key=${apiKey}&query=${query}&language=fr-FR&page=${page}`
     );

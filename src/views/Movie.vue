@@ -29,7 +29,7 @@
   import f from "../services/func";
 
   export default {
-    name: "MovieEdit",
+    name: "Movie",
     components: {
       LoginAdmin,
       MovieDetailsEdit,

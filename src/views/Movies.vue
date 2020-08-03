@@ -4,7 +4,7 @@
       <div>
         <h1>
           LES FILMS DOCUMENTÉS DE
-          <el-select v-model="selectedYear" filterable @change="handleYearSelected" placeholder="Sélectionnez une année">
+          <el-select v-model="selectedYear" filterable @change="handleYearSelected">
             <el-option
               v-for="(item, index) in 60"
               :key="index"

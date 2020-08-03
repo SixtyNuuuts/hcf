@@ -15,8 +15,8 @@ nav {
 }
 ///////////////////////////////////////////
 
-/// Component : Movies / Select Element 
-#movies {
+/// Component : Movies / Persons / Select Element 
+#movies, #persons {
     h1 {
         .el-select {
             margin-left: 8px;
@@ -47,9 +47,17 @@ nav {
         }
 
     }
-
 }
 
+#persons {
+    h1 {
+        .el-select {
+            .el-input__inner {
+                max-width: 2em;
+            }
+        }
+    }
+}
 ////////////////////////////////////
 
 /// Component : MovieEdit / Inputs 

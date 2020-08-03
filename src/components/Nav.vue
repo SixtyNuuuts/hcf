@@ -25,7 +25,7 @@
         </ul>
         <ul class="right-part">
           <li class="tlink personnalites">
-            <a href="">
+            <a href="/persons">
               Personnalités
             </a>
           </li>

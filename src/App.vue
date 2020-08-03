@@ -19,7 +19,7 @@
   import Footer from "@/components/Footer.vue";
 
   export default {
-    name: "Movie",
+    name: "HCF",
     components: {
       Nav,
       Footer

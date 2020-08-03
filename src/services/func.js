@@ -1,115 +1,134 @@
 export default {
 
+    jobsTranslation: [
+      {
+        job: "Director",
+        jobTranslatationM: "Réalisateur",
+        jobTranslatationF: "Réalisatrice",
+        order: 1
+      },
+      {
+        job: "Writer",
+        jobTranslatationM: "Scénariste",
+        jobTranslatationF: "Scénariste",
+        order: 2
+      },
+      {
+        job: "Scenario Writer",
+        jobTranslatationM: "Scénariste",
+        jobTranslatationF: "Scénariste",
+        order: 2
+      },
+      {
+        job: "Screenplay",
+        jobTranslatationM: "Scénariste",
+        jobTranslatationF: "Scénariste",
+        order: 2
+      },
+      {
+        job: "Assistant Director",
+        jobTranslatationM: "Assistant Réalisateur",
+        jobTranslatationF: "Assistant Réalisatrice",
+        order: 3
+      },
+      {
+        job: "Producer",
+        jobTranslatationM: "Producteur",
+        jobTranslatationF: "Productrice",
+        order: 3
+      },
+      {
+        job: "Novel",
+        jobTranslatationM: "Roman",
+        jobTranslatationF: "Roman",
+        order: 3
+      },
+      {
+        job: "Editor",
+        jobTranslatationM: "Monteur",
+        jobTranslatationF: "Monteuse",
+        order: 4
+      },
+      {
+        job: "Music",
+        jobTranslatationM: "Musique",
+        jobTranslatationF: "Musique",
+        order: 4
+      },
+      {
+        job: "Sound",
+        jobTranslatationM: "Son",
+        jobTranslatationF: "Son",
+        order: 4
+      },
+      {
+        job: "Production Design",
+        jobTranslatationM: "Chef décorateur",
+        jobTranslatationF: "Chef décoratrice",
+        order: 4
+      },
+      {
+        job: "Set Decoration",
+        jobTranslatationM: "Décorateur",
+        jobTranslatationF: "Décoratrice",
+        order: 4
+      },
+      {
+        job: "Director of Photography",
+        jobTranslatationM: "Directeur de la photographie",
+        jobTranslatationF: "Directrice de la photographie",
+        order: 4
+      },
+      {
+        job: "Still Photographer",
+        jobTranslatationM: "Photographe",
+        jobTranslatationF: "Photographe",
+        order: 4
+      },
+      {
+        job: "Conductor",
+        jobTranslatationM: "Chef d'orchestre",
+        jobTranslatationF: "Chef d'orchestre",
+        order: 4
+      },
+      {
+        job: "Original Music Composer",
+        jobTranslatationM: "Compositeur de la bande originale",
+        jobTranslatationF: "Compositrice de la bande originale",
+        order: 4
+      },
+      {
+        job: "Adaptation",
+        jobTranslatationM: "Adaptation",
+        jobTranslatationF: "Adaptation",
+        order: 4
+      },
+      {
+        job: "Acting",
+        jobTranslatationM: "Acteur",
+        jobTranslatationF: "Actrice",
+        order: 5
+      },
+      {
+        job: "Writing",
+        jobTranslatationM: "Scénariste",
+        jobTranslatationF: "Scénariste",
+        order: 5
+      },
+      {
+        job: "Directing",
+        jobTranslatationM: "Réalisateur",
+        jobTranslatationF: "Réalisatrice",
+        order: 5
+      },
+    ],
+
     movieCrewFormat(crew) {
         const movieCrewFormat = []
-        const jobsTranslation = [
-          {
-            job: "Director",
-            jobTranslatationM: "Réalisateur",
-            jobTranslatationF: "Réalisatrice",
-            order: 1
-          },
-          {
-            job: "Writer",
-            jobTranslatationM: "Scénariste",
-            jobTranslatationF: "Scénariste",
-            order: 2
-          },
-          {
-            job: "Scenario Writer",
-            jobTranslatationM: "Scénariste",
-            jobTranslatationF: "Scénariste",
-            order: 2
-          },
-          {
-            job: "Screenplay",
-            jobTranslatationM: "Scénariste",
-            jobTranslatationF: "Scénariste",
-            order: 2
-          },
-          {
-            job: "Assistant Director",
-            jobTranslatationM: "Assistant Réalisateur",
-            jobTranslatationF: "Assistant Réalisatrice",
-            order: 3
-          },
-          {
-            job: "Producer",
-            jobTranslatationM: "Producteur",
-            jobTranslatationF: "Productrice",
-            order: 3
-          },
-          {
-            job: "Novel",
-            jobTranslatationM: "Roman",
-            jobTranslatationF: "Roman",
-            order: 3
-          },
-          {
-            job: "Editor",
-            jobTranslatationM: "Monteur",
-            jobTranslatationF: "Monteuse",
-            order: 4
-          },
-          {
-            job: "Music",
-            jobTranslatationM: "Musique",
-            jobTranslatationF: "Musique",
-            order: 4
-          },
-          {
-            job: "Sound",
-            jobTranslatationM: "Son",
-            jobTranslatationF: "Son",
-            order: 4
-          },
-          {
-            job: "Production Design",
-            jobTranslatationM: "Chef décorateur",
-            jobTranslatationF: "Chef décoratrice",
-            order: 4
-          },
-          {
-            job: "Set Decoration",
-            jobTranslatationM: "Décorateur",
-            jobTranslatationF: "Décoratrice",
-            order: 4
-          },
-          {
-            job: "Director of Photography",
-            jobTranslatationM: "Directeur de la photographie",
-            jobTranslatationF: "Directrice de la photographie",
-            order: 4
-          },
-          {
-            job: "Still Photographer",
-            jobTranslatationM: "Photographe",
-            jobTranslatationF: "Photographe",
-            order: 4
-          },
-          {
-            job: "Conductor",
-            jobTranslatationM: "Chef d'orchestre",
-            jobTranslatationF: "Chef d'orchestre",
-            order: 4
-          },
-          {
-            job: "Original Music Composer",
-            jobTranslatationM: "Compositeur de la bande originale",
-            jobTranslatationF: "Compositrice de la bande originale",
-            order: 4
-          },
-          {
-            job: "Adaptation",
-            jobTranslatationM: "Adaptation",
-            jobTranslatationF: "Adaptation",
-            order: 4
-          }
-        ];
         crew.forEach(person => {
           let personJob = person.job
           let personPriority = 5;
-          let jobIsInArray = jobsTranslation.find(p => p.job == personJob);
+          let jobIsInArray = this.jobsTranslation.find(p => p.job == personJob);
           if (jobIsInArray) {
             personJob = jobIsInArray.jobTranslatationM;
             if (person.gender == 1) {
@@ -138,6 +157,55 @@ export default {
           }
         });
         return movieCrewFormat;
+    },
+    
+    filmographyFormat(credits) {
+      const movieCreditsFormat = []
+      credits.forEach(movie => {
+        this.posterPath(movie)
+
+        let jobIsInArray = this.jobsTranslation.find(p => p.job == movie.job);
+        if (jobIsInArray) {
+          movie.job = jobIsInArray.jobTranslatationM;
+          if (movie.gender == 1) {
+            movie.job = jobIsInArray.jobTranslatationF;
+          }
+        }
+
+        let movieIsInArray = movieCreditsFormat.find(m => m.id == movie.id);
+        if (!movieIsInArray) {
+            if (movie.job) {
+              movie.job = [{ name: movie.job }];
+            }
+            if (movie.character) {
+              movie.character = [{ name: movie.character }];
+            }
+            if (!movie.release_date) {
+              if(movie.first_air_date) {
+                movie.release_date = movie.first_air_date;
+              } else {
+                movie.release_date = "0001-01-01";
+              }
+            }
+            movieCreditsFormat.push(movie);
+        } else {
+          if (movie.job) {
+            if (!movieIsInArray.job) {
+              movie.job = [{ name: movie.job }];
+            } else {
+              movieIsInArray.job.push({name: movie.job});
+            }
+          }
+          if (movie.character) {
+            if(!movieIsInArray.character) {
+              movie.character = [{ name: movie.character }];
+            } else {
+              movieIsInArray.character.push({ name: movie.character });
+            }
+          }
+        }
+      });
+      return movieCreditsFormat;
     },
 
     backdropPath(movie) {
@@ -170,9 +238,23 @@ export default {
     profilePath(person) {
         let profilePath = null;
         if (person.profile_path) {
-            profilePath = "https://image.tmdb.org/t/p/w138_and_h175_face" + person.profile_path;
+            profilePath = "https://image.tmdb.org/t/p/w300" + person.profile_path;
         }
         person.profile_path = profilePath;
+    },
+
+    knownForDepartment(person) {
+
+      let personJob = person.known_for_department;
+      let jobIsInArray = this.jobsTranslation.find(p => p.job == personJob);
+      if (jobIsInArray) {
+        personJob = jobIsInArray.jobTranslatationM;
+        if (person.gender == 1) {
+          personJob = jobIsInArray.jobTranslatationF;
+        }
+      }
+      person.known_for_department = personJob;
+
     },
 
     formatImgForGallery(arrayOfImg){
@@ -181,7 +263,14 @@ export default {
 
     sortedByOrder(array) {
       array.sort(function(a, b) {
-        return a.order  - b.order
+        return a.order - b.order
+      })
+      return array
+    },
+
+    sortedByDate(array) {
+      array.sort(function(a, b) {
+        return new Date(b.release_date) - new Date(a.release_date);
       })
       return array
     },
