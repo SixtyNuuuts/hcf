@@ -1,23 +1,24 @@
 <template>
-  <section class="person-images">
-  <el-carousel height="500px" :interval="4000">
-    <el-carousel-item v-for="(img, i) in personImages" :key="i">
+  <section class="images-gallery">
+  <el-carousel height="500px" :interval="4000" indicator-position="none">
+    <el-carousel-item v-for="(img, i) in images" :key="i">
       <img :src="img.src" class="image">
     </el-carousel-item>
   </el-carousel>
-  <vue-preview :slides="personImages"></vue-preview>
+  <vue-preview :slides="images"></vue-preview>
   </section>
 </template>
 
 <script>
 
 export default {
-  name: "PersonImages",
+  name: "ImagesGallery",
   props: {
-    personImages: Array
+    images: Array,
+    type: String,
   },
   mounted() {
-    this.personImages.forEach(img => {
+    this.images.forEach(img => {
       if(!img.msrc) {
         img.msrc = img.src
       }
@@ -27,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss">
-.person-images {
+.images-gallery {
   background-color: black;
   padding-top: 2rem;
 

@@ -96,11 +96,17 @@ export default new Vuex.Store({
     ADD_MOVIE_IMAGES_LIST_TO_CURRENT_MOVIE_IMAGES (state, payload) {
       state.currentMovieImages = [...state.currentMovieImages, ...payload]
     },
-    ADD_IMAGES_TO_MOVIE_IMAGES (state, payload) {
+    ADD_IMAGE_TO_MOVIE_IMAGES (state, payload) {
       state.currentMovieImages.push(payload)
     },
-    REMOVE_IMAGES_FROM_MOVIE_IMAGES (state, payload) {
+    ADD_IMAGE_TO_PERSON_IMAGES (state, payload) {
+      state.currentPersonImages.push(payload)
+    },
+    REMOVE_IMAGE_FROM_MOVIE_IMAGES (state, payload) {
       state.currentMovieImages.splice(state.currentMovieImages.indexOf(payload), 1)
+    },
+    REMOVE_IMAGE_FROM_PERSON_IMAGES (state, payload) {
+      state.currentPersonImages.splice(state.currentPersonImages.indexOf(payload), 1)
     },
     RESET_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY (state) {
       state.currentMovieListByYear = []
@@ -153,6 +159,24 @@ export default new Vuex.Store({
     },
     REMOVE_PERSON_FROM_MOVIE_CAST (state, payload) {
       state.currentMovieCast.splice(state.currentMovieCast.indexOf(payload), 1)
+    },
+    ADD_FILM_TO_FILMO (state, payload) {
+      state.currentPersonCredits.push(payload)
+    },
+    ADD_JOB_TO_MOVIEFILMO (state, payload) {
+      payload.movie.job.push(payload.job)
+    },
+    REMOVE_MOVIE_FROM_FILMO (state, payload) {
+      state.currentPersonCredits.splice(state.currentPersonCredits.indexOf(payload), 1)
+    },
+    REMOVE_JOB_FROM_MOVIEFILMO (state, payload) {
+      payload.movie.job.splice(payload.movie.job.indexOf(payload.job), 1);
+    },
+    ADD_CHARAC_TO_MOVIEFILMO (state, payload) {
+      payload.movie.character.push(payload.character)
+    },
+    REMOVE_CHARAC_FROM_MOVIEFILMO (state, payload) {
+      payload.movie.character.splice(payload.movie.character.indexOf(payload.character), 1);
     },
   },
   actions: {
@@ -311,50 +335,50 @@ export default new Vuex.Store({
       })
     },
     getCurrentPerson ({commit}, payload) {
-      // db.collection("persons").doc(payload).get()
-      // .then((doc) => {
-      //     if (doc.exists && doc.data()) {
-      //       console.log("PERSON : FIREBASE");
-      //       commit('SET_CURRENT_PERSON', doc.data());
-      //     } else {
-      //       console.log("PERSON : TMDB");
+      db.collection("persons").doc(payload).get()
+      .then((doc) => {
+          if (doc.exists && doc.data()) {
+            console.log("PERSON : FIREBASE");
+            commit('SET_CURRENT_PERSON', doc.data().person);
+          } else {
+            console.log("PERSON : TMDB");
             tmdbApi.getPersonDetails(payload).then(res => {
               const person = res.data
               f.profilePath(person)
               f.knownForDepartment(person)
               commit('SET_CURRENT_PERSON', person);
             }).catch(function(error) {console.log("Error TMDB :", error)});      
-      //     }
-      // }).catch(function(error) {
-      //     console.log("Error firebase:", error);
-      // });
+          }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
     },
     getCurrentPersonCredits ({commit}, payload) {
-      // db.collection("persons").doc(payload).get()
-      // .then((doc) => {
-      //     if (doc.exists && doc.data()) {
-      //       console.log("PERSON : FIREBASE");
-      //       commit('SET_CURRENT_PERSON', doc.data());
-      //     } else {
-      //       console.log("PERSON : TMDB");
+      db.collection("persons").doc(payload).get()
+      .then((doc) => {
+          if (doc.exists && doc.data()) {
+            console.log("PERSON CREDITS : FIREBASE");
+            commit('SET_CURRENT_PERSON_CREDITS', doc.data().personCredits);
+          } else {
+            console.log("PERSON CREDITS : TMDB");
             tmdbApi.getPersonCredits(payload).then(res => {
               const credits = [...res.data.cast, ...res.data.crew]
               const creditsFormat = f.filmographyFormat(credits)
               commit('SET_CURRENT_PERSON_CREDITS', creditsFormat);
             }).catch(function(error) {console.log("Error TMDB :", error)});      
-      //     }
-      // }).catch(function(error) {
-      //     console.log("Error firebase:", error);
-      // });
+          }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
     },
     getCurrentPersonImages ({commit}, payload) {
-      // db.collection("persons").doc(payload).get()
-      // .then((doc) => {
-      //     if (doc.exists && doc.data()) {
-      //       console.log("PERSON : FIREBASE");
-      //       commit('SET_CURRENT_PERSON', doc.data());
-      //     } else {
-      //       console.log("PERSON : TMDB");
+      db.collection("persons").doc(payload).get()
+      .then((doc) => {
+          if (doc.exists && doc.data()) {
+            console.log("PERSON IMAGES : FIREBASE");
+            commit('SET_CURRENT_PERSON_IMAGES', doc.data().personImages);
+          } else {
+            console.log("PERSON IMAGES : TMDB");
             tmdbApi.getPersonImages(payload).then(res => {
               if(res.data.profiles) {
                 let imgProfiles = res.data.profiles
@@ -365,10 +389,10 @@ export default new Vuex.Store({
                 commit('SET_CURRENT_PERSON_IMAGES', imgProfiles);
               }
             }).catch(function(error) {console.log("Error TMDB :", error)});      
-      //     }
-      // }).catch(function(error) {
-      //     console.log("Error firebase:", error);
-      // });
+          }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
     },
   },
   getters: {

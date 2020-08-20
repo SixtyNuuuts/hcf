@@ -6,7 +6,6 @@
         <router-link :to="'/film/' + movie.id">
           <div v-if="movie.release_date && movie.release_date!='0001-01-01'" class="year">{{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }}</div>
           <div v-else class="year">----</div>
-          <!-- <div v-if="movie.first_air_date" class="year">{{ movie.first_air_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }}</div> -->
           <div class="separator"></div>
           <div class="details">
             <div class="poster">
@@ -17,9 +16,8 @@
             </div>
             <div class="infos">
               <h2 v-if="movie.original_title" class="title">{{ movie.original_title }}</h2>
-              <div v-if="movie.job" class="role"><span v-for="job in movie.job" :key="job.name"><strong>{{ job.name }}</strong></span></div>
-              <div v-if="movie.character" class="role"><span v-for="character in movie.character" :key="character.name">En tant que <strong>{{ character.name }}</strong></span></div>
-              <!-- <div v-if="movie.overview" class="overview">{{ movie.overview }}</div> -->
+              <div v-if="movie.job.length" class="role"><span v-for="job in movie.job" :key="job.name"><strong>{{ job.name }}</strong></span></div>
+              <div v-if="movie.character.length" class="role"><span v-for="character in movie.character" :key="character.name">En tant que <strong>{{ character.name }}</strong></span></div>
             </div>
           </div>
         </router-link>
@@ -110,11 +108,6 @@ export default {
       {
         border-radius: 3px;
         background-color: rgba(56, 52, 47, 0.699);
-        // background-image: -webkit-linear-gradient(90deg,
-        //                       transparent,
-        //                       rgba(0, 0, 0, 0.4) 50%,
-        //                       transparent,
-        //                       transparent)
       }
 
       .filmo-item {
@@ -154,7 +147,6 @@ export default {
               width: 6px;
               height: 6px;
               border-radius: 3px;
-              // border: 1px solid $--color-hcf-black;
               background-color:  $--color-hcf-black;
               position: relative;
               top: 45%;
@@ -198,15 +190,12 @@ export default {
                 font-family: 'Righteous';
                 font-size: 1.2rem;
                 font-weight: 500;
-                margin-right: 0.7rem;
                 color: #a51f1e;
                 text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
               }
 
               .role {
-                  // max-width: 18rem;
-                  // overflow: hidden;
-                  // text-overflow: ellipsis;
+                  margin-left: 0.7rem;
 
                 span {
                   &:before {

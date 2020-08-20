@@ -17,7 +17,7 @@ Vue.use(VueRouter)
         import(/* webpackChunkName: "films" */ "../views/Movies.vue")
     },
     {
-      path: "/film/:type?/:id",
+      path: "/film/:view?/:id",
       name: "film",
       component: () => import(/* webpackChunkName: "film" */ "../views/Movie.vue")
     },
@@ -28,7 +28,7 @@ Vue.use(VueRouter)
         import(/* webpackChunkName: "films" */ "../views/Persons.vue")
     },
     {
-      path: "/person/:type?/:id",
+      path: "/person/:view?/:id",
       name: "person",
       component: () => import(/* webpackChunkName: "film" */ "../views/Person.vue")
     },

@@ -176,10 +176,10 @@ export default {
         if (!movieIsInArray) {
             if (movie.job) {
               movie.job = [{ name: movie.job }];
-            }
+            } else { movie.job = [] }
             if (movie.character) {
               movie.character = [{ name: movie.character }];
-            }
+            } else { movie.character = [] }
             if (!movie.release_date) {
               if(movie.first_air_date) {
                 movie.release_date = movie.first_air_date;
@@ -195,14 +195,14 @@ export default {
             } else {
               movieIsInArray.job.push({name: movie.job});
             }
-          }
+          } else { movie.job = [] }
           if (movie.character) {
             if(!movieIsInArray.character) {
               movie.character = [{ name: movie.character }];
             } else {
               movieIsInArray.character.push({ name: movie.character });
             }
-          }
+          } else { movie.character = [] }
         }
       });
       return movieCreditsFormat;

@@ -27,6 +27,11 @@ export default {
       `${baseUrl}/movie/${id}/images?api_key=${apiKey}`
     );
   },
+  searchMovie(query, page = 1) {
+    return axios.get(
+      `${baseUrl}/search/movie?api_key=${apiKey}&query=${query}&language=fr-FR&page=${page}`
+    );
+  },
   // PERSON ///////////////////////////////////
   getPersonDetails(id = 0) {
     return axios.get(

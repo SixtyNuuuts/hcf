@@ -338,7 +338,7 @@ export default {
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {
-            this.$db.collection("movies").doc(this.$parent.id).update({ movieDocumented: this.$store.state.currentDocumentedMovie, documented: true, year: movieYear })
+            this.$db.collection("movies").doc(this.$parent.id).update({ movieDocumented: this.$store.state.currentDocumentedMovie, documented: true })
             .then(() => {
                 console.log("movieDocumented ok");
                 this.$message({
@@ -350,7 +350,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieDocumented: this.$store.state.currentDocumentedMovie, documented: true, year: movieYear })
+            this.$db.collection("movies").doc(this.$parent.id).set({ movieDocumented: this.$store.state.currentDocumentedMovie, documented: true, movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, movieCast: this.$store.state.currentMovieCast, movieImages: this.$store.state.currentMovieImages, year: movieYear })
             .then(() => {
                 console.log("movieDocumented ok");
                 this.$message({

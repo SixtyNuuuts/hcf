@@ -60,10 +60,10 @@ nav {
 }
 ////////////////////////////////////
 
-/// Component : MovieEdit / Inputs 
+/// Components : Edit / Inputs 
 
 
-.movie-info {
+.movie-info, .person-info {
 
     input, textarea {
         background-color: rgba(156, 156, 156, 0.315);
@@ -93,7 +93,27 @@ nav {
 
 }
 
-.movie-info, .movie-cast {
+.person-filmo {
+
+    .genres > div, .job {
+        
+        input {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+            &::placeholder {
+                color: #c2c2c280;
+            }
+        }
+
+        button {
+            border-radius: 0 4px 4px 0;
+        }
+
+    }
+
+}
+
+.movie-info, .movie-cast, .person-info, .person-filmo {
 
     button {
         &.is-plain:not(:hover) {

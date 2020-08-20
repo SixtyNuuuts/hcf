@@ -24,6 +24,7 @@
             <div class="release-date">
               <label for="release_date">Date de sortie</label>
               <el-date-picker
+                format="dd-MM-yyyy"
                 value-format="yyyy-MM-dd"
                 type="date"
                 name="release_date"
@@ -277,7 +278,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, year: movieYear })
+            this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, movieCast: this.$store.state.currentMovieCast, movieImages: this.$store.state.currentMovieImages, year: movieYear })
             .then(() => {
                 console.log("le Film a été créé");
                 console.log("movie et movieCrew bien enregistré");
@@ -326,7 +327,7 @@ export default {
 
         label {
           text-transform: uppercase;
-          font-size: 1.2em;
+          font-size: 1em;
           font-weight: 800;
           color: #f8f0e0;
           margin-bottom: 0.3em;

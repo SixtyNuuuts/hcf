@@ -1,17 +1,17 @@
 <template>
   <section id="movie">
-    <LoginAdmin v-if="type === 'edit' && !isAdmin" />
-    <div v-else-if="type === 'edit' && isAdmin" >
+    <LoginAdmin v-if="view === 'edit' && !isAdmin" />
+    <div v-else-if="view === 'edit' && isAdmin" >
       <MovieDetailsEdit :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCastEdit :movieCast="currentMovieCast" />
       <MovieDocuEdit :movieDocumented="currentMovieDocumented" />
-      <MovieImagesEdit :movieImages="currentMovieImages" />
+      <ImagesGalleryEdit :images="currentMovieImages" />
     </div>
     <div v-else>
       <MovieDetails :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCast :movieCast="currentMovieCast" />
       <MovieDocu v-if="currentMovieDocumented.colLeftContent.length || currentMovieDocumented.colRightContent.length" :movieDocumented="currentMovieDocumented" />
-      <MovieImages v-if="currentMovieImages.length" :movieImages="currentMovieImages"/>
+      <ImagesGallery v-if="currentMovieImages.length" :images="currentMovieImages"/>
     </div>
   </section>
 </template>
@@ -20,29 +20,29 @@
   import MovieDetails from "@/components/Movie/MovieDetails.vue";
   import MovieCast from "@/components/Movie/MovieCast.vue";
   import MovieDocu from "@/components/Movie/MovieDocu.vue";
-  import MovieImages from "@/components/Movie/MovieImages.vue";
+  import ImagesGallery from "@/components/ImagesGallery.vue";
+  import LoginAdmin from "@/components/Edit/LoginAdmin.vue";
   import MovieDetailsEdit from "@/components/Movie/MovieEdit/MovieDetailsEdit.vue";
   import MovieCastEdit from "@/components/Movie/MovieEdit/MovieCastEdit.vue";
   import MovieDocuEdit from "@/components/Movie/MovieEdit/MovieDocuEdit.vue";
-  import MovieImagesEdit from "@/components/Movie/MovieEdit/MovieImagesEdit.vue";
-  import LoginAdmin from "@/components/Movie/MovieEdit/LoginAdmin.vue";
+  import ImagesGalleryEdit from "@/components/Edit/ImagesGalleryEdit.vue";
   import f from "../services/func";
 
   export default {
     name: "Movie",
     components: {
+      MovieDetails,
+      MovieCast,
+      MovieDocu,
+      ImagesGallery,
       LoginAdmin,
       MovieDetailsEdit,
       MovieCastEdit,
       MovieDocuEdit,
-      MovieImagesEdit,
-      MovieDetails,
-      MovieCast,
-      MovieDocu,
-      MovieImages
+      ImagesGalleryEdit,
     },
     created() {
-      this.type = this.$route.params.type
+      this.view = this.$route.params.view
       this.id = this.$route.params.id
       this.$store.dispatch("getCurrentMovie", this.id)
       this.$store.dispatch("getMovieCrew", this.id)
@@ -53,7 +53,7 @@
     data() {
       return {
         id: null,
-        type: null
+        view: null
       };
     },
     computed: {

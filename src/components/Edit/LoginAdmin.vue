@@ -66,7 +66,7 @@ export default {
     position: relative;
     text-align: center;
     z-index: 2;
-    background: url("../../../assets/img/box-border-patern.png") repeat 0 0
+    background: url("../../assets/img/box-border-patern.png") repeat 0 0
       $--color-hcf-beige;
 
     &:before {
