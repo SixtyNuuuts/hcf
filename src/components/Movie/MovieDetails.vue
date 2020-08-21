@@ -14,7 +14,7 @@
             <h3>Date de Sortie</h3>
             {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
           </div>
-          <div v-if="movie.genres.length > 0" class="fact genres">
+          <div v-if="movie.genres && movie.genres.length > 0" class="fact genres">
             <h3>Genre(s)</h3>
             <div v-for="(genre) in movie.genres" :key="genre.id">
               {{ genre.name }}
@@ -32,7 +32,7 @@
               <p>{{ movie.overview }}</p>
             </div>
           </div>
-          <div v-if="movieCrew.length > 0" id="crew">
+          <div v-if="movieCrew && movieCrew.length > 0" id="crew">
             <h3>l'Équipe technique</h3>
             <CrewCarousel :movieCrew="movieCrew" />
           </div>

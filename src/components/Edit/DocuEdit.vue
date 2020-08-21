@@ -1,9 +1,9 @@
 <template>
-  <section id="moviedocu">
-    <div class="moviedocu_border">
-      <div class="moviedocu_container">
+  <section id="docu">
+    <div class="docu_border">
+      <div class="docu_container">
         <h1>EN SAVOIR +</h1>
-        <div class="moviedocu_content">
+        <div class="docu_content">
           <div class="col-left">
             <el-button-group>
               <el-button type="success" icon="el-icon-tickets" @click="addTextCL">Texte</el-button>
@@ -12,7 +12,7 @@
               <el-button type="success" icon="el-icon-video-play"  @click="addYoutubeCL">Youtube</el-button>
               <el-button type="success" icon="el-icon-video-play"  @click="addAudioCL">Audio</el-button>
             </el-button-group>
-            <div v-for="(item, index) in colLeftMovieDocu" :key="index">
+            <div v-for="(item, index) in colLeftDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
                 <el-button
                   type="primary"
@@ -120,7 +120,7 @@
               <el-button type="success" icon="el-icon-video-play"  @click="addYoutubeCR">Youtube</el-button>
               <el-button type="success" icon="el-icon-video-play"  @click="addAudioCR">Audio</el-button>
             </el-button-group>
-            <div v-for="(item, index) in colRightMovieDocu" :key="index">
+            <div v-for="(item, index) in colRightDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
               <el-button
                 type="primary"
@@ -224,9 +224,18 @@
       </div>
     </div>
     <el-button
+      v-if="docuType === 'movie'"
       type="success"
       icon="el-icon-check"
       @click="saveMovieDocumented"
+      class="save-btn"
+    >Enregistrer les modifications
+    </el-button>
+    <el-button
+      v-if="docuType === 'person'"
+      type="success"
+      icon="el-icon-check"
+      @click="savePersonDocumented"
       class="save-btn"
     >Enregistrer les modifications
     </el-button>
@@ -238,12 +247,13 @@ import UploadFile from "@/components/UploadFile.vue";
 import f from "@/services/func";
 
 export default {
-  name: "MovieDocuEdit",
+  name: "DocuEdit",
   components: {
     UploadFile
   },
   props: {
-    movieDocumented: Object,
+    docu: Object,
+    docuType: String,
   },
   data() {
     return {
@@ -263,8 +273,20 @@ export default {
         [],
         [{ 'size': ['small', false, 'large', 'huge'] }],
         ["clean"],
-      ]
+      ],
+      mutationAdd : '',
+      mutationRemove : ''
     };
+  },
+  mounted() {
+    if (this.docuType === 'movie') {
+      this.mutationAdd = 'ADD_CONTENT_TO_DOCUMENTED_MOVIE';
+      this.mutationRemove = 'REMOVE_CONTENT_FROM_DOCUMENTED_MOVIE';
+    }
+    if (this.docuType === 'person') {
+      this.mutationAdd = 'ADD_CONTENT_TO_DOCUMENTED_PERSON';
+      this.mutationRemove = 'REMOVE_CONTENT_FROM_DOCUMENTED_PERSON';
+    }
   },
   methods: {
     setUploadFilePath(item, filePath) {
@@ -274,34 +296,34 @@ export default {
       item.posterpath = posterPath
     },
     addTextCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'text', content:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'left', content: {type: 'text', content:'', order: this.colLeftDocu.length} })
     },
     addPictureCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'picture', path:'', width:'60', caption:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'left', content: {type: 'picture', path:'', width:'60', caption:'', order: this.colLeftDocu.length} })
     },
     addVideoCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'left', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colLeftDocu.length} })
     },
     addYoutubeCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'youtube', path:'', posterpath:'', height:'250', caption:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'left', content: {type: 'youtube', path:'', posterpath:'', height:'250', caption:'', order: this.colLeftDocu.length} })
     },
     addAudioCL() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'left', content: {type: 'audio', path:'', caption: '', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'left', content: {type: 'audio', path:'', caption: '', order: this.colLeftDocu.length} })
     },
     addTextCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'text', content:'', order: this.colRightMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'right', content: {type: 'text', content:'', order: this.colRightDocu.length} })
     },
     addPictureCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'picture', path:'', width:'60', caption:'', order: this.colRightMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'right', content: {type: 'picture', path:'', width:'60', caption:'', order: this.colRightDocu.length} })
     },
     addVideoCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colRightMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'right', content: {type: 'video', path:'', posterpath:'', height:'150', caption:'', order: this.colRightDocu.length} })
     },
     addYoutubeCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'youtube', path:'', posterpath:'', height:'250', caption:'', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'right', content: {type: 'youtube', path:'', posterpath:'', height:'250', caption:'', order: this.colRightDocu.length} })
     },
     addAudioCR() {
-      this.$store.commit('ADD_CONTENT_TO_DOCUMENTED_MOVIE', { col: 'right', content: {type: 'audio', path:'', caption: '', order: this.colLeftMovieDocu.length} })
+      this.$store.commit(this.mutationAdd, { col: 'right', content: {type: 'audio', path:'', caption: '', order: this.colRightDocu.length} })
     },
     deleteContentCL(content) {
       this.$confirm(
@@ -313,7 +335,7 @@ export default {
         }
       )
         .then(() => {
-          this.$store.commit('REMOVE_CONTENT_FROM_DOCUMENTED_MOVIE', { col: 'left', content })
+          this.$store.commit(this.mutationRemove, { col: 'left', content })
         })
         .catch(() => {
         });
@@ -328,7 +350,7 @@ export default {
         }
       )
         .then(() => {
-          this.$store.commit('REMOVE_CONTENT_FROM_DOCUMENTED_MOVIE', { col: 'right', content })
+          this.$store.commit(this.mutationRemove, { col: 'right', content })
         })
         .catch(() => {
         });
@@ -366,13 +388,43 @@ export default {
           console.log("Error getting document:", error);
       });
     },
+    savePersonDocumented() {
+      this.$db.collection("persons").doc(this.$parent.id).get()
+      .then((doc) => {
+          if (doc.exists) {
+            this.$db.collection("persons").doc(this.$parent.id).update({ personDocumented: this.$store.state.currentDocumentedPerson, documented: true })
+            .then(() => {
+                this.$message({
+                  type: 'info',
+                  message: 'la personnalité a bien été documenté'
+                });
+            })
+            .catch(function(error) {
+                console.error("Erreur lors de la sauvegarde : ", error);
+            });
+          } else {
+            this.$db.collection("persons").doc(this.$parent.id).set({ personDocumented: this.$store.state.currentDocumentedPerson, documented: true, person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages })
+            .then(() => {
+                this.$message({
+                  type: 'info',
+                  message: 'la personnalité a bien été documenté'
+                });
+            })
+            .catch(function(error) {
+                console.error("Erreur lors de la sauvegarde : ", error);
+            });
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+    },
   },
   computed: {
-    colLeftMovieDocu() {
-      return f.sortedByOrder(this.movieDocumented.colLeftContent)
+    colLeftDocu() {
+      return f.sortedByOrder(this.docu.colLeftContent)
     },
-    colRightMovieDocu() {
-      return f.sortedByOrder(this.movieDocumented.colRightContent)
+    colRightDocu() {
+      return f.sortedByOrder(this.docu.colRightContent)
     }
   }
 }
@@ -383,7 +435,7 @@ export default {
   @import '@/styles/color.scss';  
   @import '@/styles/shadow.scss';  
 
-  #moviedocu {
+  #docu {
     box-shadow: $--box-shadow-dark-5;
     position: relative;
     width: 100%;
@@ -402,12 +454,12 @@ export default {
       right: 3em;
     }
 
-    .moviedocu_border {
+    .docu_border {
       position: relative;
       width: 100%;
 
-      .moviedocu_container {
-        background: url('../../../assets/img/main-pattern.jpg') repeat scroll left top;
+      .docu_container {
+        background: url('../../assets/img/main-pattern.jpg') repeat scroll left top;
         padding: 2%;
         padding-bottom: 12%;
 
@@ -429,7 +481,7 @@ export default {
             display: block;
             width: 40%;
             height: 22px;
-            background: url("../../../assets/img/box-border-patern.png") repeat 0 0;
+            background: url("../../assets/img/box-border-patern.png") repeat 0 0;
           }
 
           &:before {
@@ -442,7 +494,7 @@ export default {
 
         }
 
-        .moviedocu_content {
+        .docu_content {
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -525,7 +577,7 @@ export default {
                   width: 100%;
                   .ribbon-hole {
                     margin: 0;
-                    background: url("../../../assets/img/hole.svg") repeat-x 0 bottom, $--color-hcf-black;
+                    background: url("../../assets/img/hole.svg") repeat-x 0 bottom, $--color-hcf-black;
                   }
                   iframe {
                     width: 99%;
@@ -569,13 +621,13 @@ export default {
 
   @media (min-width: $--bp-md) { 
 
-    #moviedocu {
+    #docu {
 
-      .moviedocu_border {
+      .docu_border {
 
-        .moviedocu_container {
+        .docu_container {
 
-          .moviedocu_content {
+          .docu_content {
             flex-direction: row;
           }
         }
@@ -585,12 +637,12 @@ export default {
 
   @media (min-width: $--bp-lg) { 
     
-    #moviedocu {
+    #docu {
       width: 102%;
       left: -0.9%;
 
-      .moviedocu_border {
-        background: url('../../../assets/img/content-tail-left.png') repeat-y 0 0, url('../../../assets/img/content-tail-right.png') repeat-y right 0;
+      .docu_border {
+        background: url('../../assets/img/content-tail-left.png') repeat-y 0 0, url('../../assets/img/content-tail-right.png') repeat-y right 0;
         padding: 0 3px;
         width: 101%;
         left: -0.97%;

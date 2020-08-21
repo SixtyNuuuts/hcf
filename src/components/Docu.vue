@@ -1,11 +1,11 @@
 <template>
-  <section id="moviedocu">
-    <div class="moviedocu_border">
-      <div class="moviedocu_container">
+  <section id="docu">
+    <div class="docu_border">
+      <div class="docu_container">
         <h1>EN SAVOIR +</h1>
-        <div class="moviedocu_content">
+        <div class="docu_content">
           <div class="col-left">
-            <div v-for="(item, index) in colLeftMovieDocu" :key="index">
+            <div v-for="(item, index) in colLeftDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
                 <div class="ql-editor" v-html="item.content"></div>
               </div>
@@ -52,7 +52,7 @@
             </div> 
           </div>
           <div class="col-right">
-            <div v-for="(item, index) in colRightMovieDocu" :key="index">
+            <div v-for="(item, index) in colRightDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
                 <div class="ql-editor" v-html="item.content"></div>
               </div>
@@ -108,38 +108,38 @@
 import f from "@/services/func";
 
 export default {
-  name: "MovieDocu.",
+  name: "Docu",
   props: {
-    movieDocumented: Object,
+    docu: Object,
   },
   computed: {
-    colLeftMovieDocu() {
-      return f.sortedByOrder(this.movieDocumented.colLeftContent)
+    colLeftDocu() {
+      return f.sortedByOrder(this.docu.colLeftContent)
     },
-    colRightMovieDocu() {
-      return f.sortedByOrder(this.movieDocumented.colRightContent)
+    colRightDocu() {
+      return f.sortedByOrder(this.docu.colRightContent)
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-  @import '../../styles/bp.scss';  
-  @import '../../styles/color.scss';  
-  @import '../../styles/shadow.scss';  
+  @import '@/styles/bp.scss';  
+  @import '@/styles/color.scss';  
+  @import '@/styles/shadow.scss';  
 
-  #moviedocu {
+  #docu {
     box-shadow: $--box-shadow-dark-5;
     position: relative;
     width: 100%;
     z-index: 100;
 
-    .moviedocu_border {
+    .docu_border {
       position: relative;
       width: 100%;
 
-      .moviedocu_container {
-        background: url('../../assets/img/main-pattern.jpg') repeat scroll left top;
+      .docu_container {
+        background: url('../assets/img/main-pattern.jpg') repeat scroll left top;
         padding: 2%;
         padding-bottom: 4%;
 
@@ -161,7 +161,7 @@ export default {
             display: block;
             width: 40%;
             height: 22px;
-            background: url("../../assets/img/box-border-patern.png") repeat 0 0;
+            background: url("../assets/img/box-border-patern.png") repeat 0 0;
           }
 
           &:before {
@@ -174,7 +174,7 @@ export default {
 
         }
 
-        .moviedocu_content {
+        .docu_content {
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -244,7 +244,7 @@ export default {
                   width: 100%;
                   .ribbon-hole {
                     margin: 0;
-                    background: url("../../assets/img/hole.svg") repeat-x 0 bottom, $--color-hcf-black;
+                    background: url("../assets/img/hole.svg") repeat-x 0 bottom, $--color-hcf-black;
                   }
                   iframe {
                     width: 99%;
@@ -292,13 +292,13 @@ export default {
 
   @media (min-width: $--bp-md) { 
 
-    #moviedocu {
+    #docu {
 
-      .moviedocu_border {
+      .docu_border {
 
-        .moviedocu_container {
+        .docu_container {
 
-          .moviedocu_content {
+          .docu_content {
             flex-direction: row;
           }
         }
@@ -308,12 +308,12 @@ export default {
 
   @media (min-width: $--bp-lg) { 
     
-    #moviedocu {
+    #docu {
       width: 102%;
       left: -0.9%;
 
-      .moviedocu_border {
-        background: url('../../assets/img/content-tail-left.png') repeat-y 0 0, url('../../assets/img/content-tail-right.png') repeat-y right 0;
+      .docu_border {
+        background: url('../assets/img/content-tail-left.png') repeat-y 0 0, url('../assets/img/content-tail-right.png') repeat-y right 0;
         padding: 0 3px;
         width: 101%;
         left: -0.97%;

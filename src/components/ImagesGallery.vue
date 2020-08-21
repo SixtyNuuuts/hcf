@@ -15,7 +15,6 @@ export default {
   name: "ImagesGallery",
   props: {
     images: Array,
-    type: String,
   },
   mounted() {
     this.images.forEach(img => {

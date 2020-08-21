@@ -51,7 +51,11 @@ export default new Vuex.Store({
     currentYearSelected: 1930,
     currentPerson: {},
     currentPersonCredits: [],
-    currentPersonImages: []
+    currentPersonImages: [],
+    currentDocumentedPerson: {
+      colLeftContent: [],
+      colRightContent: [],
+    },
   },
   mutations: {
     SET_CURRENT_YEAR_SELECTED (state, payload) {
@@ -90,6 +94,9 @@ export default new Vuex.Store({
     SET_CURRENT_PERSON_IMAGES (state, payload) {
       state.currentPersonImages = payload;
     },
+    SET_CURRENT_PERSON_DOCUMENTED (state, payload) {
+      state.currentDocumentedPerson = payload;
+    },
     ADD_MOVIE_LIST_PAGE_TO_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY (state, payload) {
       state.currentMovieListByYear = [...state.currentMovieListByYear, ...payload]
     },
@@ -114,6 +121,15 @@ export default new Vuex.Store({
     ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state, payload) {
       state.currentDocumentedMovieListByYear.push(payload);
     },
+    RESET_CURRENT_MOVIE (state) {
+      state.currentMovie = {}
+    },
+    RESET_CURRENT_MOVIE_CREW (state) {
+      state.currentMovieCrew = []
+    },
+    RESET_CURRENT_MOVIE_CAST (state) {
+      state.currentMovieCast = []
+    },
     RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state) {
       state.currentDocumentedMovieListByYear = []
     },
@@ -122,6 +138,12 @@ export default new Vuex.Store({
     },
     RESET_CURRENT_MOVIE_DOCUMENTED (state) {
       state.currentDocumentedMovie = {
+        colLeftContent: [],
+        colRightContent: [],
+      }
+    },
+    RESET_CURRENT_PERSON_DOCUMENTED (state) {
+      state.currentDocumentedPerson = {
         colLeftContent: [],
         colRightContent: [],
       }
@@ -140,6 +162,22 @@ export default new Vuex.Store({
       }
       if (payload.col === 'right') {
         state.currentDocumentedMovie.colRightContent.splice(state.currentDocumentedMovie.colRightContent.indexOf(payload.content), 1)
+      }
+    },
+    ADD_CONTENT_TO_DOCUMENTED_PERSON (state, payload) {
+      if (payload.col === 'left') {
+        state.currentDocumentedPerson.colLeftContent.push(payload.content)
+      }
+      if (payload.col === 'right') {
+        state.currentDocumentedPerson.colRightContent.push(payload.content)
+      }
+    },
+    REMOVE_CONTENT_FROM_DOCUMENTED_PERSON (state, payload) {
+      if (payload.col === 'left') {
+        state.currentDocumentedPerson.colLeftContent.splice(state.currentDocumentedPerson.colLeftContent.indexOf(payload.content), 1)
+      }
+      if (payload.col === 'right') {
+        state.currentDocumentedPerson.colRightContent.splice(state.currentDocumentedPerson.colRightContent.indexOf(payload.content), 1)
       }
     },
     ADD_PERSON_TO_MOVIE_CREW (state, payload) {
@@ -178,6 +216,15 @@ export default new Vuex.Store({
     REMOVE_CHARAC_FROM_MOVIEFILMO (state, payload) {
       payload.movie.character.splice(payload.movie.character.indexOf(payload.character), 1);
     },
+    RESET_CURRENT_PERSON (state) {
+      state.currentPerson = {}
+    },
+    RESET_CURRENT_PERSON_CREDITS (state) {
+      state.currentPersonCredits = []
+    },
+    RESET_CURRENT_PERSON_IMAGES (state) {
+      state.currentPersonImages = []
+    },
   },
   actions: {
     fetchUser({ commit }, user) {
@@ -193,6 +240,7 @@ export default new Vuex.Store({
       }
     },  
     getCurrentMovie ({commit}, payload) {
+      commit('RESET_CURRENT_MOVIE');
       db.collection("movies").doc(payload).get()
       .then((doc) => {
           if (doc.exists && doc.data().movie) {
@@ -211,7 +259,8 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
-    getMovieCrew ({commit}, payload) {
+    getCurrentMovieCrew ({commit}, payload) {
+      commit('RESET_CURRENT_MOVIE_CREW');
       db.collection("movies").doc(payload).get()
       .then((doc) => {
           if (doc.exists && doc.data().movieCrew) {
@@ -231,7 +280,8 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
-    getMovieCast ({commit}, payload) {
+    getCurrentMovieCast ({commit}, payload) {
+      commit('RESET_CURRENT_MOVIE_CAST');
       db.collection("movies").doc(payload).get()
       .then((doc) => {
           if (doc.exists && doc.data().movieCast) {
@@ -252,7 +302,7 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
-    getMovieImages ({commit}, payload) {
+    getCurrentMovieImages ({commit}, payload) {
       commit('RESET_CURRENT_MOVIE_IMAGES');
       db.collection("movies").doc(payload).get()
       .then((doc) => {
@@ -284,7 +334,7 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
-    getMovieDocumented ({commit}, payload) {
+    getCurrentMovieDocumented ({commit}, payload) {
       commit('RESET_CURRENT_MOVIE_DOCUMENTED');
       db.collection("movies").doc(payload).get()
       .then((doc) => {
@@ -335,6 +385,7 @@ export default new Vuex.Store({
       })
     },
     getCurrentPerson ({commit}, payload) {
+      commit('RESET_CURRENT_PERSON');
       db.collection("persons").doc(payload).get()
       .then((doc) => {
           if (doc.exists && doc.data()) {
@@ -354,6 +405,7 @@ export default new Vuex.Store({
       });
     },
     getCurrentPersonCredits ({commit}, payload) {
+      commit('RESET_CURRENT_PERSON_CREDITS');
       db.collection("persons").doc(payload).get()
       .then((doc) => {
           if (doc.exists && doc.data()) {
@@ -372,6 +424,7 @@ export default new Vuex.Store({
       });
     },
     getCurrentPersonImages ({commit}, payload) {
+      commit('RESET_CURRENT_PERSON_IMAGES');
       db.collection("persons").doc(payload).get()
       .then((doc) => {
           if (doc.exists && doc.data()) {
@@ -389,6 +442,20 @@ export default new Vuex.Store({
                 commit('SET_CURRENT_PERSON_IMAGES', imgProfiles);
               }
             }).catch(function(error) {console.log("Error TMDB :", error)});      
+          }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
+    },
+    getCurrentPersonDocumented ({commit}, payload) {
+      commit('RESET_CURRENT_PERSON_DOCUMENTED');
+      db.collection("persons").doc(payload).get()
+      .then((doc) => {
+          if (doc.exists && doc.data().personDocumented) {
+            console.log("PERSON_DOCUMENTED");
+            commit('SET_CURRENT_PERSON_DOCUMENTED', doc.data().personDocumented);
+          } else {
+            console.log("PERSON NOT DOCUMENTED");
           }
       }).catch(function(error) {
           console.log("Error firebase:", error);

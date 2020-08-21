@@ -12,17 +12,18 @@
       </el-button>
     </h1>
     <ul class="filmo-list">
-      <li v-for="movie in personCredits" :key="movie.id" class="filmo-item">
+      <li v-for="(movie, i) in personCredits" :key="movie.id" class="filmo-item">
         <el-button
           type="primary"
           icon="el-icon-delete"
           @click="deleteMovie(movie)"
           class="btn-delete-movie"
+          plain
         ></el-button>
 
         <div class="title-and-date">
           <div class="original-title">
-            <label for="original-title">Titre du film</label>
+            <label for="original-title">Titre du film ({{ i + 1 }})</label>
             <el-autocomplete
               :trigger-on-focus="false"
               hide-loading
@@ -343,8 +344,8 @@ export default {
 
         .btn-delete-movie {
           position: absolute;
-          right: 0;
-          top: 0;
+          right: 6px;
+          top: 7px;
           padding: 0.7em;
           z-index: 1;
         }

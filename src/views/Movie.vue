@@ -4,13 +4,13 @@
     <div v-else-if="view === 'edit' && isAdmin" >
       <MovieDetailsEdit :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCastEdit :movieCast="currentMovieCast" />
-      <MovieDocuEdit :movieDocumented="currentMovieDocumented" />
-      <ImagesGalleryEdit :images="currentMovieImages" />
+      <DocuEdit :docu="currentMovieDocumented" docuType="movie"/>
+      <ImagesGalleryEdit :images="currentMovieImages" galleryType="movie"/>
     </div>
     <div v-else>
       <MovieDetails :movie="currentMovie" :movieCrew="currentMovieCrew"/>
       <MovieCast :movieCast="currentMovieCast" />
-      <MovieDocu v-if="currentMovieDocumented.colLeftContent.length || currentMovieDocumented.colRightContent.length" :movieDocumented="currentMovieDocumented" />
+      <Docu v-if="currentMovieDocumented.colLeftContent.length || currentMovieDocumented.colRightContent.length" :docu="currentMovieDocumented" />
       <ImagesGallery v-if="currentMovieImages.length" :images="currentMovieImages"/>
     </div>
   </section>
@@ -19,12 +19,12 @@
 <script>
   import MovieDetails from "@/components/Movie/MovieDetails.vue";
   import MovieCast from "@/components/Movie/MovieCast.vue";
-  import MovieDocu from "@/components/Movie/MovieDocu.vue";
+  import Docu from "@/components/Docu.vue";
   import ImagesGallery from "@/components/ImagesGallery.vue";
   import LoginAdmin from "@/components/Edit/LoginAdmin.vue";
   import MovieDetailsEdit from "@/components/Movie/MovieEdit/MovieDetailsEdit.vue";
   import MovieCastEdit from "@/components/Movie/MovieEdit/MovieCastEdit.vue";
-  import MovieDocuEdit from "@/components/Movie/MovieEdit/MovieDocuEdit.vue";
+  import DocuEdit from "@/components/Edit/DocuEdit.vue";
   import ImagesGalleryEdit from "@/components/Edit/ImagesGalleryEdit.vue";
   import f from "../services/func";
 
@@ -33,22 +33,22 @@
     components: {
       MovieDetails,
       MovieCast,
-      MovieDocu,
+      Docu,
       ImagesGallery,
       LoginAdmin,
       MovieDetailsEdit,
       MovieCastEdit,
-      MovieDocuEdit,
+      DocuEdit,
       ImagesGalleryEdit,
     },
     created() {
       this.view = this.$route.params.view
       this.id = this.$route.params.id
       this.$store.dispatch("getCurrentMovie", this.id)
-      this.$store.dispatch("getMovieCrew", this.id)
-      this.$store.dispatch("getMovieCast", this.id)
-      this.$store.dispatch("getMovieDocumented", this.id)
-      this.$store.dispatch("getMovieImages", this.id)
+      this.$store.dispatch("getCurrentMovieCrew", this.id)
+      this.$store.dispatch("getCurrentMovieCast", this.id)
+      this.$store.dispatch("getCurrentMovieDocumented", this.id)
+      this.$store.dispatch("getCurrentMovieImages", this.id)
     },
     data() {
       return {
