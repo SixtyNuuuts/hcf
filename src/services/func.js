@@ -184,7 +184,7 @@ export default {
               if(movie.first_air_date) {
                 movie.release_date = movie.first_air_date;
               } else {
-                movie.release_date = "0001-01-01";
+                movie.release_date = "2021-01-01";
               }
             }
             movieCreditsFormat.push(movie);
@@ -270,7 +270,7 @@ export default {
 
     sortedByDate(array) {
       array.sort(function(a, b) {
-        return new Date(b.release_date) - new Date(a.release_date);
+        return new Date(a.release_date) - new Date(b.release_date);
       })
       return array
     },

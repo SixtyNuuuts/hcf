@@ -45,12 +45,14 @@
     },
     computed: {
       movieListByYear() {
-        return f.sortedByAlphabet(this.$store.state.currentMovieListByYear)
+        let currentMovieListByYearfiltered = this.$store.state.currentMovieListByYear.filter(m => !this.$store.state.currentDocumentedMovieListByYear.find(e => e.id === m.id) );
+        return f.sortedByAlphabet(currentMovieListByYearfiltered);
       },
       documentedMovieListByYear() {
-        return f.sortedByAlphabet(this.$store.state.currentDocumentedMovieListByYear)
+        return f.sortedByAlphabet(this.$store.state.currentDocumentedMovieListByYear);
       },
     },
+    // this.$store.state.currentDocumentedMovieListByYear.includes(m.id) m.id == '47831'
     name: "Movies",
     components: {
       MoviesList,

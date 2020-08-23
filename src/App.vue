@@ -56,28 +56,50 @@
 
     ::-webkit-scrollbar-track
     {
-      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
       border-radius: 3px;
-      background-color: #444444;
+      background-color: rgba(68, 68, 68, 0.05);
     }
 
     ::-webkit-scrollbar
     {
       width: 6px;
+      height: 6px;
       border-radius: 3px;
-      background-color: #444444;
+      background-color: rgba(68, 68, 68, 0.05);
     }
 
     ::-webkit-scrollbar-thumb
     {
       border-radius: 3px;
-      background-color: #a51f1e;
-      background-image: -webkit-linear-gradient(90deg,
-                            transparent,
-                            rgba(0, 0, 0, 0.4) 50%,
-                            transparent,
-                            transparent)
+      background-color: rgba(56, 52, 47, 0.699);
     }
+
+    // ::-webkit-scrollbar-track
+    // {
+    //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+    //   border-radius: 3px;
+    //   background-color: #444444;
+    // }
+
+    // ::-webkit-scrollbar
+    // {
+    //   width: 6px;
+    //   height: 6px;
+    //   border-radius: 3px;
+    //   background-color: #444444;
+    // }
+
+    // ::-webkit-scrollbar-thumb
+    // {
+    //   border-radius: 3px;
+    //   background-color: #a51f1e;
+    //   background-image: -webkit-linear-gradient(90deg,
+    //                         transparent,
+    //                         rgba(0, 0, 0, 0.4) 50%,
+    //                         transparent,
+    //                         transparent)
+    // }
 
     .VueCarousel-navigation-button {
       color: $--color-hcf-red !important;

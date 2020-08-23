@@ -83,6 +83,17 @@ export default {
         }
       )
         .then(() => {
+          // if(image.src.includes('h-c-f-f6391.appspot.com')) {
+          //   console.log('img Firebase');
+          //   let storagePath = firebase.storage().ref();
+          //   let name = image.src.substring(70, image.src.indexOf('?'));
+          //   let fileRef = storagePath.child(name);
+          //   fileRef.delete().then(function() {
+          //     console.log(name + ' bien supprimé !');
+          //   }).catch(function(error) {
+          //     console.log('erreur lors de la suppression du fichier', error);
+          //   });
+          // }
           if (this.galleryType === 'movie') {
             this.$store.commit('REMOVE_IMAGE_FROM_MOVIE_IMAGES', image)
           }

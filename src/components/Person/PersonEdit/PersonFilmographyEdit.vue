@@ -179,7 +179,7 @@ export default {
       movie.poster_path = posterPath
     },
     addFilmToFilmo() {
-      this.$store.commit('ADD_FILM_TO_FILMO', { id: null, original_title: null, character: [], job: [], poster_path: null, release_date: "2021-01-01" })
+      this.$store.commit('ADD_FILM_TO_FILMO', { id: null, original_title: null, character: [], job: [], poster_path: null, release_date: "1900-01-01" })
     },
     addJob(movie) {
       this.$store.commit('ADD_JOB_TO_MOVIEFILMO', { movie, job: { name: null } })
@@ -310,32 +310,11 @@ export default {
     }
 
     .filmo-list {
-      max-height: 32rem;
+      max-height: 45rem;
       overflow-y: auto;
       overflow-x: hidden;
       box-shadow: $--box-shadow-inner-brown;
       border-radius: 3px;
-
-      &::-webkit-scrollbar-track
-      {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
-        border-radius: 3px;
-        background-color: rgba(68, 68, 68, 0.05);
-      }
-
-      &::-webkit-scrollbar
-      {
-        width: 6px;
-        height: 6px;
-        border-radius: 3px;
-        background-color: rgba(68, 68, 68, 0.05);
-      }
-
-      &::-webkit-scrollbar-thumb
-      {
-        border-radius: 3px;
-        background-color: rgba(56, 52, 47, 0.699);
-      }
 
       .filmo-item {
         border-bottom: 1px solid rgba(214, 178, 131, 0.9);

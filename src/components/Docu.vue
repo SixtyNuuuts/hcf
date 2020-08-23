@@ -262,9 +262,11 @@ export default {
 
               &.audio {
                 width: 100%;
-                background-color: $--color-hcf-beige;
                 padding: 1em 2em 1.1em 2em;
                 border-radius: 5px;
+                box-shadow: $--box-shadow-inner-beige, $--box-shadow-brown-2;
+                background: url("../assets/img/content-pattern.png") repeat scroll left top #f6e5c8;
+
                 figcaption {
                   margin-bottom: 0.8em;
                   color: $--color-hcf-brown  ;
