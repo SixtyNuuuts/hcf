@@ -167,10 +167,10 @@
 
     }
 
-    .ql-editor {
+    .ql-editor, .docu_content .content {
       padding: .3em;
       max-width: 440px;
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1.2;
       font-family: 'Source Sans Pro', sans-serif;
       text-align: left;
@@ -207,11 +207,11 @@
       }
 
       .ql-size-large {
-          font-size: 1.25em;
+          font-size: 1.15em;
       }
 
       .ql-size-huge {
-          font-size: 1.5em;
+          font-size: 1.4em;
       }
 
       a {
@@ -229,10 +229,50 @@
       }
     }
 
-    .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor ol, .ql-editor p, .ql-editor pre, .ql-editor ul {
+    .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor ol, .ql-editor p, .ql-editor pre, .ql-editor ul,
+    .docu_content .content blockquote, .docu_content .content h1, .docu_content .content h2, .docu_content .content h3, .docu_content .content h4, .docu_content .content h5, .docu_content .content h6, .docu_content .content ol, .docu_content .content p, .docu_content .content pre, .docu_content .content ul {
         margin: 0;
         padding: 0;
         counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+    }
+
+    .person-biography, .overview.edit {
+      .ql-toolbar {
+        border-radius: 4px 4px 0 0;
+        background-color: white;
+      }
+      .ql-editor {
+        background-color: rgba(156, 156, 156, 0.315);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.205);
+        max-width: none;
+        border-radius: 0 0 4px 4px;
+        line-height: 1.3;
+        font-size: 1rem;
+        a {
+          color: white!important;
+        }
+        p {
+          margin: 0;
+          &:first-child {
+            margin-top: .4rem;
+          }
+        }
+      }
+    }
+
+    .person-info .biography, .movie-info .overview {
+      p {
+        margin: 0;
+        &:first-child {
+          margin-top: .4rem;
+        }
+        a {
+          color: #f6e5c8 !important;
+          text-decoration: underline;
+          font-weight: 600;
+        }
+      }
     }
 
     .my-gallery {

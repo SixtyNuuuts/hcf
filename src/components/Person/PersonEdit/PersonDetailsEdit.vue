@@ -64,7 +64,7 @@
         </div>
         <div class="person-biography">
           <label for="person-biography">Biographie</label>
-          <el-input type="textarea" :rows="10" v-model="person.biography"></el-input>
+          <vue-editor v-model="person.biography" :editorToolbar="customToolbar" />
         </div>
       </div>
     </div>
@@ -88,6 +88,17 @@ export default {
   },
   components: {
     UploadFile
+  },
+  data() {
+    return {
+      customToolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [],
+        ["link"],
+        [],
+        ["clean"],
+      ]
+    };
   },
   computed: {
     backgroundImage() {
@@ -178,8 +189,9 @@ export default {
         
         .no-picture {
           background-color: $--color-hcf-light-grey;
-          width: 280px;
-          height: 310px;
+          background: linear-gradient(0deg, rgba(181,181,181,1) 0%, rgba(181,181,181,1) 15%, rgba(214,212,209,1) 20%, rgba(214,212,209,1) 100%);
+          width: 283px;
+          height: 424px;
           display: flex;
           justify-content: center;
           align-items: center;

@@ -257,7 +257,6 @@ export default {
   },
   data() {
     return {
-      content: "<h1>Html For Editor</h1>",
       customToolbar: [
         ["bold", "italic", "underline", "strike"],
         [

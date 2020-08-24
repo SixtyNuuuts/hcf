@@ -27,10 +27,8 @@
         </div>
         <div>
           <div v-if="movie.overview" id="overview">
-            <h3>Résumé</h3>
-            <div v-if="movie.overview" class="overview">
-              <p>{{ movie.overview }}</p>
-            </div>
+            <h3>Synopsis</h3>
+            <div v-if="movie.overview" class="overview" v-html="movie.overview"></div>
           </div>
           <div v-if="movieCrew && movieCrew.length > 0" id="crew">
             <h3>l'Équipe technique</h3>
@@ -106,6 +104,7 @@ export default {
 
       .text {
         color: $--color-hcf-beige;
+        line-height: 1.3;
         width: 80%;
 
         h1 {

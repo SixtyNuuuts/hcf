@@ -27,9 +27,7 @@
         <div>
           <div v-if="person.biography" id="biography">
             <h3>Biographie</h3>
-            <div v-if="person.biography" class="biography">
-              <p>{{ person.biography }}</p>
-            </div>
+            <div v-if="person.biography" class="biography" v-html="person.biography"></div>
           </div>
         </div>
       </div>
@@ -88,8 +86,9 @@ export default {
         
         .no-picture {
           background-color: $--color-hcf-light-grey;
-          width: 280px;
-          height: 310px;
+          background: linear-gradient(0deg, rgba(181,181,181,1) 0%, rgba(181,181,181,1) 15%, rgba(214,212,209,1) 20%, rgba(214,212,209,1) 100%);
+          width: 283px;
+          height: 424px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -108,6 +107,7 @@ export default {
 
       .text {
         color: $--color-hcf-beige;
+        line-height: 1.3;
         width: 80%;
 
         h1 {
@@ -131,6 +131,15 @@ export default {
           
         }
 
+        h3 {
+          margin: 0;
+          text-transform: uppercase;
+          font-size: 0.9em;
+          line-height: 1.1;
+          color: #f8f0e0;
+          margin-bottom: 0.3em;
+        }
+
         .facts {
           display: flex;
           flex-direction: column;
@@ -142,30 +151,11 @@ export default {
           
         }
 
-        div {
-
-          h3 {
-            margin: 0;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            line-height: 1.1;
-            color: #f8f0e0;
-            margin-bottom: 0.3em;
-          }
-
-          #biography {
-            margin-bottom: .5em;
-
-            .biography {
-              p{
-                margin: 0;
-                line-height: 1.2;
-              }
-
-            }
-
-          }
-
+        .biography {
+          // voir  le css dans App.vue 
+          // p {
+          //   margin: .5rem 0;
+          // }
         }
 
       }

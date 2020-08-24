@@ -54,9 +54,9 @@
             </div>
             <el-button type="success" icon="el-icon-plus" @click="addGenre()" plain>Ajouter un genre</el-button>
           </div>
-          <div class="overview">
-            <label for="overview">Résumé</label>
-            <el-input type="textarea" :rows="4" v-model="movie.overview"></el-input>
+          <div class="overview edit">
+            <label for="overview">Synopsis</label>
+            <vue-editor v-model="movie.overview" :editorToolbar="customToolbar" />
           </div>
         </div>
       </div>
@@ -163,6 +163,13 @@ export default {
   },
   data() {
     return {
+      customToolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [],
+        ["link"],
+        [],
+        ["clean"],
+      ],
       genresList: [],
       debounce: null,
     };

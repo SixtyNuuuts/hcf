@@ -7,7 +7,7 @@
           <div class="col-left">
             <div v-for="(item, index) in colLeftDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
-                <div class="ql-editor" v-html="item.content"></div>
+                <div v-html="item.content"></div>
               </div>
               <div class="content" v-if="item.type === 'picture'">
                 <figure :style=" { width: item.width +'%' }" class="pict">
@@ -54,7 +54,7 @@
           <div class="col-right">
             <div v-for="(item, index) in colRightDocu" :key="index">
               <div class="content" v-if="item.type === 'text'">
-                <div class="ql-editor" v-html="item.content"></div>
+                <div v-html="item.content"></div>
               </div>
               <div class="content" v-if="item.type === 'picture'">
                 <figure :style=" { width: item.width +'%' }" class="pict">

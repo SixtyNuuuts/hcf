@@ -309,12 +309,12 @@ export default {
                   > span {
                     &.job {
                       &:before {
-                        width: 1.1rem;
+                        width: .95rem;
                       }
                     }
                     &.character {
                       &:before {
-                        width: 1.2rem;
+                        width: 1rem;
                       }
                     }
                     strong {
@@ -357,10 +357,6 @@ export default {
                 h2 {
                   font-size: 1.1rem;
                 }
-                .role {
-                  font-size: 1rem;
-
-                }
               }
             }
 
@@ -401,10 +397,6 @@ export default {
                   font-size: 1.2rem;
                   margin: 0.3rem 0;
                   margin-top: 0;
-                }
-                .role {
-                  font-size: 1rem;
-
                 }
               }
             }
