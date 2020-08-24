@@ -45,7 +45,6 @@
               value-format="yyyy-MM-dd"
               type="date"
               name="release_date"
-              id="release_date"
               v-model="movie.release_date"
             ></el-date-picker>
           </div>
@@ -218,6 +217,10 @@ export default {
       });
     },
     saveFilmo() {
+      const fullName = this.$store.state.currentPerson.name.trim();
+      const index = fullName.lastIndexOf(' ');
+      const lastname = fullName.substring(index+1);
+      const firstname = fullName.substring(0, index);
       this.$db.collection("persons").doc(this.$parent.id).get()
       .then((doc) => {
         console.log(doc)
@@ -234,7 +237,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("persons").doc(this.$parent.id).set({ person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages })
+            this.$db.collection("persons").doc(this.$parent.id).set({ person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages, firstname: firstname, lastname: lastname })
             .then(() => {
                 console.log("la filmographie a été créée");
                 this.$message({

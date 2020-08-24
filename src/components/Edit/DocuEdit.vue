@@ -388,6 +388,10 @@ export default {
       });
     },
     savePersonDocumented() {
+      const fullName = this.$store.state.currentPerson.name.trim();
+      const index = fullName.lastIndexOf(' ');
+      const lastname = fullName.substring(index+1);
+      const firstname = fullName.substring(0, index);
       this.$db.collection("persons").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {
@@ -402,7 +406,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("persons").doc(this.$parent.id).set({ personDocumented: this.$store.state.currentDocumentedPerson, documented: true, person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages })
+            this.$db.collection("persons").doc(this.$parent.id).set({ personDocumented: this.$store.state.currentDocumentedPerson, documented: true, person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages, firstname: firstname, lastname: lastname })
             .then(() => {
                 this.$message({
                   type: 'info',

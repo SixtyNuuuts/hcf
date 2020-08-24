@@ -114,11 +114,15 @@ export default {
       person.profile_path = profilePath
     },
     savePerson() {
+      const fullName = this.$store.state.currentPerson.name.trim();
+      const index = fullName.lastIndexOf(' ');
+      const lastname = fullName.substring(index+1);
+      const firstname = fullName.substring(0, index);
       this.$db.collection("persons").doc(this.$parent.id).get()
       .then((doc) => {
         console.log(doc)
           if (doc.exists) {
-            this.$db.collection("persons").doc(this.$parent.id).update({ person: this.$store.state.currentPerson })
+            this.$db.collection("persons").doc(this.$parent.id).update({ person: this.$store.state.currentPerson, firstname: firstname, lastname: lastname})
             .then(() => {
                 console.log("la personnalité a été mise à jour");
                 this.$message({
@@ -130,7 +134,7 @@ export default {
                 console.error("Erreur lors de la sauvegarde : ", error);
             });
           } else {
-            this.$db.collection("persons").doc(this.$parent.id).set({ person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages })
+            this.$db.collection("persons").doc(this.$parent.id).set({ person: this.$store.state.currentPerson, personCredits: this.$store.state.currentPersonCredits, personImages: this.$store.state.currentPersonImages, firstname: firstname, lastname: lastname })
             .then(() => {
                 console.log("la personnalité a été créée");
                 this.$message({
@@ -246,14 +250,6 @@ export default {
 
     }
 
-  }
-
-  @media (min-width: $--bp-sm) { 
-    section.person-info {
-      .content {
-
-      }
-    }
   }
 
   @media (min-width: $--bp-md) { 
