@@ -108,7 +108,7 @@ export default {
       .text {
         color: $--color-hcf-beige;
         line-height: 1.3;
-        width: 80%;
+        width: 100%;
 
         h1 {
           margin: 0;
@@ -168,7 +168,7 @@ export default {
     section.person-info {
       .content {
         .text {
-          width: 75%;
+          // width: 75%;
 
           h1 {
             margin-bottom: .9em;
@@ -213,7 +213,7 @@ export default {
         }
 
         .text {
-          width: 60%;
+          // width: 60%;
 
           .facts {
             max-width: 28em;

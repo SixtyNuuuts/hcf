@@ -42,7 +42,8 @@ export default {
     transition: .2s ease;
     position: relative;
     top: 0;
-
+    margin-bottom: 2.5rem;
+    
     &:hover {
       box-shadow: $--box-shadow-4;
       top: -.2em;
@@ -74,7 +75,6 @@ export default {
         img {
           width: 110%;
           position: relative;
-          bottom: -1em;
         }
       }
 

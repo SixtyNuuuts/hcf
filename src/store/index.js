@@ -56,6 +56,7 @@ export default new Vuex.Store({
       colLeftContent: [],
       colRightContent: [],
     },
+    currentPersonsList: []
   },
   mutations: {
     SET_CURRENT_YEAR_SELECTED (state, payload) {
@@ -224,6 +225,12 @@ export default new Vuex.Store({
     },
     RESET_CURRENT_PERSON_IMAGES (state) {
       state.currentPersonImages = []
+    },
+    ADD_PERSON_TO_CURRENT_PERSONS_LIST (state, payload) {
+      state.currentPersonsList.push(payload);
+    },
+    RESET_CURRENT_PERSONS_LIST (state) {
+      state.currentPersonsList = []
     },
   },
   actions: {
@@ -457,6 +464,18 @@ export default new Vuex.Store({
           } else {
             console.log("PERSON NOT DOCUMENTED");
           }
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
+    },
+    getPersons ({commit}) {
+      commit('RESET_CURRENT_PERSONS_LIST');
+      db.collection("persons")
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          commit('ADD_PERSON_TO_CURRENT_PERSONS_LIST', doc.data());   
+        });
       }).catch(function(error) {
           console.log("Error firebase:", error);
       });

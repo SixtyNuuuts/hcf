@@ -282,4 +282,12 @@ export default {
       return array
     },
 
+    sortedByAlphabetPerson(array) {
+      array.sort(function(a, b) {
+        return a.lastname.localeCompare(b.lastname)
+      })
+      return array
+    },
+
+
 }

@@ -22,9 +22,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  @import '@/styles/bp.scss';  
 
   section.movie-cast {
-    padding: 1em 3em 2em 3em;
+    padding: 1em 3em 1em 3em;
 
     h1 {
       font-family: "Righteous";
@@ -41,7 +42,7 @@ export default {
         position: absolute;
         top: 14px;
         display: block;
-        width: 39%;
+        width: 16%;
         height: 2px;
         background-color: rgba(65, 38, 7, 0.09);
       }
@@ -56,6 +57,36 @@ export default {
 
     }
 
+  }
+
+  @media (min-width: $--bp-sm) { 
+      section.movie-cast {
+        h1 {
+          &:before, &:after {
+            width: 30%;
+          }
+        }
+    }
+  }
+
+  @media (min-width: $--bp-md) { 
+      section.movie-cast {
+        h1 {
+          &:before, &:after {
+            width: 36%;
+          }
+        }
+    }
+  }
+
+  @media (min-width: $--bp-lg) { 
+      section.movie-cast {
+        h1 {
+          &:before, &:after {
+            width: 39%;
+          }
+        }
+    }
   }
 
 </style>

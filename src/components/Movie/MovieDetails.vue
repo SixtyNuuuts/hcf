@@ -105,7 +105,7 @@ export default {
       .text {
         color: $--color-hcf-beige;
         line-height: 1.3;
-        width: 80%;
+        width: 100%;
 
         h1 {
           margin: 0;
@@ -181,7 +181,6 @@ export default {
     section.movie-info {
       .content {
         .text {
-          width: 75%;
 
           .facts {
             flex-direction: row;
