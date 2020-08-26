@@ -1,5 +1,5 @@
 <template>
-  <section id="moviesdocu">
+  <section id="moviesdocu" :class="{'is-loading' : isLoading}">
      <router-link v-for="(movie, index) in movies" :to="'/film/' + movie.id" :key="index" class="moviedocu_wrap"  :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
       <div>
         <div class="moviedocu_box">
@@ -34,6 +34,11 @@ export default {
   props: {
     movies: Array
   },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
+  }
 }
 </script>
 
@@ -47,6 +52,11 @@ export default {
     justify-content: center;
     margin-bottom: 3em;
     flex-wrap: wrap;
+
+    &.is-loading {
+      background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;
+      min-height: 12rem;
+    }
     
     .moviedocu_wrap {
       box-shadow: $--box-shadow-1;

@@ -1,8 +1,8 @@
 <template>
   <section class="movie-info" :style="{ backgroundImage: 'url(' + movie.backdrop_path + ')' }">
-    <div class="content">
+    <div class="content" :class="{'is-loading' : isLoading}">
       <div>
-        <div class="poster">
+        <div class="poster" :class="{'is-loading' : isLoading}">
           <img v-if="movie.poster_path" :src="movie.poster_path" />
           <div v-else class="no-poster">
             <i class="el-icon-picture"></i>
@@ -302,6 +302,11 @@ export default {
           console.log("Error getting document:", error);
       });
     },
+  },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
   }
 };
 </script>
@@ -322,11 +327,15 @@ export default {
       text-align: left;
       padding: 4.5em 3em 7em 3em;
       position: relative;
-      background-image: linear-gradient(
+      background: linear-gradient(
         to right,
         #0e0e0ede 150px,
         rgba(2, 2, 0, 0.88) 100%
       );
+
+      &.is-loading {
+        background: url('../../../assets/img/loader-Bars-1s-108px.gif') no-repeat 64%, linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
+      }
 
       > div {
         display: flex;
@@ -342,6 +351,15 @@ export default {
 
         .poster {
           margin-right: 40px;
+
+          &.is-loading {
+            .no-poster {
+              background: url('../../../assets/img/loader-Spin-1s-81px.gif') no-repeat center, black;
+              i {
+                font-size: 0;
+              }
+            }
+          }
 
           img {
             width: 290px;

@@ -1,5 +1,5 @@
 <template>
-  <section id="persons-list">
+  <section id="persons-list" :class="{'is-loading' : isLoading}">
     <router-link
       v-for="(item, index) in persons"
       :to="'/person/' + item.person.id"
@@ -27,6 +27,11 @@ export default {
   props: {
     persons: Array,
   },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
+  }
 };
 </script>
 
@@ -42,6 +47,11 @@ export default {
   padding-top: 1.4rem;
   min-height: 19.6rem;
   
+  &.is-loading {
+    background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;
+    min-height: 12rem;
+  }
+
   .card {
     display: flex;
     flex-direction: column;

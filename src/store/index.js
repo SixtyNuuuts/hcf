@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isLoading: false,
     currentUser: {
       loggedIn: false,
       admin: false,
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     currentPersonsList: []
   },
   mutations: {
+    IS_LOADING (state, payload) {
+      state.isLoading = payload;
+    },
     SET_CURRENT_YEAR_SELECTED (state, payload) {
       state.currentYearSelected = payload;
     },
@@ -248,8 +252,10 @@ export default new Vuex.Store({
     },  
     getCurrentMovie ({commit}, payload) {
       commit('RESET_CURRENT_MOVIE');
+      commit('IS_LOADING', true);
       db.collection("movies").doc(payload).get()
       .then((doc) => {
+          commit('IS_LOADING', false);
           if (doc.exists && doc.data().movie) {
             console.log("MOVIE : FIREBASE");
             commit('SET_CURRENT_MOVIE', doc.data().movie);
@@ -357,9 +363,11 @@ export default new Vuex.Store({
     },
     getDocumentedMoviesByYear ({commit}, payload) {
       commit('RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR');
+      commit('IS_LOADING', true);
       db.collection("movies").where("documented", "==", true).where("year", "==", payload)
       .get()
       .then(function(querySnapshot) {
+        commit('IS_LOADING', false);
         querySnapshot.forEach(function(doc) {
           if (doc.data().movie) {
             let movieDetail = doc.data().movie;
@@ -393,8 +401,10 @@ export default new Vuex.Store({
     },
     getCurrentPerson ({commit}, payload) {
       commit('RESET_CURRENT_PERSON');
+      commit('IS_LOADING', true);
       db.collection("persons").doc(payload).get()
       .then((doc) => {
+          commit('IS_LOADING', false);
           if (doc.exists && doc.data()) {
             console.log("PERSON : FIREBASE");
             commit('SET_CURRENT_PERSON', doc.data().person);
@@ -470,9 +480,11 @@ export default new Vuex.Store({
     },
     getPersons ({commit}) {
       commit('RESET_CURRENT_PERSONS_LIST');
+      commit('IS_LOADING', true);
       db.collection("persons")
       .get()
       .then(function(querySnapshot) {
+        commit('IS_LOADING', false);
         querySnapshot.forEach(function(doc) {
           commit('ADD_PERSON_TO_CURRENT_PERSONS_LIST', doc.data());   
         });

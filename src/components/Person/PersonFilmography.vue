@@ -88,7 +88,7 @@ export default {
       overflow-y: auto;
       overflow-x: hidden;
       box-shadow: $--box-shadow-inner-brown;
-      background: url('../../assets/img/content-pattern.png') repeat scroll left top;
+      background: url('../../assets/img/content-pattern.png') repeat local left top;
       border-radius: 3px;
 
       .filmo-item {
@@ -120,7 +120,8 @@ export default {
             }
         }
         &:hover {
-          background-color: rgba(255, 239, 212, 0.57);      
+          background-color: rgba(255, 239, 212, 0.57);
+          border-radius: 0 .4rem .4rem 0;      
         }
 
         a {
@@ -203,6 +204,8 @@ export default {
                 color: #a51f1e;
                 text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
                 margin: 0.2rem 0;
+                max-height: 3.2rem;
+                overflow: hidden;
               }
 
               .role {
@@ -210,7 +213,8 @@ export default {
                 display: flex;
                 flex-wrap: wrap;
                 margin: 0.05rem 0;
-                margin-left: 0.3rem;
+                max-height: 2.2rem;
+                overflow: hidden;
 
                 > span {
                   display: inline-flex;
@@ -223,7 +227,7 @@ export default {
                       width: .9rem;
                       position: relative;
                       top: 0.1rem;
-                      left: -0.25rem;
+                      margin-right: 0.15rem;
                     }
                   }
                   &.character {
@@ -232,7 +236,7 @@ export default {
                       width: .9rem;
                       position: relative;
                       top: 0.1rem;
-                      left: -0.25rem;
+                      margin-right: 0.15rem;
                     }
                   }
                   .entantque {
@@ -247,7 +251,7 @@ export default {
                   }
                 }
                 > span:not(:last-child) {
-                  margin-right: 1rem;
+                  margin-right: .5rem;
                 }
               }
             }
@@ -301,10 +305,14 @@ export default {
                   font-size: 1rem;
                   line-height: 1.2;
                   margin: 0.1rem 0;
+                  max-height: none;
+                  overflow: visible;
                 }
 
                 .role {
                   font-size: 0.9rem;
+                  max-height: none;
+                  overflow: visible;
 
                   > span {
                     &.job {
@@ -318,7 +326,7 @@ export default {
                       }
                     }
                     strong {
-                      max-height: 0;
+                      max-height: none;
                       overflow: visible;
                     }
                   }
@@ -345,7 +353,6 @@ export default {
           a {
             .year {
               font-size: 1.1em;
-              // margin-left: 11rem;
             }
 
             .separator {
@@ -356,6 +363,12 @@ export default {
               .infos {
                 h2 {
                   font-size: 1.1rem;
+                }
+
+                .role {
+                  > span:not(:last-child) {
+                    margin-right: .8rem;
+                  }
                 }
               }
             }
@@ -374,11 +387,14 @@ export default {
       }
 
       .filmo-list {
+        background: url('../../assets/img/content-pattern.png') repeat local left top, url('../../assets/img/fond-cine.svg') repeat-y local right top, ;
+        background-size: 8% , 29%;
+
         .filmo-item {
+          max-width: 41rem;
           a {
             .year {
               font-size: 1.2em;
-              // margin-left: 16.9rem;
             }
 
             .separator {

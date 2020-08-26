@@ -1,7 +1,7 @@
 <template>
   <section class="person-info" :style="{ backgroundImage: backgroundImage }">
-    <div class="content">
-      <div class="poster">
+    <div class="content" :class="{'is-loading' : isLoading}">
+      <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="person.profile_path" :src="person.profile_path">
         <div v-else class="no-picture">
           <img v-if="person.gender == 1" src="@/assets/img/p-female.svg" />
@@ -49,7 +49,10 @@ export default {
         backgroundImg = 'url(' +  this.person.profile_path + ')';
       }
       return backgroundImg;
-    }
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
   }
 }
 </script>
@@ -72,12 +75,25 @@ export default {
       text-align: center;
       padding: 4.5em 3em 3em 3em;
       position: relative;
-      background-image: linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
+      background: linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
+
+      &.is-loading {
+        background: url('../../assets/img/loader-Bars-1s-108px.gif') no-repeat 64%, linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
+      }
 
       .poster {
         width: 100%;
         max-width: 310px;
         margin-bottom: 2em;
+
+        &.is-loading {
+          .no-picture {
+            background: url('../../assets/img/loader-Spin-1s-81px.gif') no-repeat center, black;
+            img {
+              display: none;;
+            }
+          }
+        }
 
         img {
           width: 100%;
