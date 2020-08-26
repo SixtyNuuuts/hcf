@@ -28,7 +28,8 @@ export default {
 
     span.sepa {
       margin: 0 3px;
-      color: #a51f1e;
+      // color: #a51f1e;
+      color: $--color-hcf-beige;
     }
 
   }

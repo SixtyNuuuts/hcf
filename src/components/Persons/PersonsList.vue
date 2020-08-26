@@ -109,12 +109,12 @@ export default {
 
       h1 {
         margin: 0;
+        color: white;
         font-size: 1.05em;
       }
 
       p {
         font-size: 0.85em;
-        color: #bf2423;
         margin: 0;
         margin-top: 0.25em;
       }
