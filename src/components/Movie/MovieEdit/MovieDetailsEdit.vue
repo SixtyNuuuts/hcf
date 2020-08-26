@@ -86,6 +86,11 @@
                 </el-autocomplete>
                 <el-button type="primary" icon="el-icon-delete" @click="deletePerson(person)" plain></el-button>
               </div>
+              <!-- <el-input
+                type="text"
+                name="person-id"
+                v-model="person.id"
+              ></el-input> -->
               <UploadFile @uploadFilePath="setUploadFilePath(person, $event)"/>
               <div class="profile-path">
                 <div class="picture">

@@ -56,7 +56,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 0.8em;
-    background-color: #fff;
+    background-color: $--color-hcf-black;
     box-shadow: $--box-shadow-2;
     margin: 1em;
     transition: 0.2s ease;
@@ -102,9 +102,10 @@ export default {
     .text {
       padding: 0.05em;
       margin-top: 0.7em;
-      color: $--color-hcf-black;
+      color: $--color-hcf-light-beige;
       text-align: left;
       line-height: 1.05;
+      letter-spacing: 0.02rem;
 
       h1 {
         margin: 0;
@@ -113,6 +114,7 @@ export default {
 
       p {
         font-size: 0.85em;
+        color: #bf2423;
         margin: 0;
         margin-top: 0.25em;
       }

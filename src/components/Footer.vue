@@ -1,6 +1,7 @@
 <template>
   <footer>
-    <p><span> © L'Histoire du cinéma français</span>  <span class="sepa">|</span>  par <span>Clément Dupuy</span> </p>
+    <!-- <p><span> © L'Histoire du cinéma français</span>  <span class="sepa">|</span>  par <span>Clément Dupuy</span> </p> -->
+    <p><span> <span class="sepa">©</span> L'Histoire du cinéma français</span></p>
   </footer>
 </template>
 
@@ -17,7 +18,7 @@ export default {
   footer {
     padding: 3% 2%;
     background-color: $--color-hcf-black;
-    color: #e8cea2;
+    color: $--color-hcf-light-beige;
     font-size: 0.9em;
     text-align: center;
     
