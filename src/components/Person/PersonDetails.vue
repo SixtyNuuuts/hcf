@@ -75,10 +75,10 @@ export default {
       text-align: center;
       padding: 4.5em 3em 3em 3em;
       position: relative;
-      background: linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
+      background: linear-gradient(to right, #0e0e0ee1 150px, rgba(2, 2, 0, 0.88) 100%);
 
       &.is-loading {
-        background: url('../../assets/img/loader-Bars-1s-108px.gif') no-repeat 64%, linear-gradient(to right, #0e0e0ede 150px, rgba(2, 2, 0, 0.88) 100%);
+        background: url('../../assets/img/loader-Bars-1s-108px.gif') no-repeat 64%, linear-gradient(to right, #0e0e0ee1 150px, rgba(2, 2, 0, 0.88) 100%);
       }
 
       .poster {

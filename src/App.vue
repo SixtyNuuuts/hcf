@@ -317,7 +317,6 @@
     #app {
       max-width: $--bp-lg;
       margin: 0 auto;
-      background-color: $--color-hcf-beige;
       box-shadow: $--box-shadow-dark-6;
       font-family: 'Source Sans Pro', sans-serif;
       text-align: center;
@@ -358,6 +357,7 @@
 
       main {
         box-shadow: inset 0 17px 61px 0 rgba(206,136,24,.24);
+        background-color: $--color-hcf-beige;
       }
 
     }

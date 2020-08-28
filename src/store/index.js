@@ -57,7 +57,8 @@ export default new Vuex.Store({
       colLeftContent: [],
       colRightContent: [],
     },
-    currentPersonsList: []
+    currentPersonsList: [],
+    currentJobsListinPersonsList: []
   },
   mutations: {
     IS_LOADING (state, payload) {
@@ -235,6 +236,12 @@ export default new Vuex.Store({
     },
     RESET_CURRENT_PERSONS_LIST (state) {
       state.currentPersonsList = []
+    },
+    ADD_JOBS_LIST_IN_PERSONS_LIST (state, payload) {
+      state.currentJobsListinPersonsList.push(payload);
+    },
+    RESET_CURRENT_JOBS_LIST_IN_PERSONS_LIST (state) {
+      state.currentJobsListinPersonsList = []
     },
   },
   actions: {
@@ -478,14 +485,30 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
-    getPersons ({commit}) {
+    getPersons ({commit, state}) {
       commit('RESET_CURRENT_PERSONS_LIST');
+      commit('RESET_CURRENT_JOBS_LIST_IN_PERSONS_LIST');
       commit('IS_LOADING', true);
       db.collection("persons")
       .get()
       .then(function(querySnapshot) {
         commit('IS_LOADING', false);
         querySnapshot.forEach(function(doc) {
+          if(!state.currentJobsListinPersonsList.find(j=>j.includes(doc.data().person.known_for_department.substring(0, 3)))) {
+            switch (doc.data().person.known_for_department.substring(0, 3)) {
+              case 'Act':
+                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Acteurs');
+                break;
+              case 'Réa':
+                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Réalisateurs');
+                break;
+              case 'Scé':
+                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Scénaristes');
+                break;
+              default:
+                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', doc.data().person.known_for_department);
+            }
+          }
           commit('ADD_PERSON_TO_CURRENT_PERSONS_LIST', doc.data());   
         });
       }).catch(function(error) {

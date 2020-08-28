@@ -1,35 +1,65 @@
 <template>
-  <section id="persons-list" :class="{'is-loading' : isLoading}">
-    <router-link
-      v-for="(item, index) in persons"
-      :to="'/person/' + item.person.id"
-      :key="index"
-      class="card"
-    >
-      <div class="picture">
-        <img v-if="item.person.profile_path" :src="item.person.profile_path" />
-        <div v-else class="no-picture">
-          <img v-if="item.person.gender == 1" src="@/assets/img/p-female.svg" />
-          <img v-else src="@/assets/img/p-male.svg" />
+  <div>
+    <div class="filters">
+      <h3>Filtres :</h3>
+      <el-radio-group v-model="filter">
+        <el-radio label="all">Tous</el-radio>
+        <el-radio v-for="(job, index) in JobsList" :key="index" :label="job">{{ job }}</el-radio>
+      </el-radio-group>
+    </div>
+    <section id="persons-list" :class="{'is-loading' : isLoading}">
+      <router-link
+        v-for="(item, index) in personsFiltered"
+        :to="'/person/' + item.person.id"
+        :key="index"
+        class="card"
+      >
+        <div class="picture">
+          <img v-if="item.person.profile_path" :src="item.person.profile_path" />
+          <div v-else class="no-picture">
+            <img v-if="item.person.gender == 1" src="@/assets/img/p-female.svg" />
+            <img v-else src="@/assets/img/p-male.svg" />
+          </div>
         </div>
-      </div>
-      <div class="text">
-        <h1>{{ item.person.name }}</h1>
-        <p class="character">{{ item.person.known_for_department }}</p>
-      </div>
-    </router-link>
-  </section>
+        <div class="text">
+          <h1>{{ item.person.name }}</h1>
+          <p class="character">{{ item.person.known_for_department }}</p>
+        </div>
+      </router-link>
+    </section>
+  </div>
 </template>
 
 <script>
+import f from "../../services/func";
+
 export default {
   name: "PersonsList",
   props: {
     persons: Array,
   },
+  data() {
+    return {
+      filter: 'all'
+    };
+  },
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    }
+  },
   computed: {
     isLoading() {
       return this.$store.state.isLoading;
+    },
+    JobsList() {
+      return f.sortedByAlphabetJobs(this.$store.state.currentJobsListinPersonsList);
+    },
+    personsFiltered() {
+      if(this.filter === 'all') {
+        return this.persons;
+      }
+      return this.persons.filter(p => p.person.known_for_department.substring(0, 3) === this.filter.substring(0, 3));
     },
   }
 };
@@ -40,11 +70,21 @@ export default {
 @import "@/styles/bp.scss";
 @import "@/styles/shadow.scss";
 
+.filters {
+  margin-top: 1rem;
+
+  h3 {
+    display: inline-block;
+    font-size: 0.9rem;
+    margin-right: 2rem;
+  }
+}
+
 #persons-list {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  padding-top: 1.4rem;
+  padding-top: .3rem;
   min-height: 19.6rem;
   
   &.is-loading {

@@ -93,8 +93,8 @@ export default {
       },
       {
         job: "Original Music Composer",
-        jobTranslatationM: "Compositeur de la bande originale",
-        jobTranslatationF: "Compositrice de la bande originale",
+        jobTranslatationM: "Compositeur de la B.O.",
+        jobTranslatationF: "Compositrice de la B.O.",
         order: 4
       },
       {
@@ -289,5 +289,11 @@ export default {
       return array
     },
 
+    sortedByAlphabetJobs(array) {
+      array.sort(function(a, b) {
+        return a.localeCompare(b)
+      })
+      return array
+    },
 
 }

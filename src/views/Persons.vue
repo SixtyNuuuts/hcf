@@ -18,7 +18,7 @@
 
 <script>
   import PersonsList from "@/components/Persons/PersonsList.vue"
-  // import f from "../services/func";
+  import f from "../services/func";
 
   export default {
     created() {
@@ -37,11 +37,10 @@
     },
     computed: {
       personsListByAlphabet() {
-        // return f.sortedByAlphabetPerson(this.$store.state.currentPersonsList)
         if(!this.selectedLetter) {
           return this.$store.state.currentPersonsList;
         }
-        return this.$store.state.currentPersonsList.filter(p => p.lastname.charAt(0) === this.selectedLetter);
+        return f.sortedByAlphabetPerson(this.$store.state.currentPersonsList.filter(p => p.lastname.charAt(0) === this.selectedLetter));
       },
     },
     name: "Persons",
