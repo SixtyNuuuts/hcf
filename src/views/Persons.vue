@@ -121,8 +121,12 @@
           border-radius: 3px;
           background-color: $--color-hcf-light-beige;
           font-size: 1.45rem;
-          margin: .2rem .05rem;
-          transition: all .3s;
+          // margin: .2rem .05rem;
+          margin-left: .05rem;
+          margin-right: .05rem;
+          margin-top: .2rem;
+          margin-bottom: .2rem;
+          transition: background-color .3s, color .3s, margin-left .3s, margin-right .3s;
           cursor: pointer;
 
           &:hover, &.active {
@@ -131,7 +135,11 @@
             box-shadow: $--box-shadow-brown-2;
           }
           &.active {
-            margin: .3rem .3rem .3rem .43rem;
+            // margin: .3rem .3rem .3rem .43rem;
+            margin-left: .43rem;
+            margin-right: .3rem;
+            margin-top: .3rem;
+            margin-bottom: .3rem;
           }
         }
       }
