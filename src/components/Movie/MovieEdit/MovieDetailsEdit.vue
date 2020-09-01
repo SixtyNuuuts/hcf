@@ -280,7 +280,6 @@ export default {
             this.$db.collection("movies").doc(this.$parent.id).update({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, year: movieYear })
             .then(() => {
                 console.log("le Film a été mis à jour");
-                console.log("movie et movieCrew bien modifié");
                 this.$message({
                   type: 'info',
                   message: 'le Film a bien été mis à jour'
@@ -293,7 +292,6 @@ export default {
             this.$db.collection("movies").doc(this.$parent.id).set({ movie: this.$store.state.currentMovie, movieCrew: this.$store.state.currentMovieCrew, movieCast: this.$store.state.currentMovieCast, movieImages: this.$store.state.currentMovieImages, year: movieYear })
             .then(() => {
                 console.log("le Film a été créé");
-                console.log("movie et movieCrew bien enregistré");
                 this.$message({
                   type: 'info',
                   message: 'le Film a bien été créé'

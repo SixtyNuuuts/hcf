@@ -132,7 +132,6 @@ export default {
       clearTimeout(this.debounce)
       this.debounce = setTimeout(() => {
         tmdbApi.searchMovie(queryString, 1).then(res => {
-          console.log(res.data)
           let searchMovieResult = []
           let pageLimit = 5
           if (res.data.total_pages < 5) {
@@ -223,7 +222,6 @@ export default {
       const firstname = fullName.substring(0, index);
       this.$db.collection("persons").doc(this.$parent.id).get()
       .then((doc) => {
-        console.log(doc)
           if (doc.exists) {
             this.$db.collection("persons").doc(this.$parent.id).update({ personCredits: this.$store.state.currentPersonCredits })
             .then(() => {
@@ -335,7 +333,7 @@ export default {
         .title-and-date {
           display: flex;
           margin-bottom: .8em;
-          :first-child {
+          >:first-child {
             margin-right: .8em;
             flex : 1;
           }

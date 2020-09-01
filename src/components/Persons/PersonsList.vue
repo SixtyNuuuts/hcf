@@ -43,11 +43,6 @@ export default {
       filter: 'all'
     };
   },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    }
-  },
   computed: {
     isLoading() {
       return this.$store.state.isLoading;

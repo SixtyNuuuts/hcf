@@ -144,7 +144,6 @@ export default {
       const firstname = fullName.substring(0, index);
       this.$db.collection("persons").doc(this.$parent.id).get()
       .then((doc) => {
-        console.log(doc)
           if (doc.exists) {
             this.$db.collection("persons").doc(this.$parent.id).update({ personImages: this.$store.state.currentPersonImages })
             .then(() => {

@@ -519,15 +519,6 @@ export default new Vuex.Store({
   getters: {
     // currentMovie (state) {
     //   return state.currentMovie;
-    // },
-    // currentMovieCrew (state) {
-    //   return state.currentMovieCrew;
-    // },
-    // currentMovieCast (state) {
-    //   return state.currentMovieCast;
-    // },
-    // currentUser(state){
-    //   return state.currentUser
     // }
   }
 })
