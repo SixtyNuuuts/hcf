@@ -9,7 +9,10 @@
         </div>
       </div>
       <div class="text">
-        <h1 v-if="person.name">{{ person.name }}<span v-if="person.known_for_department">({{ person.known_for_department }})</span></h1>
+        <div class="title">
+          <h1 v-if="person.name">{{ person.name }}</h1>
+          <div v-if="person.known_for_department" class="jobs"><span class="job" v-for="(job, index) in person.known_for_department" :key="index" >{{ job.name }}</span></div>
+        </div>
         <div class="facts">
           <div v-if="person.birthday" class="fact">
             <h3>Date de naissance</h3>
@@ -22,6 +25,10 @@
           <div v-if="person.deathday" class="fact">
             <h3>Date de décès</h3>
             {{ person.deathday  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
+          </div>
+          <div v-if="person.place_of_death" class="fact">
+            <h3>Lieu de décès</h3>
+            {{ person.place_of_death }}
           </div>
         </div>
         <div>
@@ -126,25 +133,42 @@ export default {
         line-height: 1.3;
         width: 100%;
 
-        h1 {
-          margin: 0;
-          font-size: 2.2rem;
-          font-weight: 800;
-          line-height: 1;
-          text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
-          margin-bottom: 1.3em;
-          color: $--color-hcf-light-beige;
+        .title {
+          margin-bottom: 1.9rem;
 
-          span {
+          h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+            color: $--color-hcf-light-beige;
+            margin-bottom: 0.1rem;
+          }
+
+          .jobs {
             opacity: 0.8;
             font-weight: 400;
-            font-size: 1.7rem;
-            display: block;
-            position: relative;
-            top:.4rem;
-            left:0;
+            font-size: 1.5rem;
+            font-style: italic;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .job {
+              &:not(:last-child) {
+                margin-right: 1.3rem;
+                &:after {
+                  content:"/";
+                  content: "/";
+                  position: relative;
+                  top: -0.1rem;
+                  right: -0.7rem;
+                  font-size: 1.2rem;
+                }
+              }
+            }
           }
-          
         }
 
         h3 {
@@ -187,14 +211,6 @@ export default {
           // width: 75%;
 
           h1 {
-            margin-bottom: .9em;
-
-            span {
-              display: inline;
-              top: -0.1rem;
-              left: .9rem;
-            }
-            
           }
 
           .facts {
@@ -229,8 +245,10 @@ export default {
         }
 
         .text {
-          // width: 60%;
-
+          width: 60%;
+          .title .jobs {
+            justify-content: flex-start;
+          }
           .facts {
             max-width: 28em;
             justify-content: flex-start;

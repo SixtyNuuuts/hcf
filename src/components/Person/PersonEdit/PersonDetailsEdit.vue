@@ -21,13 +21,22 @@
           ></el-input>
         </div>
         <div class="person-job">
-          <label for="person-job">Métier principal</label>
-          <el-input
-            type="text"
-            name="person-job"
-            id="person-job"
-            v-model="person.known_for_department"
-          ></el-input>
+          <label for="person-job">Métiers</label>
+            <div v-for="(job, index) in person.known_for_department" :key="index" class="job">
+              <el-input type="text" name="job" v-model="job.name"></el-input>
+              <el-button
+                type="primary"
+                icon="el-icon-delete"
+                @click="deleteJob(person, job)"
+                plain
+              ></el-button>
+            </div>
+            <el-button
+              type="success"
+              icon="el-icon-plus"
+              @click="addJob(person)"
+              plain
+            >Ajouter un métier</el-button>
         </div>
         <div class="facts">
           <div class="person-birthday">
@@ -60,6 +69,15 @@
             name="place-of-birth"
             id="place-of-birth"
             v-model="person.place_of_birth"
+          ></el-input>
+        </div>
+        <div class="place-of-death">
+          <label for="place-of-death">Lieu de décès</label>
+          <el-input
+            type="text"
+            name="place-of-death"
+            id="place-of-death"
+            v-model="person.place_of_death"
           ></el-input>
         </div>
         <div class="person-biography">
@@ -115,6 +133,24 @@ export default {
   methods: {
     setUploadProfilePath(person, profilePath) {
       person.profile_path = profilePath
+    },
+    addJob(person) {
+      this.$store.commit('ADD_JOB_TO_CURRENT_PERSON', { person, job: { name: null } })
+    },
+    deleteJob(person, job) {
+      this.$confirm(
+        "Êtes-vous sûr de vouloir supprimer le métier " + job.name + " ?",
+        "Confirmation",
+        {
+          confirmButtonText: "Confirmer",
+          cancelButtonText: "Annuler"
+        }
+      )
+      .then(() => {
+        this.$store.commit('REMOVE_JOB_FROM_CURRENT_PERSON', { person, job })
+      })
+      .catch(() => {
+      });
     },
     savePerson() {
       const fullName = this.$store.state.currentPerson.name.trim();
@@ -241,6 +277,7 @@ export default {
         }
 
         .place-of-birth,
+        .place-of-death,
         .person-deathday,
         .person-biography,
         .person-birthday,
@@ -255,6 +292,16 @@ export default {
 
         > div {
           margin-bottom: 1em;
+        }
+
+        .job {
+          display: flex;
+          width: 100%;
+          margin-bottom: 0.5rem!important;
+
+          button {
+            padding: 0 1em;
+          }
         }
 
         .facts {

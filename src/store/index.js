@@ -198,6 +198,13 @@ export default new Vuex.Store({
     REMOVE_JOB_FROM_PERSON (state, payload) {
       payload.person.jobs.splice(payload.person.jobs.indexOf(payload.job), 1);
     },
+    ADD_JOB_TO_CURRENT_PERSON (state, payload) {
+      payload.person.known_for_department.push(payload.job)
+    },
+    REMOVE_JOB_FROM_CURRENT_PERSON (state, payload) {
+      payload.person.known_for_department.splice(payload.person.known_for_department.indexOf(payload.job), 1);
+    },
+
     ADD_PERSON_TO_MOVIE_CAST (state, payload) {
       state.currentMovieCast.push(payload)
     },
@@ -421,6 +428,7 @@ export default new Vuex.Store({
               const person = res.data
               f.profilePath(person)
               f.knownForDepartment(person)
+              f.addPlaceOfDeath(person)
               commit('SET_CURRENT_PERSON', person);
             }).catch(function(error) {console.log("Error TMDB :", error)});      
           }
@@ -494,22 +502,24 @@ export default new Vuex.Store({
       .then(function(querySnapshot) {
         commit('IS_LOADING', false);
         querySnapshot.forEach(function(doc) {
-          if(!state.currentJobsListinPersonsList.find(j=>j.includes(doc.data().person.known_for_department.substring(0, 3)))) {
-            switch (doc.data().person.known_for_department.substring(0, 3)) {
-              case 'Act':
-                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Acteurs');
-                break;
-              case 'Réa':
-                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Réalisateurs');
-                break;
-              case 'Scé':
-                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Scénaristes');
-                break;
-              default:
-                commit('ADD_JOBS_LIST_IN_PERSONS_LIST', doc.data().person.known_for_department);
+          doc.data().person.known_for_department.forEach(pj => {
+            if(!state.currentJobsListinPersonsList.find(j=>j.includes(pj.name.substring(0, 3)))) {
+              switch (pj.name.substring(0, 3)) {
+                case 'Act':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Acteurs');
+                  break;
+                case 'Réa':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Réalisateurs');
+                  break;
+                case 'Scé':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Scénaristes');
+                  break;
+                default:
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', pj.name);
+              }
             }
-          }
-          commit('ADD_PERSON_TO_CURRENT_PERSONS_LIST', doc.data());   
+          })
+          commit('ADD_PERSON_TO_CURRENT_PERSONS_LIST', doc.data());
         });
       }).catch(function(error) {
           console.log("Error firebase:", error);

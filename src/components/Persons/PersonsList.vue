@@ -23,7 +23,9 @@
         </div>
         <div class="text">
           <h1>{{ item.person.name }}</h1>
-          <p class="character">{{ item.person.known_for_department }}</p>
+          <div class="jobs">
+            <span v-for="(job, index) in item.person.known_for_department" :key="index" class="job">{{ job.name }}</span>
+          </div>
         </div>
       </router-link>
     </section>
@@ -54,7 +56,7 @@ export default {
       if(this.filter === 'all') {
         return this.persons;
       }
-      return this.persons.filter(p => p.person.known_for_department.substring(0, 3) === this.filter.substring(0, 3));
+      return this.persons.filter(p => p.person.known_for_department.some((e) =>e.name.substring(0, 3) === this.filter.substring(0, 3)));
     },
   }
 };
@@ -147,11 +149,22 @@ export default {
         color: white;
         font-size: 1.05em;
       }
-
-      p {
-        font-size: 0.85em;
-        margin: 0;
-        margin-top: 0.25em;
+      .jobs {
+        display: flex;
+        flex-wrap: wrap;
+        .job {
+          font-size: 0.85em;
+          margin: 0;
+          margin-top: 0.25em;
+          &:not(:last-child) {
+            margin-right: .3rem;
+            &:after {
+              content:",";
+              position:relative;
+              right:0.15
+            }
+          }
+        }
       }
     }
   }

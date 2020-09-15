@@ -16,8 +16,8 @@
             </div>
             <div class="infos">
               <h2 v-if="movie.original_title" class="title">{{ movie.original_title }}</h2>
-              <div v-if="movie.job.length" class="role"><span v-for="job in movie.job" :key="job.name" class="job"><strong>{{ job.name }}</strong></span></div>
-              <div v-if="movie.character.length" class="role"><span v-for="character in movie.character" :key="character.name" class="character"><span class="entantque">En tant que</span><strong>{{ character.name }}</strong></span></div>
+              <div v-if="movie.job && movie.job.length" class="role"><span v-for="job in movie.job" :key="job.name" class="job"><strong>{{ job.name }}</strong></span></div>
+              <div v-if="movie.character && movie.character.length" class="role"><span v-for="character in movie.character" :key="character.name" class="character"><span class="entantque">En tant que</span><strong>{{ character.name }}</strong></span></div>
             </div>
           </div>
         </router-link>

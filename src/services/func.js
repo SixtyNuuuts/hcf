@@ -245,16 +245,20 @@ export default {
 
     knownForDepartment(person) {
 
-      let personJob = person.known_for_department;
+      let personJob = [{ name: person.known_for_department }];
       let jobIsInArray = this.jobsTranslation.find(p => p.job == personJob);
       if (jobIsInArray) {
-        personJob = jobIsInArray.jobTranslatationM;
+        personJob = [{ name: jobIsInArray.jobTranslatationM }];
         if (person.gender == 1) {
-          personJob = jobIsInArray.jobTranslatationF;
+          personJob = [{ name: jobIsInArray.jobTranslatationF }];
         }
       }
       person.known_for_department = personJob;
 
+    },
+
+    addPlaceOfDeath(person) {
+      person.place_of_death = "";
     },
 
     formatImgForGallery(arrayOfImg){
