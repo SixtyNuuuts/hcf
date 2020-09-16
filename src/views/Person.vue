@@ -48,6 +48,9 @@
       this.$store.dispatch("getCurrentPersonCredits", this.id);
       this.$store.dispatch("getCurrentPersonDocumented", this.id)
       this.$store.dispatch("getCurrentPersonImages", this.id);
+      if(!this.$store.state.allDocumentedMovieList.length) {
+        this.$store.dispatch("getAllDocumentedMovies");
+      }
     },
     data() {
       return {

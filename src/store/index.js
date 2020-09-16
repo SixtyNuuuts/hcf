@@ -9,6 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoading: false,
+    isLoadingFilmo: false,
     currentUser: {
       loggedIn: false,
       admin: false,
@@ -45,6 +46,7 @@ export default new Vuex.Store({
     currentMovieImages: [],
     currentMovieListByYear: [],
     currentDocumentedMovieListByYear: [],
+    allDocumentedMovieList: [],
     currentDocumentedMovie: {
       colLeftContent: [],
       colRightContent: [],
@@ -63,6 +65,9 @@ export default new Vuex.Store({
   mutations: {
     IS_LOADING (state, payload) {
       state.isLoading = payload;
+    },
+    IS_LOADING_FILMO (state, payload) {
+      state.isLoadingFilmo = payload;
     },
     SET_CURRENT_YEAR_SELECTED (state, payload) {
       state.currentYearSelected = payload;
@@ -127,6 +132,9 @@ export default new Vuex.Store({
     ADD_DOCU_MOVIE_TO_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state, payload) {
       state.currentDocumentedMovieListByYear.push(payload);
     },
+    ADD_DOCU_MOVIE_TO_ALL_DOCU_MOVIE_LIST (state, payload) {
+      state.allDocumentedMovieList.push(payload);
+    },
     RESET_CURRENT_MOVIE (state) {
       state.currentMovie = {}
     },
@@ -138,6 +146,9 @@ export default new Vuex.Store({
     },
     RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR (state) {
       state.currentDocumentedMovieListByYear = []
+    },
+    RESET_ALL_DOCU_MOVIE_LIST (state) {
+      state.allDocumentedMovieList = []
     },
     RESET_CURRENT_MOVIE_IMAGES (state) {
       state.currentMovieImages = []
@@ -403,6 +414,22 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
+    getAllDocumentedMovies ({commit}) {
+      commit('RESET_ALL_DOCU_MOVIE_LIST');
+      commit('IS_LOADING_FILMO', true);
+      db.collection("movies")
+      .get()
+      .then(function(querySnapshot) {
+        commit('IS_LOADING_FILMO', false);
+        querySnapshot.forEach(function(doc) {
+          if (doc.data().movie) {
+            commit('ADD_DOCU_MOVIE_TO_ALL_DOCU_MOVIE_LIST', doc.data().movie);   
+          }
+        });
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+      });
+    },
     getMoviesByYear ({commit}, payload) {
       tmdbApi.getMoviesFrByYear(payload, 1).then(res => {
         commit('RESET_CURRENT_MOVIE_LIST_BY_YEAR_ARRAY');
@@ -513,6 +540,12 @@ export default new Vuex.Store({
                   break;
                 case 'Scé':
                   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Scénaristes');
+                  break;
+                case 'Pho':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Photographes');
+                  break;
+                case 'Pro':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Producteurs');
                   break;
                 default:
                   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', pj.name);

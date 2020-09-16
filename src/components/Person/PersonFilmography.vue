@@ -1,28 +1,69 @@
 <template>
   <section v-if="personCredits" class="person-filmo">
-    <h1>Filmographie <span>{{ personCredits.length}} films</span></h1>
-    <ul class="filmo-list">
-      <li v-for="movie in personCredits" :key="movie.id" class="filmo-item">
-        <router-link :to="'/film/' + movie.id">
-          <div v-if="movie.release_date && movie.release_date!='2021-01-01'" class="year">{{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }}</div>
-          <div v-else class="year">----</div>
-          <div class="separator"></div>
-          <div class="details">
-            <div class="poster">
-              <img v-if="movie.poster_path" :src="movie.poster_path">
-              <div v-else class="no-poster">
-                <i class="el-icon-picture"></i>
+    <!-- <h1>Filmographie <span>{{ personCredits.length}} films</span></h1> -->
+    <h1>Filmographie</h1>
+    <div v-if="personCreditsFilteredCount">
+      <div class="filters">
+        <h3>Filtres :</h3>
+        <el-radio-group v-model="filter">
+          <el-radio label="all">Tous les films ({{ personCredits.length }})</el-radio>
+          <el-radio :disabled="!personCreditsFilteredCount" label="doc-movies">Films documentés ({{ personCreditsFilteredCount }})</el-radio>
+        </el-radio-group>
+      </div>
+      <ul class="filmo-list" :class="{'is-loading' : isLoading}">
+        <li v-for="movie in personCreditsFiltered" :key="movie.id" class="filmo-item" :class="{'only-one' : personCreditsFiltered.length===1}">
+          <router-link :to="'/film/' + movie.id">
+            <div v-if="movie.release_date && movie.release_date!='2021-01-01'" class="year">{{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }}</div>
+            <div v-else class="year">----</div>
+            <div class="separator"></div>
+            <div class="details">
+              <div class="poster">
+                <img v-if="movie.poster_path" :src="movie.poster_path">
+                <div v-else class="no-poster">
+                  <i class="el-icon-picture"></i>
+                </div>
+              </div>
+              <div class="infos">
+                <h2 v-if="movie.original_title" class="title">{{ movie.original_title }}</h2>
+                <div v-if="movie.job && movie.job.length" class="role"><span v-for="job in movie.job" :key="job.name" class="job"><strong>{{ job.name }}</strong></span></div>
+                <div v-if="movie.character && movie.character.length" class="role"><span v-for="character in movie.character" :key="character.name" class="character"><span class="entantque">En tant que</span><strong>{{ character.name }}</strong></span></div>
               </div>
             </div>
-            <div class="infos">
-              <h2 v-if="movie.original_title" class="title">{{ movie.original_title }}</h2>
-              <div v-if="movie.job && movie.job.length" class="role"><span v-for="job in movie.job" :key="job.name" class="job"><strong>{{ job.name }}</strong></span></div>
-              <div v-if="movie.character && movie.character.length" class="role"><span v-for="character in movie.character" :key="character.name" class="character"><span class="entantque">En tant que</span><strong>{{ character.name }}</strong></span></div>
+          </router-link>
+        </li>
+      </ul>
+    </div>
+    <div v-else>
+      <div class="filters">
+        <h3>Filtres :</h3>
+        <el-radio-group v-model="filter2">
+          <el-radio label="all">Tous les films ({{ personCredits.length }})</el-radio>
+          <el-radio :disabled="!personCreditsFilteredCount" label="doc-movies">Films documentés ({{ personCreditsFilteredCount }})</el-radio>
+        </el-radio-group>
+      </div>
+      <ul class="filmo-list" :class="{'is-loading' : isLoading}">
+        <li v-for="movie in personCredits" :key="movie.id" class="filmo-item" :class="{'only-one' : personCredits.length===1}">
+          <router-link :to="'/film/' + movie.id">
+            <div v-if="movie.release_date && movie.release_date!='2021-01-01'" class="year">{{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }}</div>
+            <div v-else class="year">----</div>
+            <div class="separator"></div>
+            <div class="details">
+              <div class="poster">
+                <img v-if="movie.poster_path" :src="movie.poster_path">
+                <div v-else class="no-poster">
+                  <i class="el-icon-picture"></i>
+                </div>
+              </div>
+              <div class="infos">
+                <h2 v-if="movie.original_title" class="title">{{ movie.original_title }}</h2>
+                <div v-if="movie.job && movie.job.length" class="role"><span v-for="job in movie.job" :key="job.name" class="job"><strong>{{ job.name }}</strong></span></div>
+                <div v-if="movie.character && movie.character.length" class="role"><span v-for="character in movie.character" :key="character.name" class="character"><span class="entantque">En tant que</span><strong>{{ character.name }}</strong></span></div>
+              </div>
             </div>
-          </div>
-        </router-link>
-      </li>
-    </ul>
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </section>
 </template>
 
@@ -33,6 +74,26 @@ export default {
   props: {
     personCredits: Array
   },
+  data() {
+    return {
+      filter: 'doc-movies',
+      filter2: 'all'
+    };
+  },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoadingFilmo;
+    },
+    personCreditsFiltered() {
+      if(this.filter === 'all') {
+        return this.personCredits;
+      }
+      return this.personCredits.filter(m => this.$store.state.allDocumentedMovieList.some((am) => am.id === m.id));
+    },
+    personCreditsFilteredCount() {
+      return this.personCredits.filter(m => this.$store.state.allDocumentedMovieList.some((am) => am.id === m.id)).length;
+    },
+  }
 };
 </script>
 
@@ -43,13 +104,26 @@ export default {
 
   section.person-filmo {
     padding: 0 1.5rem;
-    padding-bottom: 1.6rem;
+    padding-bottom: 1.9rem;
     position: relative;
+
+    .filters {
+      margin-top: 0.9rem;
+      margin-bottom: 1rem;
+
+      h3 {
+        display: inline-block;
+        font-size: 0.9rem;
+        margin: 0;
+        margin-right: 2rem;
+      }
+    }
 
     h1 {
       font-family: "Righteous";
       font-size: 1.5em;
-      margin-bottom: .9em;
+      //margin-bottom: .9em;
+      margin-bottom: 0;
       text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
       text-transform: uppercase;
       position: relative;
@@ -68,7 +142,7 @@ export default {
         position: absolute;
         top: 14px;
         display: block;
-        width: 0;
+        width: 22%;
         height: 2px;
         background-color: rgba(65, 38, 7, 0.09);
       }
@@ -90,6 +164,12 @@ export default {
       box-shadow: $--box-shadow-inner-brown;
       background: url('../../assets/img/content-pattern.png') repeat local left top;
       border-radius: 3px;
+      min-height: none;
+
+      &.is-loading {
+        background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;
+        min-height: 10rem;
+      }
 
       .filmo-item {
         transition: all .2s ease-in-out;
@@ -119,6 +199,20 @@ export default {
               }
             }
         }
+
+        &.only-one {
+          .separator {
+            height: 0;
+            top: -3px;
+
+            &::after {
+              content: '';
+              top: 5%;
+              left: -3px ;
+            }
+          }
+        }
+
         &:hover {
           background-color: rgba(255, 239, 212, 0.57);
           border-radius: 0 .4rem .4rem 0;      
@@ -269,7 +363,7 @@ export default {
     section.person-filmo {
       h1 {
         &:before, &:after {
-          width: 25%;
+          width: 32%;
         }
       }
 
@@ -344,7 +438,7 @@ export default {
     section.person-filmo {
       h1 {
         &:before, &:after {
-          width: 31%;
+          width: 36%;
         }
       }
 
@@ -382,7 +476,7 @@ export default {
     section.person-filmo {
       h1 {
         &:before, &:after {
-          width: 34%;
+          width: 39%;
         }
       }
 
