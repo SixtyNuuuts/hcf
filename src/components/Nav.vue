@@ -185,7 +185,7 @@ export default {
               &.is-active {
                 color: $--color-hcf-red;
                 text-shadow: $--text-shadow-2;
-                font-size: 2.05em;
+                font-size: 2.09em;
 
                 &::after {
                   content: '';
