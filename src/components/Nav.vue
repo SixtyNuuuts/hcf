@@ -7,12 +7,12 @@
       </a>
       <div id="menu">
         <ul class="left-part">
-          <li class="tlink">
-            <router-link to="/films">
+          <li>
+            <router-link to="/films" :class="[currentPage.includes('film') ? 'is-active' : '']">
               Films
             </router-link>
           </li>
-          <li class="search" :class="{ 'search-movie-is-open': idSearchMovieOpen }">
+          <!-- <li class="search" :class="{ 'search-movie-is-open': idSearchMovieOpen }">
             <div class="search-title" @click="toggleSearchMovie"><i class="el-icon-search"></i>Recherchez un film</div>
             <el-autocomplete
               ref="searchm"
@@ -21,15 +21,15 @@
               :trigger-on-focus="false"
               @blur="toggleSearchMovie"
             ></el-autocomplete>
-          </li>
+          </li> -->
         </ul>
         <ul class="right-part">
-          <li class="tlink personnalites">
-            <a href="/persons">
+          <li>
+            <router-link to="/persons" :class="[currentPage.includes('person') ? 'is-active' : '']" class="personnalites">
               Personnalités
-            </a>
+            </router-link>
           </li>
-          <li class="search" :class="{ 'search-person-is-open': idSearchPersonOpen }">
+          <!-- <li class="search" :class="{ 'search-person-is-open': idSearchPersonOpen }">
             <div class="search-title" @click="toggleSearchPerson"><i class="el-icon-search"></i>Recherchez une personnalité</div>
             <el-autocomplete
               ref="searchp"
@@ -38,7 +38,7 @@
               :trigger-on-focus="false"
               @blur="toggleSearchPerson"
             ></el-autocomplete>
-          </li>
+          </li> -->
         </ul>
       </div>
       <div id="menu-icon" @click="toggleMenu">
@@ -76,6 +76,11 @@ export default {
       this.$nextTick(() => this.$refs.searchp.focus());
     },
   },
+  computed: {
+    currentPage() {
+      return this.$route.path;
+    }
+  }
 };
 </script>
 
@@ -136,7 +141,7 @@ export default {
         max-width: 350px;
 
         ul {
-          margin: 1em 0;
+          //margin: 1em 0;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -145,7 +150,7 @@ export default {
           transition: .5s ease-in-out;
           width: 100%;
 
-          &.left-part {
+          /* &.left-part {
             margin-bottom: 3.5em;
 
             &::after {
@@ -158,27 +163,42 @@ export default {
               background: url("../assets/img/sep-1-star-black.svg") no-repeat center 0;
             }
             
-          }
+          } */
 
           li {
             font-family: 'Righteous', sans-serif;
             position: relative;
 
-            &.tlink {
+            a {
+              color: $--color-hcf-black;
+              transition: .15s ease-in-out;
+              position: relative;
               font-size: 1.95em;
               text-transform: uppercase;
               text-shadow: $--text-shadow-1;
-              position: relative;
               margin-bottom: .6em;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
 
-              a {
+              &.is-active {
                 color: $--color-hcf-red;
-                transition: .3s ease-in-out;
-                position: relative;
-                top:0;
+                text-shadow: $--text-shadow-2;
+                font-size: 2.05em;
 
-                &:hover {
-                  top:-0.07em;
+                &::after {
+                  content: '';
+                  display: block;
+                  height: 10px;
+                  width: 70%;
+                  position: absolute;
+                  bottom: -0.7em;
+                  background: url("../assets/img/sep-3-stars.svg") no-repeat center 0;
+                }
+
+                &.personnalites {
+                  font-size: 2.02em;
                 }
 
               }
@@ -187,7 +207,7 @@ export default {
                 content: '';
                 display: block;
                 height: 10px;
-                width: 100%;
+                width: 60%;
                 position: absolute;
                 bottom: -0.7em;
                 background: url("../assets/img/sep-3-stars.svg") no-repeat center 0;
@@ -196,7 +216,15 @@ export default {
               &.personnalites {
                 font-size: 1.90em;
               }
-            }
+
+            }        
+
+            &:hover {
+                a {
+                  color: $--color-hcf-red;
+                  text-shadow: $--text-shadow-1;
+                }
+              }    
           
             &.search {
               order: 1;
@@ -305,10 +333,15 @@ export default {
           }
           
           #menu {
-            height: 19.5em;
+            /*height: 19.5em;
             opacity: 1;
             margin-top: 12em;
+            */
+              height: 12.5em;
+              opacity: 1;
+              margin-top: 13em;
           }
+          
 
           //// BURGER ICON ////////////////
           #menu-icon {

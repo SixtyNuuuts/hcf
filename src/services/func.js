@@ -246,7 +246,7 @@ export default {
     knownForDepartment(person) {
 
       let personJob = [{ name: person.known_for_department }];
-      let jobIsInArray = this.jobsTranslation.find(p => p.job == personJob);
+      let jobIsInArray = this.jobsTranslation.find(p => p.job == personJob[0].name);
       if (jobIsInArray) {
         personJob = [{ name: jobIsInArray.jobTranslatationM }];
         if (person.gender == 1) {

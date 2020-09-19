@@ -7,8 +7,7 @@ Vue.use(VueRouter)
     {
       path: "/",
       name: "home",
-      component: () =>
-        import(/* webpackChunkName: "films" */ "../views/Movies.vue")
+      redirect: { name: 'films' }
     },
     {
       path: "/films",

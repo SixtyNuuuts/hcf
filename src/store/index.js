@@ -547,6 +547,12 @@ export default new Vuex.Store({
                 case 'Pro':
                   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Producteurs');
                   break;
+                case 'Aut':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Auteurs');
+                  break;
+                case 'Dra':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Dramaturges');
+                  break;
                 default:
                   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', pj.name);
               }
