@@ -325,13 +325,13 @@
 
       .top-tail {
         background-color: #a51f1e;
-        height: 30px;
+        height: 40px;
       }
 
       .frieze-film-deco {
         position: absolute;
         z-index: -1;
-        top: 50px;
+        top: 48px;
         left: 0;
         width: 100%;
         box-shadow: $--box-shadow-dark-4;
@@ -341,7 +341,7 @@
         }
 
         .frieze-img {
-          height: 110px;
+          height: 100px;
           background-image: url("assets/img/frieze-img.jpg");
           background-repeat: repeat-x;
 

@@ -111,6 +111,10 @@ export default {
       margin-top: 0.9rem;
       margin-bottom: 1rem;
 
+      .el-radio-group {
+        line-height: 1.5rem;
+      }
+      
       h3 {
         display: inline-block;
         font-size: 0.9rem;
@@ -266,7 +270,7 @@ export default {
             .poster {
               width: 1.5rem;
               height: 2.1rem;
-              background-color: $--color-hcf-light-grey;
+              background-color: $--color-hcf-black;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -278,7 +282,7 @@ export default {
               }
               i {
                 font-size: 1.3rem;
-                color: $--color-hcf-dark-grey;
+                color: #484848;
               }
 
             }

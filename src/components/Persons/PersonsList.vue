@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
     <div class="filters">
       <h3>Filtres :</h3>
       <el-radio-group v-model="filter">
@@ -49,6 +50,9 @@ export default {
     isLoading() {
       return this.$store.state.isLoading;
     },
+    loadingErrorMess() {
+      return this.$store.state.loadingErrorMess;
+    },
     JobsList() {
       return f.sortedByAlphabetJobs(this.$store.state.currentJobsListinPersonsList);
     },
@@ -67,8 +71,25 @@ export default {
 @import "@/styles/bp.scss";
 @import "@/styles/shadow.scss";
 
+  .error-mess {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 24rem;
+    font-size: 1.2em;
+    img {
+      width: 3rem;
+      margin-bottom: 1rem;
+    }
+  }
+
 .filters {
   margin-top: 1rem;
+
+  .el-radio-group {
+    line-height: 1.5rem;
+  }
 
   h3 {
     display: inline-block;

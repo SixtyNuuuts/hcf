@@ -1,5 +1,6 @@
 <template>
   <section id="moviesdocu" :class="{'is-loading' : isLoading}">
+    <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
      <router-link v-for="(movie, index) in movies" :to="'/film/' + movie.id" :key="index" class="moviedocu_wrap"  :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
       <div>
         <div class="moviedocu_box">
@@ -38,6 +39,9 @@ export default {
     isLoading() {
       return this.$store.state.isLoading;
     },
+    loadingErrorMess() {
+      return this.$store.state.loadingErrorMess;
+    },
   }
 }
 </script>
@@ -52,6 +56,19 @@ export default {
     justify-content: center;
     margin-bottom: 3em;
     flex-wrap: wrap;
+    
+    .error-mess {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 24rem;
+      font-size: 1.2em;
+      img {
+        width: 3rem;
+        margin-bottom: 1rem;
+      }
+    }
 
     &.is-loading {
       background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;

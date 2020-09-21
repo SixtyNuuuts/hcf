@@ -4,11 +4,12 @@
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="person.profile_path" :src="person.profile_path">
         <div v-else class="no-picture">
-          <img v-if="person.gender == 1" src="@/assets/img/p-female.svg" />
-          <img v-else src="@/assets/img/p-male.svg" />
+          <img v-if="person.gender == 1" src="@/assets/img/p-female-dgrey.svg" />
+          <img v-else src="@/assets/img/p-male-dgrey.svg" />
         </div>
       </div>
       <div class="text">
+        <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-grey.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
         <div class="title">
           <h1 v-if="person.name">{{ person.name }}</h1>
           <div v-if="person.known_for_department" class="jobs"><span class="job" v-for="(job, index) in person.known_for_department" :key="index" >{{ job.name }}</span></div>
@@ -60,6 +61,9 @@ export default {
     isLoading() {
       return this.$store.state.isLoading;
     },
+    loadingErrorMess() {
+      return this.$store.state.loadingErrorMess;
+    },
   }
 }
 </script>
@@ -74,6 +78,19 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;   
     background-position: center;
+    
+    .error-mess {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 24rem;
+      font-size: 1.2em;
+      img {
+        width: 3rem;
+        margin-bottom: 1rem;
+      }
+    }
 
     .content {
       display: flex;
@@ -108,8 +125,8 @@ export default {
         }
         
         .no-picture {
-          background-color: $--color-hcf-light-grey;
-          background: linear-gradient(0deg, rgba(181,181,181,1) 0%, rgba(181,181,181,1) 15%, rgba(214,212,209,1) 20%, rgba(214,212,209,1) 100%);
+          background-color: $--color-hcf-black;
+          background: linear-gradient(0deg, #212121 0%, #212121 15%, #0b0b0b 20%, #000000 100%);
           width: 283px;
           height: 424px;
           display: flex;

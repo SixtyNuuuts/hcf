@@ -3,6 +3,7 @@
     <div class="moviesother_border">
       <div class="moviesother_container">
         <h1>D'AUTRES FILMS DE {{ year }}</h1>
+        <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
         <div class="moviesother_list">
           <div v-for="(movie, index) in movies" :key="index">
             <img src="../../assets/img/icon-film.svg" alt="icon film" ><router-link :to="'/film/' + movie.id">{{ movie.original_title }}</router-link>
@@ -21,6 +22,11 @@ export default {
     movies: Array,
     year: Number
   },
+  computed: {
+    loadingErrorMess() {
+      return this.$store.state.loadingErrorMess;
+    },
+  }
 }
 </script>
 
@@ -46,6 +52,19 @@ export default {
         background: url('../../assets/img/main-pattern.jpg') repeat scroll left top;
         padding: 2%;
         padding-bottom: 3%;
+
+        .error-mess {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          min-height: 24rem;
+          font-size: 1.2em;
+          img {
+            width: 3rem;
+            margin-bottom: 1rem;
+          }
+        }
 
         h1 {
           font-family: "Righteous";

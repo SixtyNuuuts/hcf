@@ -1,5 +1,5 @@
 <template>
-  <section class="movie-info" :style="{ backgroundImage: 'url(' +  movie.backdrop_path + ')' }">
+  <section class="movie-info" :style="{ backgroundImage: backgroundImage }">
     <div class="content" :class="{'is-loading' : isLoading}">
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="movie.poster_path" :src="movie.poster_path">
@@ -8,9 +8,10 @@
         </div>
       </div>
       <div class="text">
+        <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-grey.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
         <h1 v-if="movie.original_title">{{ movie.original_title }} <span v-if="movie.release_date" class="release_date">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></h1>
         <div class="facts">
-          <div v-if="movie.release_date" class="fact release">
+          <div v-if="movie.release_date" class=" fact release">
             <h3>Date de Sortie</h3>
             {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
           </div>
@@ -53,8 +54,18 @@ export default {
     CrewCarousel
   },
   computed: {
+    backgroundImage() {
+      let backgroundImg = 'url(' +  require("@/assets/img/backdrop_default.jpg") + ')';
+      if(this.movie.backdrop_path) {
+        backgroundImg = 'url(' +  this.movie.backdrop_path + ')';
+      }
+      return backgroundImg;
+    },
     isLoading() {
       return this.$store.state.isLoading;
+    },
+    loadingErrorMess() {
+      return this.$store.state.loadingErrorMess;
     },
   }
 }
@@ -69,6 +80,19 @@ export default {
   section.movie-info {
     background-size: cover;
     background-repeat: no-repeat;   
+
+    .error-mess {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 24rem;
+      font-size: 1.2em;
+      img {
+        width: 3rem;
+        margin-bottom: 1rem;
+      }
+    }
 
     .content {
       display: flex;
@@ -104,7 +128,7 @@ export default {
         }
         
         .no-poster {
-          background-color: $--color-hcf-light-grey;
+          background-color: $--color-hcf-black;
           width: 280px;
           height: 420px;
           display: flex;
@@ -114,7 +138,7 @@ export default {
 
           i {
             font-size: 8rem;
-            color: $--color-hcf-dark-grey;
+            color: #746e6d40;
           }
 
         }

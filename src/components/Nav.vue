@@ -146,7 +146,7 @@ export default {
           flex-direction: column;
           justify-content: center;
           position: relative;
-          min-height: 105px;
+          min-height: 85px;
           transition: .5s ease-in-out;
           width: 100%;
 
@@ -337,7 +337,7 @@ export default {
             opacity: 1;
             margin-top: 12em;
             */
-              height: 12.5em;
+              height: 10.5em;
               opacity: 1;
               margin-top: 13em;
           }
@@ -384,8 +384,8 @@ export default {
 
         .logo {
           width: 12.5em;
-          left: calc(50% - 6.25em);
-          top: -2.1em;
+          left: calc(50% - 6.15em);
+          top: -2.6em;
         }
 
         #menu {

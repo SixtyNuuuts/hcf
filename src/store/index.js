@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     isLoading: false,
     isLoadingFilmo: false,
+    loadingErrorMess: null,
     currentUser: {
       loggedIn: false,
       admin: false,
@@ -68,6 +69,12 @@ export default new Vuex.Store({
     },
     IS_LOADING_FILMO (state, payload) {
       state.isLoadingFilmo = payload;
+    },
+    SET_LOADING_ERROR_MESS (state, payload) {
+      state.loadingErrorMess = payload;
+    },
+    RESET_LOADING_ERROR_MESS (state) {
+      state.loadingErrorMess = null;
     },
     SET_CURRENT_YEAR_SELECTED (state, payload) {
       state.currentYearSelected = payload;
@@ -278,6 +285,7 @@ export default new Vuex.Store({
     getCurrentMovie ({commit}, payload) {
       commit('RESET_CURRENT_MOVIE');
       commit('IS_LOADING', true);
+      commit('RESET_LOADING_ERROR_MESS');
       db.collection("movies").doc(payload).get()
       .then((doc) => {
           commit('IS_LOADING', false);
@@ -291,10 +299,20 @@ export default new Vuex.Store({
               f.backdropPath(movie)
               f.posterPath(movie)
               commit('SET_CURRENT_MOVIE', movie);
-            }).catch(function(error) {console.log("Error TMDB:", error)});      
+            }).catch(function(error) {
+              console.log("Error TMDB:", error)
+              if(error) {
+                const mess = "Nous n'avons pas trouvé le film demandé"
+                commit('SET_LOADING_ERROR_MESS', mess);
+              }    
+            });      
           }
       }).catch(function(error) {
           console.log("Error firebase:", error);
+          if(error) {
+            const mess = "Erreur lors du chargement du film, essayez de recharger la page ou de réessayer ultérieurement"
+            commit('SET_LOADING_ERROR_MESS', mess);
+          }
       });
     },
     getCurrentMovieCrew ({commit}, payload) {
@@ -384,6 +402,10 @@ export default new Vuex.Store({
           }
       }).catch(function(error) {
           console.log("Error firebase:", error);
+          if(error) {
+            const mess = "Erreur lors du chargement des films, essayez de recharger la page ou de réessayer ultérieurement"
+            commit('SET_LOADING_ERROR_MESS', mess);
+          }
       });
     },
     getDocumentedMoviesByYear ({commit}, payload) {
@@ -412,6 +434,10 @@ export default new Vuex.Store({
         });
       }).catch(function(error) {
           console.log("Error firebase:", error);
+          if(error) {
+            const mess = "Erreur lors du chargement des films, essayez de recharger la page ou de réessayer ultérieurement"
+            commit('SET_LOADING_ERROR_MESS', mess);
+          }
       });
     },
     getAllDocumentedMovies ({commit}) {
@@ -443,6 +469,7 @@ export default new Vuex.Store({
     getCurrentPerson ({commit}, payload) {
       commit('RESET_CURRENT_PERSON');
       commit('IS_LOADING', true);
+      commit('RESET_LOADING_ERROR_MESS');
       db.collection("persons").doc(payload).get()
       .then((doc) => {
           commit('IS_LOADING', false);
@@ -457,10 +484,20 @@ export default new Vuex.Store({
               f.knownForDepartment(person)
               f.addPlaceOfDeath(person)
               commit('SET_CURRENT_PERSON', person);
-            }).catch(function(error) {console.log("Error TMDB :", error)});      
+            }).catch(function(error) {
+              console.log("Error TMDB :", error)
+              if(error) {
+                const mess = "Nous n'avons pas trouvé la personnalité demandée"
+                commit('SET_LOADING_ERROR_MESS', mess);
+              }
+            });      
           }
       }).catch(function(error) {
           console.log("Error firebase:", error);
+          if(error) {
+            const mess = "Erreur lors du chargement de la personnalité, essayez de recharger la page ou de réessayer ultérieurement"
+            commit('SET_LOADING_ERROR_MESS', mess);
+          }
       });
     },
     getCurrentPersonCredits ({commit}, payload) {
@@ -562,6 +599,10 @@ export default new Vuex.Store({
         });
       }).catch(function(error) {
           console.log("Error firebase:", error);
+          if(error) {
+            const mess = "Erreur lors du chargement des personnalités, essayez de recharger la page ou de réessayer ultérieurement"
+            commit('SET_LOADING_ERROR_MESS', mess);
+          }
       });
     },
   },
