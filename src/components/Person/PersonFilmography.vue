@@ -113,6 +113,7 @@ export default {
 
       .el-radio-group {
         line-height: 1.5rem;
+        margin-top: 0.5rem;
       }
       
       h3 {
