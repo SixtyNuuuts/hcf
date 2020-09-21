@@ -1,5 +1,6 @@
 <template>
   <section class="person-info" :style="{ backgroundImage: backgroundImage }">
+    <el-button v-if="isAdmin" type="success" @click="btnEdit" class="btn-edit" icon="el-icon-edit">EDIT</el-button>
     <div class="content" :class="{'is-loading' : isLoading}">
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="person.profile_path" :src="person.profile_path">
@@ -50,6 +51,12 @@ export default {
   props: {
     person: Object,
   },
+  methods: {
+    btnEdit() {
+      this.$router.push(({ name: 'person', params: { view: 'edit', id: this.person.id }}));
+      location.reload();
+    },
+  },
   computed: {
     backgroundImage() {
       let backgroundImg = 'url(' +  require("@/assets/img/backdrop_default.jpg") + ')';
@@ -63,6 +70,9 @@ export default {
     },
     loadingErrorMess() {
       return this.$store.state.loadingErrorMess;
+    },
+    isAdmin() {
+      return this.$store.state.currentUser.admin;
     },
   }
 }
@@ -78,6 +88,14 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;   
     background-position: center;
+    position: relative;
+
+    .btn-edit {
+      position: absolute;
+      right:25px;
+      top:25px;
+      z-index: 400;
+    }
     
     .error-mess {
       display: flex;

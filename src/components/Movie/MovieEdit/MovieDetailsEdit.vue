@@ -1,5 +1,6 @@
 <template>
   <section class="movie-info" :style="{ backgroundImage: 'url(' + movie.backdrop_path + ')' }">
+    <el-button type="success" @click="btnView" class="btn-view" icon="el-icon-view">VIEW</el-button>
     <div class="content" :class="{'is-loading' : isLoading}">
       <div>
         <div class="poster" :class="{'is-loading' : isLoading}">
@@ -180,6 +181,10 @@ export default {
     };
   },
   methods: {
+    btnView() {
+      this.$router.push(({ name: 'film', params: { id: this.movie.id }}));
+      location.reload();
+    },
     setUploadPosterPath(movie, posterPath) {
       movie.poster_path = posterPath
     },
@@ -319,6 +324,13 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
+
+    .btn-view {
+      position: absolute;
+      right:25px;
+      top:25px;
+      z-index: 400;
+    }
 
     .save-btn {
       position: absolute;

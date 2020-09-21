@@ -1,5 +1,6 @@
 <template>
   <section class="person-info" :style="{ backgroundImage: backgroundImage }">
+    <el-button type="success" @click="btnView" class="btn-view" icon="el-icon-view">VIEW</el-button>
     <div class="content" :class="{'is-loading' : isLoading}">
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="person.profile_path" :src="person.profile_path">
@@ -131,6 +132,10 @@ export default {
     },
   },
   methods: {
+    btnView() {
+      this.$router.push(({ name: 'person', params: { id: this.person.id }}));
+      location.reload();
+    },
     setUploadProfilePath(person, profilePath) {
       person.profile_path = profilePath
     },
@@ -204,6 +209,13 @@ export default {
     background-repeat: no-repeat;   
     background-position: center;
     position: relative;
+
+    .btn-view {
+      position: absolute;
+      right:25px;
+      top:25px;
+      z-index: 400;
+    }
 
     .save-btn {
       position: absolute;

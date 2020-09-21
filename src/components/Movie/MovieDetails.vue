@@ -1,5 +1,6 @@
 <template>
   <section class="movie-info" :style="{ backgroundImage: backgroundImage }">
+    <el-button v-if="isAdmin" type="success" @click="btnEdit" class="btn-edit" icon="el-icon-edit">EDIT</el-button>
     <div class="content" :class="{'is-loading' : isLoading}">
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="movie.poster_path" :src="movie.poster_path">
@@ -53,6 +54,12 @@ export default {
   components: {
     CrewCarousel
   },
+  methods: {
+    btnEdit() {
+      this.$router.push(({ name: 'film', params: { view: 'edit', id: this.movie.id }}));
+      location.reload();
+    },
+  },
   computed: {
     backgroundImage() {
       let backgroundImg = 'url(' +  require("@/assets/img/backdrop_default.jpg") + ')';
@@ -67,6 +74,9 @@ export default {
     loadingErrorMess() {
       return this.$store.state.loadingErrorMess;
     },
+    isAdmin() {
+      return this.$store.state.currentUser.admin;
+    },
   }
 }
 </script>
@@ -80,6 +90,14 @@ export default {
   section.movie-info {
     background-size: cover;
     background-repeat: no-repeat;   
+    position: relative;
+
+    .btn-edit {
+      position: absolute;
+      right:25px;
+      top:25px;
+      z-index: 400;
+    }
 
     .error-mess {
       display: flex;
