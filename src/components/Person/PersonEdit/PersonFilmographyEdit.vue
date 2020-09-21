@@ -37,6 +37,11 @@
               </template>
             </el-autocomplete>
 
+            <!-- <el-input-number
+              type="text"
+              v-model="movie.id"
+            ></el-input-number> -->
+
           </div>
           <div class="release-date">
             <label for="release_date">Date de sortie</label>

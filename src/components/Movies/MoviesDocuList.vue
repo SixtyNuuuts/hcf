@@ -62,8 +62,10 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 24rem;
+      min-height: 14rem;
       font-size: 1.2em;
+      max-width: 33rem;
+      margin: auto;
       img {
         width: 3rem;
         margin-bottom: 1rem;
@@ -72,7 +74,7 @@ export default {
 
     &.is-loading {
       background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;
-      min-height: 12rem;
+      min-height: 20rem;
     }
     
     .moviedocu_wrap {

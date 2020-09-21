@@ -7,7 +7,7 @@
       </a>
       <div id="menu">
         <ul class="left-part">
-          <li>
+          <li @click="toggleMenu">
             <router-link to="/films" :class="[currentPage.includes('film') ? 'is-active' : '']">
               Films
             </router-link>
@@ -24,7 +24,7 @@
           </li> -->
         </ul>
         <ul class="right-part">
-          <li>
+          <li @click="toggleMenu">
             <router-link to="/persons" :class="[currentPage.includes('person') ? 'is-active' : '']" class="personnalites">
               Personnalités
             </router-link>

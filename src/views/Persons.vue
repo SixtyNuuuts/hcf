@@ -60,13 +60,12 @@
     padding: 3em 1.45em 2em 1.5em;
 
     .title {
-      padding: 2.5em;
+      padding: 3.6em;
       position: relative;
       text-align: center;
       z-index: 2;
       background: url("../assets/img/box-border-patern.png") repeat 0 0 $--color-hcf-beige;
       font-family: "Righteous";
-      font-size: 1rem;
       line-height: 1.2;
 
       &:before {
@@ -87,6 +86,7 @@
         margin: 0.5em; 
         margin-top: 0.2em;
         text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+        font-size: 1.9rem;
 
         // .el-select {
         //   margin-top: 0.25em;
@@ -148,10 +148,13 @@
 
   }
 
-@media (min-width: $--bp-sm) {
+@media (max-width: 400px) {
     #persons {
       .title {
-        font-size: 1.3rem;
+        padding: 2.5em;
+        h1 {
+          font-size: 1.7rem;
+        }
       }
    }
 }

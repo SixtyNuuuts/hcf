@@ -402,14 +402,11 @@ export default new Vuex.Store({
           }
       }).catch(function(error) {
           console.log("Error firebase:", error);
-          if(error) {
-            const mess = "Erreur lors du chargement des films, essayez de recharger la page ou de réessayer ultérieurement"
-            commit('SET_LOADING_ERROR_MESS', mess);
-          }
       });
     },
     getDocumentedMoviesByYear ({commit}, payload) {
       commit('RESET_CURRENT_DOCU_MOVIE_LIST_BY_YEAR');
+      commit('RESET_LOADING_ERROR_MESS');
       commit('IS_LOADING', true);
       db.collection("movies").where("documented", "==", true).where("year", "==", payload)
       .get()
@@ -560,6 +557,7 @@ export default new Vuex.Store({
     getPersons ({commit, state}) {
       commit('RESET_CURRENT_PERSONS_LIST');
       commit('RESET_CURRENT_JOBS_LIST_IN_PERSONS_LIST');
+      commit('RESET_LOADING_ERROR_MESS');
       commit('IS_LOADING', true);
       db.collection("persons")
       .get()

@@ -56,10 +56,9 @@ export default {
 @import "@/styles/color.scss";
 
 #login-admin {
-  padding: 3em 1.45em 0 1.5em;
+  padding: 3em 1.45em 2em 1.5em;
 
   .title {
-    margin: 0 0 2em;
     padding: 1.5em;
     position: relative;
     text-align: center;

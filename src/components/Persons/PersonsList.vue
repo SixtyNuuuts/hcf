@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
-    <div class="filters">
+    <div v-if="personsFiltered.length " class="filters">
       <h3>Filtres :</h3>
       <el-radio-group v-model="filter">
         <el-radio label="all">Tous</el-radio>
@@ -58,9 +58,9 @@ export default {
     },
     personsFiltered() {
       if(this.filter === 'all') {
-        return this.persons;
+        return f.sortedByAlphabetPerson(this.persons);
       }
-      return this.persons.filter(p => p.person.known_for_department.some((e) =>e.name.substring(0, 3) === this.filter.substring(0, 3)));
+      return f.sortedByAlphabetPerson(this.persons.filter(p => p.person.known_for_department.some((e) =>e.name.substring(0, 3) === this.filter.substring(0, 3))));
     },
   }
 };
@@ -71,18 +71,21 @@ export default {
 @import "@/styles/bp.scss";
 @import "@/styles/shadow.scss";
 
-  .error-mess {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 24rem;
-    font-size: 1.2em;
-    img {
-      width: 3rem;
-      margin-bottom: 1rem;
-    }
+.error-mess {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 14rem;
+  font-size: 1.2em;
+  max-width: 37rem;
+  margin: auto;
+  margin-top: 1rem;
+  img {
+    width: 3rem;
+    margin-bottom: 1rem;
   }
+}
 
 .filters {
   margin-top: 1rem;
@@ -103,11 +106,10 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   padding-top: .3rem;
-  min-height: 19.6rem;
   
   &.is-loading {
     background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;
-    min-height: 12rem;
+    min-height: 20rem;
   }
 
   .card {
@@ -134,7 +136,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: $--color-hcf-light-grey;
+      background-color: $--color-hcf-black;
 
       img {
         width: 100%;
