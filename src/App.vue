@@ -331,7 +331,7 @@
       .frieze-film-deco {
         position: absolute;
         z-index: -1;
-        top: 48px;
+        top: 52px;
         left: 0;
         width: 100%;
         box-shadow: $--box-shadow-dark-4;
