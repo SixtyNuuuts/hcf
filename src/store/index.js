@@ -565,31 +565,37 @@ export default new Vuex.Store({
         commit('IS_LOADING', false);
         querySnapshot.forEach(function(doc) {
           doc.data().person.known_for_department.forEach(pj => {
-            if(!state.currentJobsListinPersonsList.find(j=>j.includes(pj.name.substring(0, 3)))) {
+            if(!state.currentJobsListinPersonsList.find(j=>j.name.includes(pj.name.substring(0, 3)))) {
               switch (pj.name.substring(0, 3)) {
                 case 'Act':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Acteurs');
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Acteurs', order: 1});
                   break;
                 case 'Réa':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Réalisateurs');
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Réalisateurs', order: 2});
                   break;
                 case 'Scé':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Scénaristes');
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Scénaristes', order: 3});
+                  break;
+                case 'Mus':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Musiciens', order: 4});
                   break;
                 case 'Pho':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Photographes');
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Photographes', order: 5});
+                  break;
+                case 'Déc':
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Décorateurs', order: 6});
                   break;
                 case 'Pro':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Producteurs');
+                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Producteurs', order: 7});
                   break;
-                case 'Aut':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Auteurs');
-                  break;
-                case 'Dra':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Dramaturges');
-                  break;
-                default:
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', pj.name);
+                // case 'Aut':
+                //   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Auteurs');
+                //   break;
+                // case 'Dra':
+                //   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Dramaturges');
+                //   break;
+                // default:
+                //   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', pj.name);
               }
             }
           })

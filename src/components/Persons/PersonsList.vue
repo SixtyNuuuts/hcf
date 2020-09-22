@@ -3,11 +3,11 @@
     <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
     <div v-if="!loadingErrorMess" class="filters">
       <h3>Filtres :</h3>
-      <el-input placeholder="Recherche" v-model="search"></el-input>
       <el-radio-group v-model="filter">
         <el-radio label="all">Tous</el-radio>
-        <el-radio v-for="(job, index) in JobsList" :key="index" :label="job">{{ job }}</el-radio>
+        <el-radio v-for="(job, index) in JobsList" :key="index" :label="job.name">{{ job.name }}</el-radio>
       </el-radio-group>
+      <el-input placeholder="Recherche" v-model="search"></el-input>
     </div>
     <section id="persons-list" :class="{'is-loading' : isLoading}">
       <router-link
@@ -56,7 +56,7 @@ export default {
       return this.$store.state.loadingErrorMess;
     },
     JobsList() {
-      return f.sortedByAlphabetJobs(this.$store.state.currentJobsListinPersonsList);
+      return f.sortedByOrder(this.$store.state.currentJobsListinPersonsList);
     },
     personsFiltered() {
       if(this.filter === 'all') {
@@ -90,11 +90,12 @@ export default {
 }
 
 .filters {
-  margin: 0 2rem;
-  margin-top: .7rem;
+  margin: 0 1rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
 
   .el-input {
-    margin-bottom: 1rem;
+    margin-top: .5rem;
   }
 
   .el-radio-group {
@@ -102,9 +103,8 @@ export default {
   }
 
   h3 {
-    display: inline-block;
     font-size: 0.9rem;
-    margin: 1rem 0;
+    margin: .9rem 0;
   }
 }
 
@@ -200,6 +200,10 @@ export default {
   }
 }
 @media (min-width: $--bp-sm) {
+  .filters {
+    margin: 0 2rem;
+  }
+
   #persons-list {
     .card {
       width: 38%;

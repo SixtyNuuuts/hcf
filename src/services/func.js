@@ -293,11 +293,11 @@ export default {
       return array
     },
 
-    sortedByAlphabetJobs(array) {
-      array.sort(function(a, b) {
-        return a.localeCompare(b)
-      })
-      return array
-    },
+    // sortedByAlphabetJobs(array) {
+    //   array.sort(function(a, b) {
+    //     return a.localeCompare(b)
+    //   })
+    //   return array
+    // },
 
 }
