@@ -5,7 +5,7 @@
         <h1>LES PERSONNALITÉS DOCUMENTÉES</h1>
           <h2>par ordre alphabétique</h2>
           <ul class="alphabet">
-            <li @click="handleLetterSelected()" :class="{ 'active': !selectedLetter }">A-Z</li>
+            <li @click="handleLetterSelected()" :class="{ 'active': !selectedLetter }">TOUS</li>
             <li v-for="letter in letters" :key="letter" @click="handleLetterSelected(letter)" :class="{ 'active': letter === selectedLetter }">
               {{ letter }}
             </li>
@@ -111,7 +111,7 @@
         li {
           &:first-child {
             margin: .4rem 50%!important;
-            min-width: 2.7rem;
+            min-width: 3.9rem;
           }
           color: $--color-hcf-red;
           display: flex;
