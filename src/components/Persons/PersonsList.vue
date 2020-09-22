@@ -7,7 +7,7 @@
         <el-radio label="all">Tous</el-radio>
         <el-radio v-for="(job, index) in JobsList" :key="index" :label="job.name">{{ job.name }}</el-radio>
       </el-radio-group>
-      <el-input placeholder="Recherche" v-model="search"></el-input>
+      <el-input placeholder="Recherche par nom / prénom" :autofocus="true" v-model="search"></el-input>
     </div>
     <section id="persons-list" :class="{'is-loading' : isLoading}">
       <router-link
