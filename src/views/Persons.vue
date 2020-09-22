@@ -111,7 +111,7 @@
         li {
           &:first-child {
             margin: .4rem 50%!important;
-            min-width: 3.9rem;
+            min-width: 4rem;
           }
           color: $--color-hcf-red;
           display: flex;

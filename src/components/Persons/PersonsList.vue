@@ -202,6 +202,8 @@ export default {
 @media (min-width: $--bp-sm) {
   .filters {
     margin: 0 2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
   }
 
   #persons-list {
