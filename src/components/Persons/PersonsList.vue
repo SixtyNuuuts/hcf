@@ -1,8 +1,9 @@
 <template>
   <div>
     <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
-    <div v-if="personsFiltered.length " class="filters">
+    <div v-if="!loadingErrorMess" class="filters">
       <h3>Filtres :</h3>
+      <el-input placeholder="Recherche" v-model="search"></el-input>
       <el-radio-group v-model="filter">
         <el-radio label="all">Tous</el-radio>
         <el-radio v-for="(job, index) in JobsList" :key="index" :label="job">{{ job }}</el-radio>
@@ -43,7 +44,8 @@ export default {
   },
   data() {
     return {
-      filter: 'all'
+      filter: 'all',
+      search: '',
     };
   },
   computed: {
@@ -58,9 +60,9 @@ export default {
     },
     personsFiltered() {
       if(this.filter === 'all') {
-        return f.sortedByAlphabetPerson(this.persons);
+        return f.sortedByAlphabetPerson(this.persons.filter(p => p.person.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.search.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))));
       }
-      return f.sortedByAlphabetPerson(this.persons.filter(p => p.person.known_for_department.some((e) =>e.name.substring(0, 3) === this.filter.substring(0, 3))));
+      return f.sortedByAlphabetPerson(this.persons.filter(p => p.person.known_for_department.some((e) =>e.name.substring(0, 3) === this.filter.substring(0, 3))).filter(p => p.person.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.search.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))));
     },
   }
 };
@@ -88,7 +90,12 @@ export default {
 }
 
 .filters {
-  margin-top: 1rem;
+  margin: 0 2rem;
+  margin-top: .7rem;
+
+  .el-input {
+    margin-bottom: 1rem;
+  }
 
   .el-radio-group {
     line-height: 1.5rem;
@@ -97,7 +104,7 @@ export default {
   h3 {
     display: inline-block;
     font-size: 0.9rem;
-    margin-right: 2rem;
+    margin: 1rem 0;
   }
 }
 

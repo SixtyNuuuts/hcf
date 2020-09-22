@@ -167,6 +167,32 @@ nav {
     }
 }
 
+/// Div Filters 
+.filters {
+    .el-input__inner {
+        background-color: #fcedd5;
+        border: 1px solid #dbc7ab;
+        color: #9e876a;
+        text-align: center;
+        &::placeholder {
+            color: #dbc7ab;
+        }
+    }
+
+    .el-radio__inner {
+        border: 1px solid #dbc7ab;
+        background-color: #fcedd5;
+    }
+    .el-radio__input.is-disabled + span.el-radio__label {
+        color: #dccaaf;
+    }
+    .el-radio__input.is-disabled .el-radio__inner {
+        background-color: #f1ddc3;
+        border-color: #e8d3b7;
+    }
+}
+
+
 // .el-date-table td.current:not(.disabled) span {
 //     background-color: $--color-success;
 // }
