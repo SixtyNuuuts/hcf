@@ -146,7 +146,7 @@ export default {
           flex-direction: column;
           justify-content: center;
           position: relative;
-          min-height: 90px;
+          min-height: 100px;
           transition: .5s ease-in-out;
           width: 100%;
 
