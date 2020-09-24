@@ -1,5 +1,5 @@
 <template>
-  <section v-if="movieCast.length" class="movie-cast">
+  <section class="movie-cast">
     <h1>
       Distribution
       <el-button
@@ -48,6 +48,12 @@
                   <div>{{ item.name }}</div>
                 </template>
               </el-autocomplete>
+              <p>ID de la personnalité</p>
+              <el-input
+                type="number"
+                v-model="actor.id"
+                placeholder="ID de la personnalité"
+              ></el-input>
               <p>SEXE</p>
               <el-select v-model="actor.gender">
                 <el-option label="-----------" :value="0"></el-option>
@@ -137,7 +143,8 @@ export default {
         });
     },
     saveMovieCastData() {
-      const movieYear = parseInt(this.$store.state.currentMovie.release_date.split('-')[0])
+      const movieYear = this.$store.state.currentMovie.release_date ? parseInt(this.$store.state.currentMovie.release_date.split('-')[0]) : '';
+
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {

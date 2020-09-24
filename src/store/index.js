@@ -16,34 +16,9 @@ export default new Vuex.Store({
       admin: false,
       data: null
     },
-    currentMovie: {
-      backdrop_path: null,
-      genres: [
-        {
-          id: null,
-          name: null
-        }
-      ],
-      id: null,
-      original_title: null,
-      overview: null,
-      poster_path: null,
-      release_date: "1930-01-01",
-      runtime: null,
-      vote_average: null,
-      production_countries: [
-        {
-          iso_3166_1: null,
-          name: null
-        }
-      ]
-    },
-    currentMovieCrew: [
-      { id: null, name: null, jobs: [], gender: null, profile_path: null, order: null }
-    ],
-    currentMovieCast: [
-      { id: null, name: null, character: null, gender: null, profile_path: null, order: null }
-    ],
+    currentMovie: {},
+    currentMovieCrew: [],
+    currentMovieCast: [],
     currentMovieImages: [],
     currentMovieListByYear: [],
     currentDocumentedMovieListByYear: [],
@@ -301,6 +276,9 @@ export default new Vuex.Store({
               commit('SET_CURRENT_MOVIE', movie);
             }).catch(function(error) {
               console.log("Error TMDB:", error)
+              if(payload) {
+                commit('SET_CURRENT_MOVIE', {id: parseInt(payload), backdrop_path: null, genres: [{id: null, name: null}], original_title: null, overview: null, poster_path: null, release_date: null, runtime: null, vote_average: null, production_countries: [{iso_3166_1: null,name: null}]});
+              }
               if(error) {
                 const mess = "Nous n'avons pas trouvé le film demandé"
                 commit('SET_LOADING_ERROR_MESS', mess);
@@ -483,6 +461,9 @@ export default new Vuex.Store({
               commit('SET_CURRENT_PERSON', person);
             }).catch(function(error) {
               console.log("Error TMDB :", error)
+              if(payload) {
+                commit('SET_CURRENT_PERSON', {id: parseInt(payload), biography: null, birthday: null, deathday: null, profile_path: null, gender: null, known_for_department: [{name: ""}], name: null, place_of_birth: "", place_of_death: ""});
+              }
               if(error) {
                 const mess = "Nous n'avons pas trouvé la personnalité demandée"
                 commit('SET_LOADING_ERROR_MESS', mess);

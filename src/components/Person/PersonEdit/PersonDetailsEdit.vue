@@ -158,7 +158,7 @@ export default {
       });
     },
     savePerson() {
-      const fullName = this.$store.state.currentPerson.name.trim();
+      const fullName = this.$store.state.currentPerson.name ? this.$store.state.currentPerson.name.trim() : '';
       const index = fullName.lastIndexOf(' ');
       const lastname = fullName.substring(index+1);
       const firstname = fullName.substring(0, index);

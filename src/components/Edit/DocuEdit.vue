@@ -355,7 +355,8 @@ export default {
         });
     },
     saveMovieDocumented() {
-      const movieYear = parseInt(this.$store.state.currentMovie.release_date.split('-')[0])
+      const movieYear = this.$store.state.currentMovie.release_date ? parseInt(this.$store.state.currentMovie.release_date.split('-')[0]) : '';
+
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {
@@ -388,7 +389,7 @@ export default {
       });
     },
     savePersonDocumented() {
-      const fullName = this.$store.state.currentPerson.name.trim();
+      const fullName = this.$store.state.currentPerson.name ? this.$store.state.currentPerson.name.trim() : '';
       const index = fullName.lastIndexOf(' ');
       const lastname = fullName.substring(index+1);
       const firstname = fullName.substring(0, index);

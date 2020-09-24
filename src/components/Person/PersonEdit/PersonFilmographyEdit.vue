@@ -36,12 +36,12 @@
                 <div><strong>{{ item.original_title }}</strong> ({{ item.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</div>
               </template>
             </el-autocomplete>
-
-            <!-- <el-input-number
-              type="text"
+            <label for="original-title">ID du film</label>
+            <el-input
+              type="number"
               v-model="movie.id"
-            ></el-input-number> -->
-
+              placeholder="ID du film"
+            ></el-input>
           </div>
           <div class="release-date">
             <label for="release_date">Date de sortie</label>
@@ -221,7 +221,7 @@ export default {
       });
     },
     saveFilmo() {
-      const fullName = this.$store.state.currentPerson.name.trim();
+      const fullName = this.$store.state.currentPerson.name ? this.$store.state.currentPerson.name.trim() : '';
       const index = fullName.lastIndexOf(' ');
       const lastname = fullName.substring(index+1);
       const firstname = fullName.substring(0, index);

@@ -1,6 +1,6 @@
 <template>
   <section class="person-info" :style="{ backgroundImage: backgroundImage }">
-    <el-button v-if="isAdmin" type="success" @click="btnEdit" class="btn-edit" icon="el-icon-edit">EDIT</el-button>
+    <el-button v-if="isAdmin && person.id" type="success" @click="btnEdit" class="btn-edit" icon="el-icon-edit">EDIT</el-button>
     <div class="content" :class="{'is-loading' : isLoading}">
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="person.profile_path" :src="person.profile_path">

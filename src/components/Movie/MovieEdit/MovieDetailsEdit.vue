@@ -87,11 +87,11 @@
                 </el-autocomplete>
                 <el-button type="primary" icon="el-icon-delete" @click="deletePerson(person)" plain></el-button>
               </div>
-              <!-- <el-input
-                type="text"
-                name="person-id"
+              <el-input
+                type="number"
                 v-model="person.id"
-              ></el-input> -->
+                placeholder="ID de la personnalité"
+              ></el-input>
               <UploadFile @uploadFilePath="setUploadFilePath(person, $event)"/>
               <div class="profile-path">
                 <div class="picture">
@@ -278,7 +278,7 @@ export default {
       });
     },
     saveMovieAndMovieCrewData() {
-      const movieYear = parseInt(this.$store.state.currentMovie.release_date.split('-')[0])
+      const movieYear = this.$store.state.currentMovie.release_date ? parseInt(this.$store.state.currentMovie.release_date.split('-')[0]) : '';
       this.$db.collection("movies").doc(this.$parent.id).get()
       .then((doc) => {
           if (doc.exists) {

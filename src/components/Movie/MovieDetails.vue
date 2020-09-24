@@ -1,6 +1,6 @@
 <template>
   <section class="movie-info" :style="{ backgroundImage: backgroundImage }">
-    <el-button v-if="isAdmin" type="success" @click="btnEdit" class="btn-edit" icon="el-icon-edit">EDIT</el-button>
+    <el-button v-if="isAdmin && movie.id" type="success" @click="btnEdit" class="btn-edit" icon="el-icon-edit">EDIT</el-button>
     <div class="content" :class="{'is-loading' : isLoading}">
       <div class="poster" :class="{'is-loading' : isLoading}">
         <img v-if="movie.poster_path" :src="movie.poster_path">
@@ -16,7 +16,7 @@
             <h3>Date de Sortie</h3>
             {{ movie.release_date  | dateParse('YYYY-MM-DD') | dateFormat('DD/MM/YYYY') }}
           </div>
-          <div v-if="movie.genres && movie.genres.length > 0" class="fact genres">
+          <div v-if="movie.genres && movie.genres.some(e=>e.id)" class="fact genres">
             <h3>Genre(s)</h3>
             <div v-for="(genre) in movie.genres" :key="genre.id">
               {{ genre.name }}

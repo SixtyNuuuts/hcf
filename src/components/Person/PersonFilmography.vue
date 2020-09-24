@@ -1,6 +1,5 @@
 <template>
-  <section v-if="personCredits" class="person-filmo">
-    <!-- <h1>Filmographie <span>{{ personCredits.length}} films</span></h1> -->
+  <section v-if="personCredits.length" class="person-filmo">
     <h1>Filmographie</h1>
     <div v-if="personCreditsFilteredCount">
       <div class="filters">
