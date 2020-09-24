@@ -172,6 +172,13 @@ export default {
           }
         }
 
+        if (movie.job && movie.job.includes('(uncredited)')) {
+          movie.job = movie.job.replace('(uncredited)', '(non crédité)');
+        }
+        if (movie.character && movie.character.includes('(uncredited)')) {
+          movie.character = movie.character.replace('(uncredited)', '(non crédité)');
+        }
+
         let movieIsInArray = movieCreditsFormat.find(m => m.id == movie.id);
         if (!movieIsInArray) {
             if (movie.job) {
