@@ -44,6 +44,12 @@ export default {
         order: 3
       },
       {
+        job: "Author",
+        jobTranslatationM: "Auteur",
+        jobTranslatationF: "Auteure",
+        order: 4
+      },
+      {
         job: "Editor",
         jobTranslatationM: "Monteur",
         jobTranslatationF: "Monteuse",
@@ -53,6 +59,18 @@ export default {
         job: "Music",
         jobTranslatationM: "Musique",
         jobTranslatationF: "Musique",
+        order: 4
+      },
+      {
+        job: "Story",
+        jobTranslatationM: "Histoire",
+        jobTranslatationF: "Histoire",
+        order: 4
+      },
+      {
+        job: "Theatre Play",
+        jobTranslatationM: "Dramaturge",
+        jobTranslatationF: "Dramaturge",
         order: 4
       },
       {
@@ -68,15 +86,33 @@ export default {
         order: 4
       },
       {
+        job: "Art Direction",
+        jobTranslatationM: "Directeur artistique",
+        jobTranslatationF: "Directrice artistique",
+        order: 4
+      },
+      {
         job: "Set Decoration",
         jobTranslatationM: "Décorateur",
         jobTranslatationF: "Décoratrice",
         order: 4
       },
       {
+        job: "Set Designer",
+        jobTranslatationM: "Scénographe",
+        jobTranslatationF: "Scénographe",
+        order: 4
+      },
+      {
         job: "Director of Photography",
         jobTranslatationM: "Directeur de la photographie",
         jobTranslatationF: "Directrice de la photographie",
+        order: 4
+      },
+      {
+        job: "Music Director",
+        jobTranslatationM: "Directeur musical",
+        jobTranslatationF: "Directrice musicale",
         order: 4
       },
       {
@@ -95,6 +131,12 @@ export default {
         job: "Original Music Composer",
         jobTranslatationM: "Compositeur de la B.O.",
         jobTranslatationF: "Compositrice de la B.O.",
+        order: 4
+      },
+      {
+        job: "Compositor",
+        jobTranslatationM: "Compositeur",
+        jobTranslatationF: "Compositrice",
         order: 4
       },
       {
