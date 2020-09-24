@@ -567,14 +567,14 @@ export default {
                   color: $--color-hcf-black;
                   font-size: 0.95em;
                   font-style: italic;
-                  line-height: 1.1;
+                  line-height: 1.25;
                 }
 
               }
               
               &.video {
                 width: 100%;
-                border-bottom: .8em solid $--color-hcf-black;
+                //border-bottom: .8em solid $--color-hcf-black;
                 background-color: $--color-hcf-black;
                 >div {
                   margin: 0;
@@ -588,12 +588,12 @@ export default {
                   }
                 }
                 figcaption {
-                  padding: .3em;
-                  padding-top: .6em;
+                  padding: 1.1em;
+                  //padding-top: .6em;
                   color: $--color-hcf-light-beige;
                   font-size: 0.95em;
                   font-style: italic;
-                  line-height: 1.15;
+                  line-height: 1.3;
                 }
               }
 
