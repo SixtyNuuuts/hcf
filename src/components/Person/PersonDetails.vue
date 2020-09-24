@@ -255,7 +255,7 @@ export default {
             margin-bottom: 2.5em;
 
             .fact {
-              margin: 0 2em;
+              margin: 0 1em;
               margin-top:0.2em;
             }
             
@@ -294,6 +294,25 @@ export default {
                 margin-left: 0;
               }
             }
+          }
+        }
+
+      }
+    }
+  }
+
+  @media (min-width: $--bp-lg) { 
+    section.person-info {
+      .content {
+        .text {
+          
+            .facts {
+            max-width: none;
+
+            .fact {
+              margin: 0 1.5em;
+            }
+            
           }
         }
 
