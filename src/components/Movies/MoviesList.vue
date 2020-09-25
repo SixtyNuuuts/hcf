@@ -2,7 +2,7 @@
   <section id="moviesother">
     <div class="moviesother_border">
       <div class="moviesother_container">
-        <h1>D'AUTRES FILMS DE {{ year }}</h1>
+        <h1>D'AUTRES FILMS DE {{ year }} <span v-if="isAdmin">({{ movies.length }})</span></h1>
         <div v-if="!movies.length" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
         <div class="moviesother_list">
           <div v-for="(movie, index) in movies" :key="index">
@@ -26,6 +26,11 @@ export default {
     return {
       loadingErrorMess: 'Erreur lors du chargement des films, essayez de recharger la page ou de réessayer ultérieurement'
     };
+  },
+  computed: {
+    isAdmin() {
+      return this.$store.state.currentUser.admin;
+    },
   },
 }
 </script>

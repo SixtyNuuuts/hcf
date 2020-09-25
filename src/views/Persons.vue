@@ -2,7 +2,7 @@
   <section id="persons">
     <div class="title">
       <div>
-        <h1>LES PERSONNALITÉS DOCUMENTÉES</h1>
+        <h1>LES PERSONNALITÉS DOCUMENTÉES <span v-if="isAdmin">({{ personsListByAlphabet.length }})</span></h1>
           <h2>par ordre alphabétique</h2>
           <ul class="alphabet">
             <li @click="handleLetterSelected()" :class="{ 'active': !selectedLetter }">TOUS</li>
@@ -42,6 +42,9 @@
         }
         return f.sortedByAlphabetPerson(this.$store.state.currentPersonsList.filter(p => p.lastname.charAt(0) === this.selectedLetter));
       },
+      isAdmin() {
+        return this.$store.state.currentUser.admin;
+      },
     },
     name: "Persons",
     components: {
@@ -54,13 +57,13 @@
 
 @import '@/styles/color.scss';  
 @import '@/styles/shadow.scss';  
-@import "@/styles/bp.scss";
+@import '@/styles/bp.scss';
 
   #persons {
-    padding: 3em 1.45em 2em 1.5em;
+    padding: 4em 1.45em 2em 1.5em;
 
     .title {
-      padding: 3.6em;
+      padding: 3.2em 3.6em;
       position: relative;
       text-align: center;
       z-index: 2;
@@ -87,11 +90,6 @@
         margin-top: 0.2em;
         text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
         font-size: 1.9rem;
-
-        // .el-select {
-        //   margin-top: 0.25em;
-        // }
-
       }
 
       h2 {
