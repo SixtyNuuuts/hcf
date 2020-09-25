@@ -146,6 +146,54 @@ export default {
         order: 4
       },
       {
+        job: "Cinematography",
+        jobTranslatationM: "Cinématographie",
+        jobTranslatationF: "Cinématographie",
+        order: 4
+      },
+      {
+        job: "Associate Producer",
+        jobTranslatationM: "Producteur Associé",
+        jobTranslatationF: "Productrice Associée",
+        order: 4
+      },
+      {
+        job: "Camera",
+        jobTranslatationM: "Photographe",
+        jobTranslatationF: "Photographe",
+        order: 4
+      },
+      {
+        job: "Camera Operator",
+        jobTranslatationM: "Caméraman",
+        jobTranslatationF: "Caméraman",
+        order: 4
+      },
+      {
+        job: "Music Editor",
+        jobTranslatationM: "Montage musical",
+        jobTranslatationF: "Montage musical",
+        order: 4
+      },
+      {
+        job: "Book",
+        jobTranslatationM: "Livre",
+        jobTranslatationF: "Livre",
+        order: 4
+      },
+      {
+        job: "Poem",
+        jobTranslatationM: "Poème",
+        jobTranslatationF: "Poème",
+        order: 4
+      },
+      {
+        job: "Script",
+        jobTranslatationM: "Scripte",
+        jobTranslatationF: "Scripte",
+        order: 4
+      },
+      {
         job: "Acting",
         jobTranslatationM: "Acteur",
         jobTranslatationF: "Actrice",
@@ -153,14 +201,20 @@ export default {
       },
       {
         job: "Writing",
-        jobTranslatationM: "Scénariste",
-        jobTranslatationF: "Scénariste",
+        jobTranslatationM: "Écrivain",
+        jobTranslatationF: "Écrivaine",
         order: 5
       },
       {
         job: "Directing",
         jobTranslatationM: "Réalisateur",
         jobTranslatationF: "Réalisatrice",
+        order: 5
+      },
+      {
+        job: "Editing",
+        jobTranslatationM: "Monteur",
+        jobTranslatationF: "Monteuse",
         order: 5
       },
     ],
@@ -219,6 +273,15 @@ export default {
         }
         if (movie.character && movie.character.includes('(uncredited)')) {
           movie.character = movie.character.replace('(uncredited)', '(non crédité)');
+        }
+        if (movie.character && movie.character.includes('(archive footage)')) {
+          movie.character = movie.character.replace('(archive footage)', '(images d\'archives)');
+        }
+        if (movie.character && movie.character.includes('Himself')) {
+          movie.character = movie.character.replace('Himself', 'Lui-même');
+        }
+        if (movie.character && movie.character.includes('himself')) {
+          movie.character = movie.character.replace('himself', 'Lui-même');
         }
 
         let movieIsInArray = movieCreditsFormat.find(m => m.id == movie.id);
