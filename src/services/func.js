@@ -68,6 +68,12 @@ export default {
         order: 4
       },
       {
+        job: "Original Story",
+        jobTranslatationM: "Histoire originale",
+        jobTranslatationF: "Histoire originale",
+        order: 4
+      },
+      {
         job: "Theatre Play",
         jobTranslatationM: "Dramaturge",
         jobTranslatationF: "Dramaturge",
@@ -95,6 +101,54 @@ export default {
         job: "Set Decoration",
         jobTranslatationM: "Décorateur",
         jobTranslatationF: "Décoratrice",
+        order: 4
+      },
+      {
+        job: "Sound Engineer",
+        jobTranslatationM: "Ingénieur du Son",
+        jobTranslatationF: "Ingénieur du Son",
+        order: 4
+      },
+      {
+        job: "Sound Designer",
+        jobTranslatationM: "Concepteur Son",
+        jobTranslatationF: "Conceptrice Son",
+        order: 4
+      },
+      {
+        job: "Sound Assistant",
+        jobTranslatationM: "Assistant Son",
+        jobTranslatationF: "Assistante Son",
+        order: 4
+      },
+      {
+        job: "Sound Recordist",
+        jobTranslatationM: "Preneur de son",
+        jobTranslatationF: "Preneuse de son",
+        order: 4
+      },
+      {
+        job: "Unit Production Manager",
+        jobTranslatationM: "Directeur de production",
+        jobTranslatationF: "Directrice de production",
+        order: 4
+      },
+      {
+        job: "Production Manager",
+        jobTranslatationM: "Directeur de production",
+        jobTranslatationF: "Directrice de production",
+        order: 4
+      },
+      {
+        job: "Dialogue Editor",
+        jobTranslatationM: "Monteur des Dialogues",
+        jobTranslatationF: "Monteuse des Dialogues",
+        order: 4
+      },
+      {
+        job: "Songs",
+        jobTranslatationM: "Chansons",
+        jobTranslatationF: "Chansons",
         order: 4
       },
       {
@@ -170,6 +224,30 @@ export default {
         order: 4
       },
       {
+        job: "Assistant Camera",
+        jobTranslatationM: "Assistant Caméraman",
+        jobTranslatationF: "Assistant Caméraman",
+        order: 4
+      },
+      {
+        job: "Idea",
+        jobTranslatationM: "Idée",
+        jobTranslatationF: "Idée",
+        order: 4
+      },
+      {
+        job: "Sound Director",
+        jobTranslatationM: "Directeur du Son",
+        jobTranslatationF: "Directrice du Son",
+        order: 4
+      },
+      {
+        job: "Additional Writing",
+        jobTranslatationM: "Écriture",
+        jobTranslatationF: "Écriture",
+        order: 4
+      },
+      {
         job: "Music Editor",
         jobTranslatationM: "Montage musical",
         jobTranslatationF: "Montage musical",
@@ -191,6 +269,18 @@ export default {
         job: "Script",
         jobTranslatationM: "Scripte",
         jobTranslatationF: "Scripte",
+        order: 4
+      },
+      {
+        job: "Lyricist",
+        jobTranslatationM: "Parolier",
+        jobTranslatationF: "Parolière",
+        order: 4
+      },
+      {
+        job: "Co-Director",
+        jobTranslatationM: "Co-Directeur",
+        jobTranslatationF: "Co-Directrice",
         order: 4
       },
       {
@@ -273,6 +363,9 @@ export default {
         }
         if (movie.character && movie.character.includes('(uncredited)')) {
           movie.character = movie.character.replace('(uncredited)', '(non crédité)');
+        }
+        if (movie.character && movie.character.includes('Uncredited')) {
+          movie.character = movie.character.replace('Uncredited', '(non crédité)');
         }
         if (movie.character && movie.character.includes('(archive footage)')) {
           movie.character = movie.character.replace('(archive footage)', '(images d\'archives)');
