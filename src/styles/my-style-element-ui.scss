@@ -168,15 +168,16 @@ nav {
 }
 
 /// Div Filters 
-.filters {
+.filters, .search {
     .el-input__inner {
         background-color: #fcedd5;
         border: 1px solid #dbc7ab;
         text-align: center;
         color: $--color-primary;
         font-family: 'Righteous';
-        font-size: 1.3em;
+        font-size: 1.5em;
         text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.12);
+        height: 45px;
 
         &::placeholder {
             color: #dbc7ab;
