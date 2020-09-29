@@ -18,7 +18,7 @@
     </div>
     <div class="search">
         <el-input placeholder="Recherche par titre" :autofocus="true" v-model="search" @input="querySearchMovie"></el-input>
-        <ul class="search-movie-result" :class="{ 'show': search, 'is-loading': isLoading }">
+        <ul class="search-movie-result" v-click-outside="hide" :class="{ 'show': search, 'is-loading': isLoading }">
             <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
                 <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
                     <div class="poster">
@@ -42,6 +42,7 @@ import MoviesDocuList from "@/components/Movies/MoviesDocuList.vue"
 import MoviesList from "@/components/Movies/MoviesList.vue"
 import f from "@/services/func";
 import tmdbApi from "@/services/tmdb-api";
+import ClickOutside from 'vue-click-outside'
 
 export default {
     created() {
@@ -56,6 +57,9 @@ export default {
             searchMovieResult: [],
             isLoading: false
         }
+    },
+    directives: {
+        ClickOutside
     },
     methods: {
         querySearchMovie(queryString) {
@@ -99,6 +103,9 @@ export default {
             this.$store.commit('SET_CURRENT_YEAR_SELECTED', year)
             this.$store.dispatch("getMoviesByYear", year)
             this.$store.dispatch("getDocumentedMoviesByYear", year)
+        },
+        hide() {
+            this.search = ''
         }
     },
     computed: {
@@ -110,7 +117,7 @@ export default {
             return f.sortedByAlphabet(this.$store.state.currentDocumentedMovieListByYear);
         },
         searchMovieResultFilteredByYear() {
-            return f.sortedByDate(this.searchMovieResult.filter(m => m.release_date && m.release_date.split('-')[0] > '1930' && m.release_date.split('-')[0] < '1960').filter(m => m.original_language == 'fr'));
+            return f.sortedByDate(this.searchMovieResult.filter(m => m.release_date && m.release_date.split('-')[0] >= '1930' && m.release_date.split('-')[0] <= '1960').filter(m => m.original_language == 'fr'));
         },
         isAdmin() {
             return this.$store.state.currentUser.admin;
