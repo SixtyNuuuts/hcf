@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="search">
-        <el-input placeholder="Recherche par titre" :autofocus="true" v-model="search" @input="querySearchMovie"></el-input>
+        <el-input placeholder="Recherche par titre" v-model="search" @input="querySearchMovie"></el-input>
         <ul class="search-movie-result" v-click-outside="hide" :class="{ 'show': search, 'is-loading': isLoading }">
             <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
                 <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
