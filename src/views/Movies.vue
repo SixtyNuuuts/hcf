@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="search" v-click-outside="hide">
-        <el-input placeholder="Recherche par titre" v-model="search" @input="querySearchMovie" @keyup.enter="querySearchMovie" @submit="querySearchMovie"></el-input>
+        <el-input placeholder="Recherche par titre" v-model="search" @input="querySearchMovie"></el-input>
         <ul class="search-movie-result" :class="{ 'show': search, 'is-loading': isLoading }">
             <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
                 <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
@@ -336,7 +336,11 @@ export default {
                 font-size: 1.7rem;
             }
         }
+    }
+}
 
+@media (max-width: 500px) {
+    #movies {
         .search {
             .search-movie-result {
                 li {
@@ -362,9 +366,6 @@ export default {
 
                         .title-year {
                             flex-shrink: 0;
-
-                            .year {}
-
                         }
 
                     }
