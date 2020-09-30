@@ -16,9 +16,9 @@
           </ul> -->
         </div>
     </div>
-    <div class="search">
-        <el-input placeholder="Recherche par titre" v-model="search" @input="querySearchMovie"></el-input>
-        <ul class="search-movie-result" v-click-outside="hide" :class="{ 'show': search, 'is-loading': isLoading }">
+    <div class="search" v-click-outside="hide">
+        <el-input placeholder="Recherche par titre" v-model="search" @input="querySearchMovie" @keyup.enter="querySearchMovie" @submit="querySearchMovie"></el-input>
+        <ul class="search-movie-result" :class="{ 'show': search, 'is-loading': isLoading }">
             <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
                 <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
                     <div class="poster">
@@ -27,7 +27,7 @@
                             <i class="el-icon-picture"></i>
                         </div>
                     </div>
-                    <div v-if="movie.release_date"><strong v-if="movie.original_title">{{ movie.original_title }}</strong> <span v-if="movie.release_date" class="year">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></div>
+                    <div class="title-year" v-if="movie.release_date"><strong v-if="movie.original_title">{{ movie.original_title }}</strong> <span v-if="movie.release_date" class="year">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></div>
                 </router-link>
             </li>
         </ul>
@@ -198,7 +198,8 @@ export default {
                     }
 
                     .poster {
-                        width: 20px;
+                        width: 25px;
+                        min-width: 25px;
                         transition: all .3s;
                         margin-right: 0.9rem;
 
@@ -209,8 +210,9 @@ export default {
 
                         .no-poster {
                             background-color: $--color-hcf-black;
-                            width: 20px;
-                            height: 30px;
+                            width: 25px;
+                            min-width: 25px;
+                            height: 37.5px;
                             display: flex;
                             justify-content: center;
                             align-items: center;
@@ -225,9 +227,14 @@ export default {
 
                     }
 
-                    .year {
-                        color: #887050;
-                        margin-left: .2rem;
+                    .title-year {
+                        // flex-shrink: 1;
+
+                        .year {
+                            color: #887050;
+                            margin-left: .2rem;
+                        }
+
                     }
 
                 }
@@ -321,6 +328,7 @@ export default {
 
 @media (max-width: 400px) {
     #movies {
+
         .title {
             padding: 2.5em;
 
@@ -328,6 +336,44 @@ export default {
                 font-size: 1.7rem;
             }
         }
+
+        .search {
+            .search-movie-result {
+                li {
+                    a {
+                        font-size: .8em;
+
+                        .poster {
+                            width: 15px;
+                            min-width: 15px;
+
+                            .no-poster {
+                                min-width: 15px;
+                                width: 15px;
+                                height: 25px;
+
+                                i {
+                                    font-size: .5rem;
+                                }
+
+                            }
+
+                        }
+
+                        .title-year {
+                            flex-shrink: 0;
+
+                            .year {}
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
     }
 }
 </style>
