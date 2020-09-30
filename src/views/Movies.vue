@@ -69,14 +69,14 @@ export default {
             this.debounce = setTimeout(() => {
                 tmdbApi.searchMovie(queryString, 1).then(res => {
                     let searchMovieResult = []
-                    let pageLimit = 5
-                    if (res.data.total_pages < 5) {
-                        pageLimit = res.data.total_pages
-                    }
-                    for (let page = 1; page <= pageLimit; page++) {
+                    // let pageLimit = 5
+                    // if (res.data.total_pages < 5) {
+                    //     pageLimit = res.data.total_pages
+                    // }
+                    for (let page = 1; page <= res.data.total_pages; page++) {
                         tmdbApi.searchMovie(queryString, page).then(res => {
                             searchMovieResult = [...searchMovieResult, ...res.data.results]
-                            if (page === pageLimit) {
+                            if (page === res.data.total_pages) {
                                 this.isLoading = false;
                                 this.searchMovieResult = searchMovieResult;
                             }
