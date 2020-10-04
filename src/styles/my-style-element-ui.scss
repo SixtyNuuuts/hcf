@@ -187,9 +187,6 @@ nav {
             z-index: 1;
             top: -2px;
         }
-        &:focus {
-            border: 1px solid $--color-hcf-red;
-        }
     }
 
     .el-radio__inner {
