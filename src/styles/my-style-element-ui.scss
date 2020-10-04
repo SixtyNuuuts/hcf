@@ -183,8 +183,12 @@ nav {
             color: #dbc7ab;
             font-size: .8em;
             text-shadow: none;
-            position: relative; 
+            position: relative;
+            z-index: 1;
             top: -2px;
+        }
+        &:focus {
+            border: 1px solid $--color-hcf-red;
         }
     }
 
