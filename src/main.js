@@ -11,8 +11,10 @@ import './styles/my-style-element-ui.scss'
 import db from './firebase'
 import VueCarousel from 'vue-carousel';
 import VuePreview from 'vue-preview'
-
+import vueHeadful from 'vue-headful';
 import Vue2Editor from "vue2-editor";
+
+Vue.component('vue-headful', vueHeadful);
 
 Vue.use(Vue2Editor);
 

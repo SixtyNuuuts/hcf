@@ -1,5 +1,6 @@
 <template>
 <section id="movies">
+    <vue-headful title="Les Films | Cinéma Français d'Autrefois" description="Les Films du Cinéma Français d'Autrefois" />
     <div class="title">
         <div>
             <h1>LES FILMS DOCUMENTÉS <span v-if="isAdmin">({{ documentedMovieListByYear.length }})</span></h1>

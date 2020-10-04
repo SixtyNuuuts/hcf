@@ -1,5 +1,6 @@
 <template>
 <section id="persons">
+    <vue-headful title="Les Personnalités | Cinéma Français d'Autrefois" description="Les Personnalités du Cinéma Français d'Autrefois" />
     <div class="title">
         <div>
             <h1>LES PERSONNALITÉS DOCUMENTÉES <span v-if="isAdmin">({{ personsFiltered.length }})({{ allPersons.length }})</span></h1>
