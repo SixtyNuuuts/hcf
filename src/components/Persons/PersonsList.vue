@@ -1,16 +1,7 @@
 <template>
 <div>
-    <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
-    <div v-if="!loadingErrorMess" class="filters">
-        <h3>Filtres :</h3>
-        <el-radio-group v-model="filter">
-            <el-radio label="all">Tous</el-radio>
-            <el-radio v-for="(job, index) in JobsList" :key="index" :label="job.name">{{ job.name }}</el-radio>
-        </el-radio-group>
-        <el-input placeholder="Recherche par nom / prénom" v-model="search"></el-input>
-    </div>
     <section id="persons-list" :class="{'is-loading' : isLoading}">
-        <router-link v-for="(item, index) in personsFiltered" :to="'/person/' + item.person.id" :key="index" class="card">
+        <router-link v-for="(item, index) in persons" :to="'/person/' + item.person.id" :key="index" class="card">
             <div class="picture">
                 <img v-if="item.person.profile_path" :src="item.person.profile_path" />
                 <div v-else class="no-picture">
@@ -30,34 +21,14 @@
 </template>
 
 <script>
-import f from "../../services/func";
-
 export default {
     name: "PersonsList",
     props: {
         persons: Array,
     },
-    data() {
-        return {
-            filter: 'all',
-            search: '',
-        };
-    },
     computed: {
         isLoading() {
             return this.$store.state.isLoading;
-        },
-        loadingErrorMess() {
-            return this.$store.state.loadingErrorMess;
-        },
-        JobsList() {
-            return f.sortedByOrder(this.$store.state.currentJobsListinPersonsList);
-        },
-        personsFiltered() {
-            if (this.filter === 'all') {
-                return f.sortedByAlphabetPerson(this.persons.filter(p => p.person.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.search.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))));
-            }
-            return f.sortedByAlphabetPerson(this.persons.filter(p => p.person.known_for_department.some((e) => e.name.substring(0, 3) === this.filter.substring(0, 3))).filter(p => p.person.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.search.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))));
         },
     }
 };
@@ -68,47 +39,11 @@ export default {
 @import "@/styles/bp.scss";
 @import "@/styles/shadow.scss";
 
-.error-mess {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 14rem;
-    font-size: 1.2em;
-    max-width: 37rem;
-    margin: auto;
-    margin-top: 1rem;
-
-    img {
-        width: 3rem;
-        margin-bottom: 1rem;
-    }
-}
-
-.filters {
-    margin: 0 1rem;
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
-
-    .el-input {
-        margin-top: .5rem;
-    }
-
-    .el-radio-group {
-        line-height: 1.5rem;
-    }
-
-    h3 {
-        font-size: 0.9rem;
-        margin: .9rem 0;
-    }
-}
-
 #persons-list {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    padding-top: .3rem;
+    // padding-top: .3rem;
 
     &.is-loading {
         background: url('../../assets/img/loader-Spin-1s-74px.gif') no-repeat center;
@@ -201,12 +136,6 @@ export default {
 }
 
 @media (min-width: $--bp-sm) {
-    .filters {
-        margin: 0 2rem;
-        margin-top: 2rem;
-        margin-bottom: 0.5rem;
-    }
-
     #persons-list {
         .card {
             width: 38%;

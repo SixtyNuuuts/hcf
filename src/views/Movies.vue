@@ -88,15 +88,8 @@ export default {
                 })
             }, 600)
         },
-        handleSelectMovie(movie, item) {
-            movie.id = item.id;
-            movie.original_title = item.original_title;
-            movie.release_date = item.release_date;
-            let posterPath = "";
-            if (item.poster_path) {
-                posterPath = "https://image.tmdb.org/t/p/w300" + item.poster_path;
-            }
-            movie.poster_path = posterPath;
+        hide() {
+            this.search = ''
         },
         handleYearSelected(year) {
             this.selectedYear = year;
@@ -104,9 +97,6 @@ export default {
             this.$store.dispatch("getMoviesByYear", year)
             this.$store.dispatch("getDocumentedMoviesByYear", year)
         },
-        hide() {
-            this.search = ''
-        }
     },
     computed: {
         movieListByYear() {

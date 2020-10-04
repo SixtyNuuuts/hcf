@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     isLoading: false,
     isLoadingFilmo: false,
+    isLoadingAllPersons: false,
     loadingErrorMess: null,
     currentUser: {
       loggedIn: false,
@@ -28,6 +29,7 @@ export default new Vuex.Store({
       colRightContent: [],
     },
     currentYearSelected: 1930,
+    currentFirstLetterSelected: "A",
     currentPerson: {},
     currentPersonCredits: [],
     currentPersonImages: [],
@@ -36,7 +38,7 @@ export default new Vuex.Store({
       colRightContent: [],
     },
     currentPersonsList: [],
-    currentJobsListinPersonsList: []
+    allPersonsList: [],
   },
   mutations: {
     IS_LOADING (state, payload) {
@@ -44,6 +46,9 @@ export default new Vuex.Store({
     },
     IS_LOADING_FILMO (state, payload) {
       state.isLoadingFilmo = payload;
+    },
+    IS_LOADING_ALL_PERSONS (state, payload) {
+      state.isLoadingAllPersons = payload;
     },
     SET_LOADING_ERROR_MESS (state, payload) {
       state.loadingErrorMess = payload;
@@ -53,6 +58,9 @@ export default new Vuex.Store({
     },
     SET_CURRENT_YEAR_SELECTED (state, payload) {
       state.currentYearSelected = payload;
+    },
+    SET_CURRENT_FIRST_LETTER_SELECTED (state, payload) {
+      state.currentFirstLetterSelected = payload;
     },
     SET_CURRENT_USER_IS_ADMIN (state, value) {
       state.currentUser.admin = value;
@@ -237,11 +245,11 @@ export default new Vuex.Store({
     RESET_CURRENT_PERSONS_LIST (state) {
       state.currentPersonsList = []
     },
-    ADD_JOBS_LIST_IN_PERSONS_LIST (state, payload) {
-      state.currentJobsListinPersonsList.push(payload);
+    ADD_PERSON_TO_ALL_PERSONS_LIST (state, payload) {
+      state.allPersonsList.push(payload);
     },
-    RESET_CURRENT_JOBS_LIST_IN_PERSONS_LIST (state) {
-      state.currentJobsListinPersonsList = []
+    RESET_ALL_PERSONS_LIST (state) {
+      state.allPersonsList = []
     },
   },
   actions: {
@@ -535,51 +543,34 @@ export default new Vuex.Store({
           console.log("Error firebase:", error);
       });
     },
-    getPersons ({commit, state}) {
+    getPersons ({commit}) {
+      commit('RESET_ALL_PERSONS_LIST');
+      commit('RESET_LOADING_ERROR_MESS');
+      commit('IS_LOADING_ALL_PERSONS', true);
+      db.collection("persons")
+      .get()
+      .then(function(querySnapshot) {
+        commit('IS_LOADING_ALL_PERSONS', false);
+        querySnapshot.forEach(function(doc) {
+          commit('ADD_PERSON_TO_ALL_PERSONS_LIST', doc.data());
+        });
+      }).catch(function(error) {
+          console.log("Error firebase:", error);
+          if(error) {
+            const mess = "Erreur lors du chargement des personnalités, essayez de recharger la page ou de réessayer ultérieurement"
+            commit('SET_LOADING_ERROR_MESS', mess);
+          }
+      });
+    },
+    getPersonsByFirstLetterLastname ({commit}, payload) {
       commit('RESET_CURRENT_PERSONS_LIST');
-      commit('RESET_CURRENT_JOBS_LIST_IN_PERSONS_LIST');
       commit('RESET_LOADING_ERROR_MESS');
       commit('IS_LOADING', true);
-      db.collection("persons")
+      db.collection("persons").orderBy("lastname").startAt(payload).endAt(String.fromCharCode(payload.charCodeAt(0) + 1))
       .get()
       .then(function(querySnapshot) {
         commit('IS_LOADING', false);
         querySnapshot.forEach(function(doc) {
-          doc.data().person.known_for_department.forEach(pj => {
-            if(!state.currentJobsListinPersonsList.find(j=>j.name.includes(pj.name.substring(0, 3)))) {
-              switch (pj.name.substring(0, 3)) {
-                case 'Act':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Acteurs', order: 1});
-                  break;
-                case 'Réa':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Réalisateurs', order: 2});
-                  break;
-                case 'Scé':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Scénaristes', order: 3});
-                  break;
-                case 'Mus':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Musiciens', order: 4});
-                  break;
-                case 'Pho':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Photographes', order: 5});
-                  break;
-                case 'Déc':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Décorateurs', order: 6});
-                  break;
-                case 'Pro':
-                  commit('ADD_JOBS_LIST_IN_PERSONS_LIST', {name:'Producteurs', order: 7});
-                  break;
-                // case 'Aut':
-                //   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Auteurs');
-                //   break;
-                // case 'Dra':
-                //   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', 'Dramaturges');
-                //   break;
-                // default:
-                //   commit('ADD_JOBS_LIST_IN_PERSONS_LIST', pj.name);
-              }
-            }
-          })
           commit('ADD_PERSON_TO_CURRENT_PERSONS_LIST', doc.data());
         });
       }).catch(function(error) {
