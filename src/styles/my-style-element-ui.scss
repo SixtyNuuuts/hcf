@@ -182,7 +182,9 @@ nav {
         &::placeholder {
             color: #dbc7ab;
             font-size: .8em;
-            text-shadow: none;    
+            text-shadow: none;
+            position: relative; 
+            top: -2px;
         }
     }
 
