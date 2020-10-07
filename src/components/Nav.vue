@@ -89,7 +89,7 @@ export default {
 @import '../styles/shadow.scss';
 
 nav {
-    background-color: $--color-hcf-llight-beige;
+    background-color: #fcf8f0;
     box-shadow: $--box-shadow-dark-5;
     position: relative;
     z-index: 100;
