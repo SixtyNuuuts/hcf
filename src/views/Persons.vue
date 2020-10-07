@@ -1,5 +1,5 @@
 <template>
-<section id="persons">
+<section id="persons" :class="{ 'no-persons': !personsFiltered.length }">
     <vue-headful title="Les Personnalités | Cinéma Français d'Autrefois" description="Les Personnalités du Cinéma Français d'Autrefois" />
     <div class="title">
         <div>
@@ -106,7 +106,12 @@ export default {
 
 #persons {
     padding: 4em 1.45em 2em 1.5em;
-    min-height: 550px;
+    min-height: 725px;
+    transition: all 1s;
+
+    &.no-persons {
+        min-height: 0;
+    }
 
     .title {
         padding: 3.2em 3.6em;
