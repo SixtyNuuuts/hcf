@@ -15,7 +15,7 @@
     <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
 
     <div class="search">
-        <el-input placeholder="Recherche par nom / prénom" v-model="search"></el-input>
+        <el-input type="search" placeholder="Recherche par nom / prénom" v-model="search"></el-input>
         <ul class="search-person-result" :class="{ 'show': search, 'is-loading': isLoadingAllPersons }">
         </ul>
     </div>
@@ -50,6 +50,7 @@ export default {
     },
     methods: {
         getAllPerons() {
+            this.filter = 'all';
             if (!this.searchQueryGetAllPersonsLaunched) {
                 if (!this.$store.state.allPersonsList.length) {
                     this.searchQueryGetAllPersonsLaunched = true;
@@ -67,14 +68,15 @@ export default {
     },
     computed: {
         personsFiltered() {
-            if (this.filter !== 'all') {
-                return f.sortedByAlphabetPerson(this.$store.state.currentPersonsList.filter(p => p.person.known_for_department.some((e) => e.name.substring(0, 3) === this.filter.substring(0, 3))));
-            }
+            let personsFiltered = f.sortedByAlphabetPerson(this.$store.state.currentPersonsList);
             if (this.search) {
                 this.getAllPerons();
-                return f.sortedByAlphabetPerson(this.$store.state.allPersonsList.filter(p => p.person.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.search.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))));
+                personsFiltered = f.sortedByAlphabetPerson(this.$store.state.allPersonsList.filter(p => p.person.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.search.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))));
             }
-            return f.sortedByAlphabetPerson(this.$store.state.currentPersonsList);
+            if (this.filter !== 'all') {
+                return personsFiltered.filter(p => p.person.known_for_department.some((e) => e.name.substring(0, 3) === this.filter.substring(0, 3)));
+            }
+            return personsFiltered;
         },
         allPersons() {
             return this.$store.state.allPersonsList;
