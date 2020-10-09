@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="search" v-click-outside="hide">
-        <el-input type="search" placeholder="Recherche par titre" v-model="search" @input="querySearchMovie"></el-input>
+        <el-input type="search" ref="searchInput" placeholder="Recherche par titre" v-model="search" @input="querySearchMovie" @keyup.enter.native="inputSearchBlur()"></el-input>
         <ul class="search-movie-result" :class="{ 'show': search, 'is-loading': isLoading }">
             <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
                 <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
@@ -63,6 +63,10 @@ export default {
         ClickOutside
     },
     methods: {
+        inputSearchBlur() {
+            this.querySearchMovie(this.search);
+            this.$refs.searchInput.$el.getElementsByTagName('input')[0].blur();
+        },
         querySearchMovie(queryString) {
             this.searchMovieResult = [];
             this.isLoading = true;

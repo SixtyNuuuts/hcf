@@ -13,13 +13,11 @@
         </div>
     </div>
     <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
-
     <div class="search">
-        <el-input type="search" placeholder="Recherche par nom / prénom" v-model="search"></el-input>
+        <el-input type="search" ref="searchInput" placeholder="Recherche par nom / prénom" v-model="search" @keyup.enter.native="inputSearchBlur()"></el-input>
         <ul class="search-person-result" :class="{ 'show': search, 'is-loading': isLoadingAllPersons }">
         </ul>
     </div>
-
     <div v-if="personsFiltered.length && !search && !loadingErrorMess" class="filters">
         <h3>Filtres :</h3>
         <el-radio-group v-model="filter">
@@ -49,6 +47,9 @@ export default {
         }
     },
     methods: {
+        inputSearchBlur() {
+            this.$refs.searchInput.$el.getElementsByTagName('input')[0].blur();
+        },
         getAllPerons() {
             this.filter = 'all';
             if (!this.searchQueryGetAllPersonsLaunched) {
