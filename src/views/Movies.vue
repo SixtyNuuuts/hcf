@@ -105,11 +105,13 @@ export default {
     },
     computed: {
         movieListByYear() {
-            let currentMovieListByYearfiltered = this.$store.state.currentMovieListByYear.filter(m => !this.$store.state.currentDocumentedMovieListByYear.find(e => e.id === m.id));
+            let currentMovieListByDocufiltered = this.$store.state.currentMovieListByYear.filter(m => !this.documentedMovieListByYear.find(e => e.id === m.id));
+            let currentMovieListByYearfiltered = currentMovieListByDocufiltered.filter(m => m.release_date.split('-')[0] === this.selectedYear.toString());
             return f.sortedByAlphabet(currentMovieListByYearfiltered);
         },
         documentedMovieListByYear() {
-            return f.sortedByAlphabet(this.$store.state.currentDocumentedMovieListByYear);
+            let currentDocumentedMovieListByYearfiltered = f.sortedByAlphabet(this.$store.state.currentDocumentedMovieListByYear);
+            return currentDocumentedMovieListByYearfiltered;
         },
         searchMovieResultFilteredByYear() {
             return f.sortedByDate(this.searchMovieResult.filter(m => m.release_date && m.release_date.split('-')[0] >= '1930' && m.release_date.split('-')[0] <= '1960').filter(m => m.original_language == 'fr'));
