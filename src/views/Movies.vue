@@ -10,11 +10,11 @@
                     {{ year }}
                 </li>
             </ul>
-            <!-- <ul class="years second-line">
-            <li v-for="year in yearsSecondLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
-              {{ year }}
-            </li>
-          </ul> -->
+            <ul class="years second-line" v-if="isAdmin">
+                <li v-for="year in yearsSecondLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
+                {{ year }}
+                </li>
+          </ul>
         </div>
     </div>
     <div class="search" v-click-outside="hide">
@@ -53,6 +53,7 @@ export default {
     data() {
         return {
             yearsFirstLine: [1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939],
+            yearsSecondLine: [1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949],
             selectedYear: this.$store.state.currentYearSelected,
             search: '',
             searchMovieResult: [],
@@ -284,6 +285,9 @@ export default {
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
+            border-top: 1px solid $--color-hcf-red;
+            border-bottom: 1px solid $--color-hcf-red;
+            margin: 1rem 0px;
 
             li {
                 color: $--color-hcf-red;
@@ -292,13 +296,13 @@ export default {
                 align-items: center;
                 padding: 0.3rem 0.6rem;
                 border-radius: 3px;
-                background-color: $--color-hcf-light-beige;
+                // background-color: $--color-hcf-light-beige;
                 font-size: 1.45rem;
                 // margin: .2rem .05rem;
-                margin-left: .45rem;
-                margin-right: .45rem;
-                margin-top: .2rem;
-                margin-bottom: .2rem;
+                margin-left: .40rem;
+                margin-right: .40rem;
+                    // margin-top: .2rem;
+                    // margin-bottom: .2rem;
                 transition: background-color .3s, color .3s, margin-left .3s, margin-right .3s;
                 cursor: pointer;
 
@@ -311,10 +315,17 @@ export default {
 
                 &.active {
                     // margin: .3rem .3rem .3rem .43rem;
-                    margin-left: .43rem;
-                    margin-right: .3rem;
-                    margin-top: .3rem;
-                    margin-bottom: .3rem;
+                    // margin-left: .43rem;
+                    // margin-right: .3rem;
+                    // margin-top: .3rem;
+                    // margin-bottom: .3rem;
+                }
+            }
+
+            &.second-line {
+                li {
+                    margin-left: .37rem;
+                    margin-right: .37rem;
                 }
             }
         }
