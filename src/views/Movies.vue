@@ -243,7 +243,7 @@ export default {
     }
 
     .title {
-        padding: 2.8em 3.6em 2.3em 3.6em;
+        padding: 3em 3.6em;
         position: relative;
         text-align: center;
         z-index: 2;
