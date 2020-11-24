@@ -285,9 +285,9 @@ export default {
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            border-top: 1px solid $--color-hcf-red;
-            border-bottom: 1px solid $--color-hcf-red;
-            margin: 1rem 0px;
+            // border-top: 1px solid $--color-hcf-red;
+            // border-bottom: 1px solid $--color-hcf-red;
+            margin: .2rem 0px;
 
             li {
                 color: $--color-hcf-red;
