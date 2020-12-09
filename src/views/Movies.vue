@@ -107,7 +107,7 @@ export default {
     computed: {
         movieListByYear() {
             let currentMovieListByDocufiltered = this.$store.state.currentMovieListByYear.filter(m => !this.documentedMovieListByYear.find(e => e.id === m.id));
-            let currentMovieListByYearfiltered = currentMovieListByDocufiltered.filter(m => m.release_date.split('-')[0] === this.selectedYear.toString());
+            let currentMovieListByYearfiltered = currentMovieListByDocufiltered.filter(m => m.release_date.split('-')[0] === this.selectedYear.toString()).filter(m => m.original_title !== 'Untel père et fils');            
             return f.sortedByAlphabet(currentMovieListByYearfiltered);
         },
         documentedMovieListByYear() {
