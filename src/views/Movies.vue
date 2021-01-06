@@ -10,7 +10,7 @@
                     {{ year }}
                 </li>
             </ul>
-            <ul class="years second-line" v-if="isAdmin">
+            <ul class="years second-line">
                 <li v-for="year in yearsSecondLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
                 {{ year }}
                 </li>
