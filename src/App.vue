@@ -1,18 +1,28 @@
 <template>
-<div id="app">
-    <vue-headful title="Cinéma Français d'Autrefois" description="Plongée enthousiaste dans le cinéma français d'autrefois" />
-    <div class="frieze-film-deco">
-        <div class="ribbon-hole"></div>
-        <div class="frieze-img"></div>
-        <div class="ribbon-hole"></div>
+    <div id="app">
+        <vue-headful
+            title="Cinéma Français d'Autrefois"
+            description="Plongée enthousiaste dans le cinéma français d'autrefois"
+        />
+        <div class="frieze-film-deco">
+            <div class="ribbon-hole"></div>
+            <div
+                class="frieze-img"
+                :class="{
+                    'fi-1': 1 === fimg,
+                    'fi-2': 2 === fimg,
+                    'fi-3': 3 === fimg,
+                }"
+            ></div>
+            <div class="ribbon-hole"></div>
+        </div>
+        <div class="top-tail"></div>
+        <Nav />
+        <main>
+            <router-view />
+        </main>
+        <Footer />
     </div>
-    <div class="top-tail"></div>
-    <Nav />
-    <main>
-        <router-view />
-    </main>
-    <Footer />
-</div>
 </template>
 
 <script>
@@ -23,16 +33,32 @@ export default {
     name: "HCF",
     components: {
         Nav,
-        Footer
-    }
+        Footer,
+    },
+    data() {
+        return {
+            fimg: 1,
+        };
+    },
+    created() {
+        const nbRandom = Math.floor(Math.random() * 3);
+        this.fimg = nbRandom != 0 ? nbRandom : 1;
+
+        setInterval(() => {
+            if (this.fimg + 1 > 3) {
+                this.fimg = 0;
+            }
+            this.fimg += 1;
+        }, 10000);
+    },
 };
 </script>
 
 <style lang="scss">
-@import 'styles/font.scss';
-@import 'styles/bp.scss';
-@import 'styles/color.scss';
-@import 'styles/shadow.scss';
+@import "styles/font.scss";
+@import "styles/bp.scss";
+@import "styles/color.scss";
+@import "styles/shadow.scss";
 
 body {
     margin: 0;
@@ -40,7 +66,14 @@ body {
     min-width: 330px;
     color: $--color-hcf-black;
     background-color: $--color-hcf-red;
-    background: linear-gradient(0deg, rgba(0, 0, 0, .9) 5%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, .9) 100%), url("assets/img/red-curtain-pattern.svg");
+    background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.9) 5%,
+            rgba(0, 0, 0, 0) 50%,
+            rgba(0, 0, 0, 0) 70%,
+            rgba(0, 0, 0, 0.9) 100%
+        ),
+        url("assets/img/red-curtain-pattern.svg");
     background-size: 700px;
     min-height: 100vh;
 
@@ -80,14 +113,12 @@ body {
         }
 
         &.VueCarousel-navigation-next {
-
             &::after {
-                content: '';
+                content: "";
                 display: block;
                 height: 24px;
                 width: 24px;
                 background: url("./assets/img/icon-next.svg") no-repeat center 0;
-                ;
                 position: absolute;
                 top: 3px;
                 left: 0px;
@@ -95,29 +126,26 @@ body {
 
             &.VueCarousel-navigation--disabled {
                 &::after {
-                    content: '';
+                    content: "";
                     display: block;
                     height: 24px;
                     width: 24px;
-                    background: url("./assets/img/icon-next-disabled.svg") no-repeat center 0;
-                    ;
+                    background: url("./assets/img/icon-next-disabled.svg")
+                        no-repeat center 0;
                     position: absolute;
                     top: 3px;
                     left: 0px;
                 }
             }
-
         }
 
         &.VueCarousel-navigation-prev {
-
             &::after {
-                content: '';
+                content: "";
                 display: block;
                 height: 24px;
                 width: 24px;
                 background: url("./assets/img/icon-prev.svg") no-repeat center 0;
-                ;
                 position: absolute;
                 top: 3px;
                 right: 0px;
@@ -125,29 +153,27 @@ body {
 
             &.VueCarousel-navigation--disabled {
                 &::after {
-                    content: '';
+                    content: "";
                     display: block;
                     height: 24px;
                     width: 24px;
-                    background: url("./assets/img/icon-prev-disabled.svg") no-repeat center 0;
-                    ;
+                    background: url("./assets/img/icon-prev-disabled.svg")
+                        no-repeat center 0;
                     position: absolute;
                     top: 3px;
                     right: 0px;
                 }
             }
-
         }
-
     }
 
     .ql-editor,
     .docu_content .content {
-        padding: .3em;
+        padding: 0.3em;
         max-width: 440px;
         font-size: 17px;
         line-height: 1.2;
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: "Source Sans Pro", sans-serif;
         text-align: left;
         min-height: none;
 
@@ -178,7 +204,7 @@ body {
         }
 
         .ql-size-small {
-            font-size: .75em;
+            font-size: 0.75em;
         }
 
         .ql-size-large {
@@ -194,7 +220,6 @@ body {
             color: #946a3b !important;
             text-decoration: underline;
         }
-
     }
 
     .quillWrapper {
@@ -229,7 +254,8 @@ body {
     .docu_content .content ul {
         margin: 0;
         padding: 0;
-        counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+        counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8
+            list-9;
     }
 
     .person-biography,
@@ -256,7 +282,7 @@ body {
                 margin: 0;
 
                 &:first-child {
-                    margin-top: .4rem;
+                    margin-top: 0.4rem;
                 }
             }
         }
@@ -268,7 +294,7 @@ body {
             margin: 0;
 
             &:first-child {
-                margin-top: .4rem;
+                margin-top: 0.4rem;
             }
 
             a {
@@ -293,7 +319,7 @@ body {
             margin: 1%;
             position: relative;
             top: 0;
-            transition: .3s ease;
+            transition: 0.3s ease;
             display: flex;
             align-items: center;
 
@@ -305,18 +331,19 @@ body {
                 img {
                     width: 100%;
                     object-fit: contain;
-                    box-shadow: 0 3px 6px rgba(15, 12, 10, 1), 0 3px 6px rgba(15, 12, 10, 1);
+                    box-shadow: 0 3px 6px rgba(15, 12, 10, 1),
+                        0 3px 6px rgba(15, 12, 10, 1);
                 }
             }
         }
     }
 
-    // @media (min-width: $--bp-md) { 
+    // @media (min-width: $--bp-md) {
     //   .my-gallery {
     //     figure {
     //       width: 20%;
     //     }
-    //   }  
+    //   }
     // }
 
     /////////////////////////////////////////
@@ -325,7 +352,7 @@ body {
         max-width: $--bp-lg;
         margin: 0 auto;
         box-shadow: $--box-shadow-dark-6;
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: "Source Sans Pro", sans-serif;
         text-align: center;
         font-size: 100%;
         line-height: 1;
@@ -344,14 +371,24 @@ body {
             box-shadow: $--box-shadow-dark-4;
 
             .ribbon-hole {
-                background: url("assets/img/hole-frieze.svg") repeat-x 0 bottom, #000;
+                background: url("assets/img/hole-frieze.svg") repeat-x 0 bottom,
+                    #000;
             }
 
             .frieze-img {
                 height: 120px;
-                background-image: url("assets/img/frieze-img.jpg");
                 background-repeat: repeat-x;
+                transition: background-image 2s;
 
+                &.fi-1 {
+                    background-image: url("assets/img/frieze-img-1.jpg");
+                }
+                &.fi-2 {
+                    background-image: url("assets/img/frieze-img-2.jpg");
+                }
+                &.fi-3 {
+                    background-image: url("assets/img/frieze-img-3.jpg");
+                }
             }
         }
 
@@ -363,11 +400,9 @@ body {
         }
 
         main {
-            box-shadow: inset 0 17px 61px 0 rgba(206, 136, 24, .24);
+            box-shadow: inset 0 17px 61px 0 rgba(206, 136, 24, 0.24);
             background-color: $--color-hcf-beige;
         }
-
     }
-
 }
 </style>
