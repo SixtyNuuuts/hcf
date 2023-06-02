@@ -14,7 +14,12 @@
                 <li v-for="year in yearsSecondLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
                 {{ year }}
                 </li>
-          </ul>
+            </ul>
+            <ul class="years third-line">
+                <li v-for="year in yearsThirdLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
+                {{ year }}
+                </li>
+            </ul> 
         </div>
     </div>
     <div class="search" v-click-outside="hide">
@@ -54,6 +59,7 @@ export default {
         return {
             yearsFirstLine: [1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939],
             yearsSecondLine: [1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949],
+            yearsThirdLine: [1950, 1951, 1952, 1953, 1954],
             selectedYear: this.$store.state.currentYearSelected,
             search: '',
             searchMovieResult: [],
