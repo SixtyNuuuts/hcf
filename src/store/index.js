@@ -254,9 +254,11 @@ export default new Vuex.Store({
   },
   actions: {
     fetchUser({ commit }, user) {
-      commit("SET_CURRENT_USER_LOGGED_IN", user !== null);
-      commit("SET_CURRENT_USER_IS_ADMIN", user !== null);
       if (user) {
+        if(['damien@admin.fr', 'popa@admin.fr'].includes(user.email))
+          commit("SET_CURRENT_USER_IS_ADMIN", true);
+          
+        commit("SET_CURRENT_USER_LOGGED_IN", true);  
         commit("SET_CURRENT_USER", {
           displayName: user.displayName,
           email: user.email

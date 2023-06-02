@@ -8,11 +8,14 @@
         <DocuEdit :docu="currentMovieDocumented" docuType="movie" />
         <ImagesGalleryEdit :images="currentMovieImages" galleryType="movie" />
     </div>
-    <div v-else>
+    <div v-else-if="isUserLogged">
         <MovieDetails :movie="currentMovie" :movieCrew="currentMovieCrew" />
         <MovieCast :movieCast="currentMovieCast" />
         <Docu v-if="currentMovieDocumented.colLeftContent.length || currentMovieDocumented.colRightContent.length" :docu="currentMovieDocumented" />
         <ImagesGallery v-if="currentMovieImages.length" :images="currentMovieImages" />
+    </div>
+    <div v-else>
+        <LoginUser/>
     </div>
 </section>
 </template>
@@ -23,6 +26,7 @@ import MovieCast from "@/components/Movie/MovieCast.vue";
 import Docu from "@/components/Docu.vue";
 import ImagesGallery from "@/components/ImagesGallery.vue";
 import LoginAdmin from "@/components/Edit/LoginAdmin.vue";
+import LoginUser from "@/components/LoginUser.vue";
 import MovieDetailsEdit from "@/components/Movie/MovieEdit/MovieDetailsEdit.vue";
 import MovieCastEdit from "@/components/Movie/MovieEdit/MovieCastEdit.vue";
 import DocuEdit from "@/components/Edit/DocuEdit.vue";
@@ -37,6 +41,7 @@ export default {
         Docu,
         ImagesGallery,
         LoginAdmin,
+        LoginUser,
         MovieDetailsEdit,
         MovieCastEdit,
         DocuEdit,
@@ -60,6 +65,9 @@ export default {
     computed: {
         isAdmin() {
             return this.$store.state.currentUser.admin;
+        },
+        isUserLogged() {
+            return this.$store.state.currentUser.loggedIn;
         },
         currentMovie() {
             return this.$store.state.currentMovie

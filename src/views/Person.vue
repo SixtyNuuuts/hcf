@@ -8,11 +8,14 @@
         <DocuEdit :docu="currentPersonDocumented" docuType="person" />
         <ImagesGalleryEdit v-if="currentPersonImages.length" :images="currentPersonImages" galleryType="person" />
     </div>
-    <div v-else>
+    <div v-else-if="isUserLogged">
         <PersonDetails :person="currentPerson" />
         <PersonFilmography :personCredits="currentPersonCredits" />
         <Docu v-if="currentPersonDocumented.colLeftContent.length || currentPersonDocumented.colRightContent.length" :docu="currentPersonDocumented" />
         <ImagesGallery v-if="currentPersonImages.length" :images="currentPersonImages" />
+    </div>
+    <div v-else>
+        <LoginUser/>
     </div>
 </section>
 </template>
@@ -28,6 +31,7 @@ import PersonFilmographyEdit from "@/components/Person/PersonEdit/PersonFilmogra
 import DocuEdit from "@/components/Edit/DocuEdit.vue";
 import ImagesGalleryEdit from "@/components/Edit/ImagesGalleryEdit.vue";
 import f from "../services/func";
+import LoginUser from "@/components/LoginUser.vue";
 
 export default {
     name: "Person",
@@ -37,6 +41,7 @@ export default {
         Docu,
         ImagesGallery,
         LoginAdmin,
+        LoginUser,
         PersonDetailsEdit,
         PersonFilmographyEdit,
         DocuEdit,
@@ -62,6 +67,9 @@ export default {
     computed: {
         isAdmin() {
             return this.$store.state.currentUser.admin;
+        },
+        isUserLogged() {
+            return this.$store.state.currentUser.loggedIn;
         },
         currentPerson() {
             return this.$store.state.currentPerson;
