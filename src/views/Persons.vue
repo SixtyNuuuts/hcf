@@ -1,37 +1,43 @@
 <template>
 <section id="persons" :class="{ 'no-persons': !personsFiltered.length }">
     <vue-headful title="Les Personnalités | Cinéma Français d'Autrefois" description="Les Personnalités du Cinéma Français d'Autrefois" />
-    <div class="title">
-        <div>
-            <h1>LES PERSONNALITÉS DOCUMENTÉES <span v-if="isAdmin">({{ personsFiltered.length }})({{ allPersons.length }})</span></h1>
-            <h2>par ordre alphabétique</h2>
-            <ul class="alphabet">
-                <li v-for="letter in letters" :key="letter" @click="handleLetterSelected(letter)" :class="{ 'active': letter === selectedLetter && !search }">
-                    {{ letter }}
-                </li>
+    <div v-if="isUserLogged">
+        <div class="title">
+            <div>
+                <h1>LES PERSONNALITÉS DOCUMENTÉES <span v-if="isAdmin">({{ personsFiltered.length }})({{ allPersons.length }})</span></h1>
+                <h2>par ordre alphabétique</h2>
+                <ul class="alphabet">
+                    <li v-for="letter in letters" :key="letter" @click="handleLetterSelected(letter)" :class="{ 'active': letter === selectedLetter && !search }">
+                        {{ letter }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
+        <div class="search">
+            <el-input type="search" ref="searchInput" placeholder="Recherche par nom / prénom" v-model="search" @keyup.enter.native="inputSearchBlur()"></el-input>
+            <ul class="search-person-result" :class="{ 'show': search, 'is-loading': isLoadingAllPersons }">
             </ul>
         </div>
+        <div v-if="personsFiltered.length && !search && !loadingErrorMess" class="filters">
+            <h3>Filtres :</h3>
+            <el-radio-group v-model="filter">
+                <el-radio label="all">Tous</el-radio>
+                <el-radio v-for="(job, index) in JobsList" :key="index" :label="job.name">{{ job.name }}</el-radio>
+            </el-radio-group>
+        </div>
+        <PersonsList :persons="personsFiltered" />
     </div>
-    <div v-if="loadingErrorMess" class="error-mess"> <img src="@/assets/img/404-error-brown.svg" alt="Logo Error 404" /> {{ loadingErrorMess }}</div>
-    <div class="search">
-        <el-input type="search" ref="searchInput" placeholder="Recherche par nom / prénom" v-model="search" @keyup.enter.native="inputSearchBlur()"></el-input>
-        <ul class="search-person-result" :class="{ 'show': search, 'is-loading': isLoadingAllPersons }">
-        </ul>
+    <div v-else>
+        <LoginUser/>
     </div>
-    <div v-if="personsFiltered.length && !search && !loadingErrorMess" class="filters">
-        <h3>Filtres :</h3>
-        <el-radio-group v-model="filter">
-            <el-radio label="all">Tous</el-radio>
-            <el-radio v-for="(job, index) in JobsList" :key="index" :label="job.name">{{ job.name }}</el-radio>
-        </el-radio-group>
-    </div>
-    <PersonsList :persons="personsFiltered" />
 </section>
 </template>
 
 <script>
 import PersonsList from "@/components/Persons/PersonsList.vue"
 import f from "../services/func";
+import LoginUser from "@/components/LoginUser.vue";
 
 export default {
     created() {
@@ -85,6 +91,9 @@ export default {
         isAdmin() {
             return this.$store.state.currentUser.admin;
         },
+        isUserLogged() {
+            return this.$store.state.currentUser.loggedIn;
+        },
         isLoadingAllPersons() {
             return this.$store.state.isLoadingAllPersons;
         },
@@ -98,6 +107,7 @@ export default {
     name: "Persons",
     components: {
         PersonsList,
+        LoginUser
     }
 }
 </script>

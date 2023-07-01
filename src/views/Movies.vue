@@ -1,45 +1,50 @@
 <template>
 <section id="movies">
     <vue-headful title="Les Films | Cinéma Français d'Autrefois" description="Les Films du Cinéma Français d'Autrefois" />
-    <div class="title">
-        <div>
-            <h1>LES FILMS DOCUMENTÉS <span v-if="isAdmin">({{ documentedMovieListByYear.length }})</span></h1>
-            <h2>par année</h2>
-            <ul class="years first-line">
-                <li v-for="year in yearsFirstLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
+    <div v-if="isUserLogged">
+        <div class="title">
+            <div>
+                <h1>LES FILMS DOCUMENTÉS <span v-if="isAdmin">({{ documentedMovieListByYear.length }})</span></h1>
+                <h2>par année</h2>
+                <ul class="years first-line">
+                    <li v-for="year in yearsFirstLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
+                        {{ year }}
+                    </li>
+                </ul>
+                <ul class="years second-line">
+                    <li v-for="year in yearsSecondLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
                     {{ year }}
-                </li>
-            </ul>
-            <ul class="years second-line">
-                <li v-for="year in yearsSecondLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
-                {{ year }}
-                </li>
-            </ul>
-            <ul class="years third-line">
-                <li v-for="year in yearsThirdLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
-                {{ year }}
-                </li>
-            </ul> 
+                    </li>
+                </ul>
+                <ul class="years third-line">
+                    <li v-for="year in yearsThirdLine" :key="year" @click="handleYearSelected(year)" :class="{ 'active': year === selectedYear }">
+                    {{ year }}
+                    </li>
+                </ul> 
+            </div>
         </div>
-    </div>
-    <div class="search" v-click-outside="hide">
-        <el-input type="search" ref="searchInput" placeholder="Recherche par titre" v-model="search" @input="querySearchMovie" @keyup.enter.native="inputSearchBlur()"></el-input>
-        <ul class="search-movie-result" :class="{ 'show': search, 'is-loading': isLoading }">
-            <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
-                <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
-                    <div class="poster">
-                        <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path">
-                        <div v-else class="no-poster">
-                            <i class="el-icon-picture"></i>
+        <div class="search" v-click-outside="hide">
+            <el-input type="search" ref="searchInput" placeholder="Recherche par titre" v-model="search" @input="querySearchMovie" @keyup.enter.native="inputSearchBlur()"></el-input>
+            <ul class="search-movie-result" :class="{ 'show': search, 'is-loading': isLoading }">
+                <li v-for="(movie, index) in searchMovieResultFilteredByYear" :key="index">
+                    <router-link v-if="movie.original_title && movie.release_date" :to="'/film/' + movie.id">
+                        <div class="poster">
+                            <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path">
+                            <div v-else class="no-poster">
+                                <i class="el-icon-picture"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="title-year" v-if="movie.release_date"><strong v-if="movie.original_title">{{ movie.original_title }}</strong> <span v-if="movie.release_date" class="year">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></div>
-                </router-link>
-            </li>
-        </ul>
+                        <div class="title-year" v-if="movie.release_date"><strong v-if="movie.original_title">{{ movie.original_title }}</strong> <span v-if="movie.release_date" class="year">({{ movie.release_date | dateParse('YYYY-MM-DD') | dateFormat('YYYY') }})</span></div>
+                    </router-link>
+                </li>
+            </ul>
+        </div>
+        <MoviesDocuList :movies="documentedMovieListByYear" />
+        <MoviesList :movies="movieListByYear" :year="selectedYear" />
     </div>
-    <MoviesDocuList :movies="documentedMovieListByYear" />
-    <MoviesList :movies="movieListByYear" :year="selectedYear" />
+    <div v-else>
+        <LoginUser/>
+    </div>
 </section>
 </template>
 
@@ -49,6 +54,7 @@ import MoviesList from "@/components/Movies/MoviesList.vue"
 import f from "@/services/func";
 import tmdbApi from "@/services/tmdb-api";
 import ClickOutside from 'vue-click-outside'
+import LoginUser from "@/components/LoginUser.vue";
 
 export default {
     created() {
@@ -126,11 +132,15 @@ export default {
         isAdmin() {
             return this.$store.state.currentUser.admin;
         },
+        isUserLogged() {
+            return this.$store.state.currentUser.loggedIn;
+        },
     },
     name: "Movies",
     components: {
         MoviesList,
-        MoviesDocuList
+        MoviesDocuList,
+        LoginUser,
     }
 }
 </script>
