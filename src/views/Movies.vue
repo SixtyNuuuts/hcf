@@ -58,8 +58,7 @@ import LoginUser from "@/components/LoginUser.vue";
 
 export default {
     created() {
-        this.$store.dispatch("getMoviesByYear", this.selectedYear)
-        this.$store.dispatch("getDocumentedMoviesByYear", this.selectedYear)
+        this.getStoreData(this.isUserLogged);
     },
     data() {
         return {
@@ -74,6 +73,11 @@ export default {
     },
     directives: {
         ClickOutside
+    },
+    watch: {
+        isUserLogged(newValue) {
+            this.getStoreData(newValue);
+        }
     },
     methods: {
         inputSearchBlur() {
@@ -115,6 +119,12 @@ export default {
             this.$store.dispatch("getMoviesByYear", year)
             this.$store.dispatch("getDocumentedMoviesByYear", year)
         },
+        getStoreData(isUserLogged) {
+            if (isUserLogged) {
+                this.$store.dispatch("getMoviesByYear", this.selectedYear)
+                this.$store.dispatch("getDocumentedMoviesByYear", this.selectedYear)
+            }
+        }
     },
     computed: {
         movieListByYear() {

@@ -41,7 +41,7 @@ import LoginUser from "@/components/LoginUser.vue";
 
 export default {
     created() {
-        this.$store.dispatch("getPersonsByFirstLetterLastname", this.selectedLetter);
+        this.getStoreData(this.isUserLogged);
     },
     data() {
         return {
@@ -71,6 +71,16 @@ export default {
             this.search = '';
             this.$store.commit('SET_CURRENT_FIRST_LETTER_SELECTED', letter)
             this.$store.dispatch("getPersonsByFirstLetterLastname", letter)
+        },
+        getStoreData(isUserLogged) {
+            if (isUserLogged) {
+                this.$store.dispatch("getPersonsByFirstLetterLastname", this.selectedLetter);
+            }
+        }
+    },
+    watch: {
+        isUserLogged(newValue) {
+            this.getStoreData(newValue);
         }
     },
     computed: {

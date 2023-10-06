@@ -3,18 +3,14 @@
     <div class="title">
       <div>
         <h1>Identification</h1>
-        <p>
-          Cher visiteur, pour garantir la sécurité des données et réduire les coûts d'hébergement du site, 
-          l'accès aux pages du site sur le cinéma français d'autrefois nécessite désormais une identification.</p>
-         <p>Veuillez créer un compte pour profiter du contenu et maintenir l'intégrité de notre communauté cinéphile.
-        <br>Vous n'avez à le faire qu'une seule fois, car nous nous souviendrons de vous lors de vos prochaines visites.</p>
-        <p>Merci pour votre compréhension.</p>
+        <p>Cher visiteur cinéphile, vous devez à présent être identifié pour accéder au contenu du site.</p>
+        <p>Utilisez le formulaire d'inscription ci-dessous ou si vous avez déjà un compte : identifiez-vous 😉.</p>
         <p>Clément</p>
         <div>
             <h2>Inscription</h2>
             <div class="erreur" v-if="error.register">{{error.register}}</div>
             <form @submit.prevent="register">
-              <el-input placeholder="Identifiant" v-model="formRegister.email"></el-input>
+              <el-input placeholder="Email" v-model="formRegister.email"></el-input>
               <el-input placeholder="Mot de passe" v-model="formRegister.password" show-password></el-input>
               <el-input placeholder="Confirmer le mot de passe" v-model="formRegister.confirmPassword" show-password></el-input>
               <el-button type="primary" native-type="submit">S'inscrire</el-button>
@@ -24,7 +20,7 @@
             <h2>Vous avez déjà un compte ?</h2>
             <div class="erreur" v-if="error.login">{{error.login}}</div>
             <form @submit.prevent="login">
-              <el-input placeholder="Identifiant" v-model="formLogin.email"></el-input>
+              <el-input placeholder="Email" v-model="formLogin.email"></el-input>
               <el-input placeholder="Mot de passe" v-model="formLogin.password" show-password></el-input>
               <el-button type="primary" native-type="submit">Se connecter</el-button>
               <!-- <el-button type="primary" native-type="button" @click.prevent="logout" plain >Se déconnecter</el-button> -->

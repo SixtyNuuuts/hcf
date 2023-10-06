@@ -50,17 +50,18 @@ export default {
     created() {
         this.view = this.$route.params.view
         this.id = this.$route.params.id
-        this.$store.dispatch("getCurrentMovie", this.id)
-        this.$store.dispatch("getCurrentMovieCrew", this.id)
-        this.$store.dispatch("getCurrentMovieCast", this.id)
-        this.$store.dispatch("getCurrentMovieDocumented", this.id)
-        this.$store.dispatch("getCurrentMovieImages", this.id)
+        this.getStoreData(this.isUserLogged);
     },
     data() {
         return {
             id: null,
             view: null
         };
+    },
+    watch: {
+        isUserLogged(newValue) {
+            this.getStoreData(newValue);
+        }
     },
     computed: {
         isAdmin() {
@@ -83,6 +84,17 @@ export default {
         },
         currentMovieImages() {
             return this.$store.state.currentMovieImages
+        }
+    },
+    methods: {
+        getStoreData(isUserLogged) {
+            if (isUserLogged) {
+                this.$store.dispatch("getCurrentMovie", this.id)
+                this.$store.dispatch("getCurrentMovieCrew", this.id)
+                this.$store.dispatch("getCurrentMovieCast", this.id)
+                this.$store.dispatch("getCurrentMovieDocumented", this.id)
+                this.$store.dispatch("getCurrentMovieImages", this.id)
+            }
         }
     },
 };

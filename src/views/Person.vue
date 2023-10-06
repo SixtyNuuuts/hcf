@@ -50,19 +50,18 @@ export default {
     created() {
         this.view = this.$route.params.view;
         this.id = this.$route.params.id;
-        this.$store.dispatch("getCurrentPerson", this.id);
-        this.$store.dispatch("getCurrentPersonCredits", this.id);
-        this.$store.dispatch("getCurrentPersonDocumented", this.id)
-        this.$store.dispatch("getCurrentPersonImages", this.id);
-        if (!this.$store.state.allDocumentedMovieList.length) {
-            this.$store.dispatch("getAllDocumentedMovies");
-        }
+        this.getStoreData(this.isUserLogged);
     },
     data() {
         return {
             id: null,
             view: null
         };
+    },
+    watch: {
+        isUserLogged(newValue) {
+            this.getStoreData(newValue);
+        }
     },
     computed: {
         isAdmin() {
@@ -83,6 +82,19 @@ export default {
         currentPersonImages() {
             return this.$store.state.currentPersonImages;
         },
+    },
+    methods: {
+        getStoreData(isUserLogged) {
+            if (isUserLogged) {
+                this.$store.dispatch("getCurrentPerson", this.id);
+                this.$store.dispatch("getCurrentPersonCredits", this.id);
+                this.$store.dispatch("getCurrentPersonDocumented", this.id)
+                this.$store.dispatch("getCurrentPersonImages", this.id);
+                if (!this.$store.state.allDocumentedMovieList.length) {
+                    this.$store.dispatch("getAllDocumentedMovies");
+                }
+            }
+        }
     },
 };
 </script>
